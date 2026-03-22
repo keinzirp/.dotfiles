@@ -1,0 +1,8 @@
+[env]
+term = "xterm-256color"
+
+[window]
+startup_mode = "Maximized"
+option_as_alt = "OnlyLeft"
+blur = false
+dynamic_title = true

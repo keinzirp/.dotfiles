@@ -1,0 +1,17 @@
+[init]
+	defaultBranch = main
+[commit]
+	gpgsign = true
+[user]
+	name = keinzirp
+	useConfigOnly = true
+[core]
+	editor = nvim
+[include]
+	path = ~/.config/git/.gitconfig.personal
+
+[includeIf "gitdir:~/Development/Personal/"]
+	path = ~/.config/git/.gitconfig.personal
+
+[includeIf "gitdir:~/Development/Work/"]
+	path = ~/.config/git/.gitconfig.work
