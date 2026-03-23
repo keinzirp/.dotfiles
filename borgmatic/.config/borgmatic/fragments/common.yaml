@@ -3,13 +3,14 @@ keep_weekly: 4
 keep_monthly: 6
 keep_yearly: 1
 
-encryption_passphrase: "{credential keepassxc ~/Sync/keepassxc/keepassxc.kdbx borgmatic}"
+encryption_passphrase: "{credential keepassxc ~/Sync/keepassxc.kdbx borgmatic}"
 
 source_directories:
   - ~/Desktop/
-  - ~/.dotfiles/
   - ~/Sync/
-  - ~/Library/Application Support/Anki2/User 1/backups
+  - ~/.dotfiles/
+  - ~/Library/Application Support/Anki2/User 1/
+  - ~/.local/share/timewarrior/
 
 patterns:
   - '- **/.git'
