@@ -5,6 +5,7 @@
   "fzf-lua": { "branch": "main", "commit": "8a79ee54d6216d10b2f153921a12b152be0c1a20" },
   "git-link.nvim": { "branch": "main", "commit": "0a56c23821fbace9a8ceeec438d04ed73287872f" },
   "gitsigns.nvim": { "branch": "main", "commit": "7c4faa3540d0781a28588cafbd4dd187a28ac6e3" },
+  "jellybeans.nvim": { "branch": "main", "commit": "f75e0cfba0cdf3b7530301df8375367c29fbd310" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
   "leap.nvim": { "branch": "main", "commit": "25d893149edfc831ba188f16448b255ab582544c" },
   "marks.nvim": { "branch": "master", "commit": "f353e8c08c50f39e99a9ed474172df7eddd89b72" },
