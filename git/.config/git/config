@@ -2,6 +2,7 @@
 	defaultBranch = main
 [commit]
 	gpgsign = true
+	verbose = true
 [user]
 	name = keinzirp
 	useConfigOnly = true

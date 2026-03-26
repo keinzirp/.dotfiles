@@ -1,0 +1,15 @@
+[ui]
+editor = "nvim"
+
+[user]
+name = "keinzirp"
+email = "keinzirp@gmail.com"
+
+[[--scope]]
+--when.repositories = ["~/Development/Work"]
+[--scope.user]
+email = "andreas@rough.app"
+
+[signing]
+behavior = "own"
+backend = "gpg"
