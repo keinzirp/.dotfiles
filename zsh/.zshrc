@@ -1,6 +1,5 @@
-if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  exec tmux
-fi
+export ZELLIJ_AUTO_EXIT=true
+source <(zellij setup --generate-auto-start zsh)
 
 TERM=tmux-256color
 EDITOR=nvim
@@ -12,7 +11,6 @@ export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
 export PNPM_HOME=$HOME/.local/pnpm
 export GO_HOME=$HOME/go/bin
-
 export PATH="$PATH:$PNPM_HOME:$GO_HOME"
 
 setopt share_history
@@ -27,4 +25,3 @@ export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
 
 source <(fzf --zsh)
-
