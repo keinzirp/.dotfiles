@@ -112,6 +112,19 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     callback = function() vim.hl.on_yank({ timeout = 200 }) end
 })
 
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = {
+        "typescript", "tsx", "javascript", "javascriptreact",
+        "svelte", "html", "css", "lua", "rust", "python",
+        "graphql", "cpp", "ruby", "json", "yaml", "toml",
+        "markdown", "bash",
+    },
+    callback = function()
+        vim.treesitter.start()
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end,
+})
+
 vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(ev)
         local opts = { buffer = ev.buf }
@@ -207,20 +220,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
     {
         "nvim-treesitter/nvim-treesitter",
-        event = { "BufReadPost", "BufNewFile" },
-        config = function()
-            require("nvim-treesitter.config").setup({
-                ensure_installed = {
-                    "typescript", "tsx", "rust", "python", "graphql", "cpp",
-                    "html", "css", "lua", "ruby", "json", "yaml", "toml",
-                    "markdown", "bash", "svelte"
-                },
-                highlight = { enable = true },
-                auto_install = true,
-                incremental_selection = { enable = true },
-                indent = { enable = true }
-            })
-        end
+        lazy = false,
+        build = ":TSUpdate",
     }, {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -495,4 +496,10 @@ require("lazy").setup({
         priority = 1000,
         opts = {},
     }
+})
+
+require('nvim-treesitter').install({
+    'typescript', 'tsx', 'rust', 'python', 'graphql', 'cpp',
+    'html', 'css', 'lua', 'ruby', 'json', 'yaml', 'toml',
+    'markdown', 'bash', 'svelte',
 })
