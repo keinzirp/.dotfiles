@@ -11,7 +11,7 @@ export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
 export PNPM_HOME=$HOME/.local/pnpm
 export GO_HOME=$HOME/go/bin
-export PATH="$PATH:$PNPM_HOME:$GO_HOME"
+export PATH="$PATH:$PNPM_HOME:$GO_HOME:/.local/bin"
 
 setopt share_history
 setopt globdots
