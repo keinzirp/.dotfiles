@@ -82,7 +82,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     end
 })
 
-vim.cmd([[colorscheme lunaperche]])
 
 -- Sessions.
 local function session_path()
@@ -489,13 +488,15 @@ require("lazy").setup({
         vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap)")
         vim.keymap.set("n", "S", "<Plug>(leap-from-window)")
     end
-},
-    {
-        "wtfox/jellybeans.nvim",
-        lazy = false,
-        priority = 1000,
-        opts = {},
-    }
+}, {
+    "wtfox/jellybeans.nvim",
+    lazy = false,
+    priority = 1000,
+    opts = {},
+    config = function()
+        vim.cmd([[colorscheme jellybeans-hc]])
+    end
+}
 })
 
 require('nvim-treesitter').install({
