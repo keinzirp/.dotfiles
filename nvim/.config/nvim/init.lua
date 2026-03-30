@@ -519,24 +519,24 @@ require("lazy").setup({
 	},
 	{
 		"folke/persistence.nvim",
-		event = "BufReadPre",
+		lazy = false,
 		config = function()
 			local persistence = require("persistence")
 			vim.keymap.set("n", "<leader>qs", function()
 				persistence.load()
-			end)
+			end, { desc = "Load session" })
 
 			vim.keymap.set("n", "<leader>qS", function()
 				persistence.select()
-			end)
+			end, { desc = "Select session" })
 
 			vim.keymap.set("n", "<leader>ql", function()
 				persistence.load({ last = true })
-			end)
+			end, { desc = "Last session" })
 
 			vim.keymap.set("n", "<leader>qd", function()
 				persistence.stop()
-			end)
+			end, { desc = "Stop session" })
 		end,
 	},
 })

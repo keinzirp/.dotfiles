@@ -109,10 +109,10 @@ on-mode-changed = []
     alt-shift-s = 'exec-and-forget screencapture -i -c'
 
     # App launchers
-    alt-b = 'exec-and-forget open -na Firefox'
-    alt-f = 'exec-and-forget open -na "Finder"'
-    alt-m = 'exec-and-forget open -na "Mail"'
-    alt-s = 'exec-and-forget open -na "Slack"'
+    # alt-b = 'exec-and-forget open -na Firefox'
+    # alt-f = 'exec-and-forget open -na "Finder"'
+    # alt-m = 'exec-and-forget open -na "Mail"'
+    # alt-s = 'exec-and-forget open -na "Slack"'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#layout
     alt-space = 'layout tiles accordion'
