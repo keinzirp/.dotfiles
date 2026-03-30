@@ -5,6 +5,7 @@ vim.o.belloff = "all"
 vim.o.ignorecase = true
 vim.o.smartcase = true
 vim.o.number = true
+vim.o.relativenumber = true
 vim.o.undofile = true
 vim.o.undodir = vim.fn.stdpath("state") .. "/undo"
 vim.o.signcolumn = "yes"
@@ -352,6 +353,13 @@ require("lazy").setup({
 	{ "tpope/vim-fugitive", cmd = { "Git", "G", "Gdiff", "Gvdiffsplit" } },
 	{ "tpope/vim-sleuth" },
 	{ "tpope/vim-abolish", event = "VeryLazy" },
+	{
+		"airblade/vim-rooter",
+		lazy = false,
+		init = function()
+			vim.g.rooter_silent_chdir = 1
+		end,
+	},
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
