@@ -12,6 +12,7 @@ export GPG_TTY=$(tty)
 export PNPM_HOME=$HOME/.local/pnpm
 export GO_HOME=$HOME/go/bin
 MANUAL=$HOME/.local/bin
+export TWS_NOTES="$HOME/Documents/Notes"
 export PATH="$PATH:$PNPM_HOME:$GO_HOME:$MANUAL"
 
 setopt share_history

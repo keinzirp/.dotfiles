@@ -166,6 +166,10 @@ vim.keymap.set("n", "gC", function()
 	vim.notify("Copied: " .. rel)
 end, { desc = "Copy current file path to clipboard" })
 
+vim.keymap.set("n", "<C-Left>",  "<C-w><", { desc = "Decrease width" })
+vim.keymap.set("n", "<C-Right>", "<C-w>>", { desc = "Increase width" })
+vim.keymap.set("n", "<C-Up>",    "<C-w>+", { desc = "Increase height" })
+vim.keymap.set("n", "<C-Down>",  "<C-w>-", { desc = "Decrease height" })
 vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Window left" })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Window down" })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Window up" })
@@ -274,10 +278,10 @@ require("lazy").setup({
 					["<C-f>"] = { "scroll_documentation_down" },
 				},
 				completion = {
-					trigger = { show_on_insert_on_trigger_character = false },
+					trigger = { show_on_insert_on_trigger_character = true },
 					documentation = { auto_show = true },
 					list = {
-						selection = { preselect = false, auto_insert = false },
+						selection = { preselect = true, auto_insert = false },
 					},
 					menu = {
 						draw = {
@@ -332,10 +336,30 @@ require("lazy").setup({
 				mode = "v",
 				desc = "Grep selection",
 			},
+			{
+				"<leader>fR",
+				"<cmd>FzfLua lsp_references<cr>",
+				desc = "References",
+			},
+			{
+				"<leader>fS",
+				"<cmd>FzfLua lsp_workspace_symbols<cr>",
+				desc = "Workspace symbols",
+			},
+			{
+				"<leader>fi",
+				"<cmd>FzfLua lsp_incoming_calls<cr>",
+				desc = "Incoming calls",
+			},
+			{
+				"<leader>fO",
+				"<cmd>FzfLua lsp_outgoing_calls<cr>",
+				desc = "Outgoing calls",
+			},
 		},
 		opts = {
 			"hide",
-			winopts = { split = "belowright new", preview = { delay = 0 } },
+			winopts = { height = 0.85, width = 0.85, preview = { delay = 0 } },
 			fzf_opts = {
 				["--history"] = vim.fn.stdpath("data") .. "/fzf-lua-history",
 			},
@@ -358,6 +382,7 @@ require("lazy").setup({
 		lazy = false,
 		init = function()
 			vim.g.rooter_silent_chdir = 1
+			vim.g.rooter_patterns = { ".git" }
 		end,
 	},
 	{
@@ -530,6 +555,7 @@ require("lazy").setup({
 		lazy = false,
 		config = function()
 			local persistence = require("persistence")
+			persistence.setup()
 			vim.keymap.set("n", "<leader>qs", function()
 				persistence.load()
 			end, { desc = "Load session" })
