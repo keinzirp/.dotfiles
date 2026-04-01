@@ -3,7 +3,7 @@ source <(zellij setup --generate-auto-start zsh)
 
 TERM=tmux-256color
 EDITOR=nvim
-PS1='%2d $ '
+PROMPT='%F{green}%n@%m%f:%F{blue}%1~%f %# '
 export DO_NOT_TRACK=1
 HOMEBREW_NO_AUTO_UPDATE=1
 export XDG_DATA_HOME=$HOME/.local/share
