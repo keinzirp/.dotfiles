@@ -7,13 +7,19 @@
 	name = keinzirp
 	useConfigOnly = true
 [core]
+  pager = delta
 	editor = nvim
+[interactive]
+  diffFilter = delta --color-only
+[delta]
+  navigate = true 
+  dark = true
+[merge]
+  conflictStyle = zdiff3
 [include]
 	path = ~/.config/git/.gitconfig.personal
-
 [includeIf "gitdir:~/Development/Personal/"]
 	path = ~/.config/git/.gitconfig.personal
-
 [includeIf "gitdir:~/Development/Work/"]
 	path = ~/.config/git/.gitconfig.work
 
