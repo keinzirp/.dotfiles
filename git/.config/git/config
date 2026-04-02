@@ -16,3 +16,38 @@
 
 [includeIf "gitdir:~/Development/Work/"]
 	path = ~/.config/git/.gitconfig.work
+
+[alias]
+	s = status
+	co = checkout
+	cb = checkout -b
+	br = branch
+	ci = commit
+	cm = commit -m
+	ca = commit --amend
+	cp = cherry-pick
+
+	lg = log --oneline --graph --decorate
+	ll = log --oneline -n 15
+	last = log -1 HEAD
+
+	d = diff
+	ds = diff --staged
+
+	a = add
+	aa = add --all
+	ap = add --patch
+
+	st = stash
+	stp = stash pop
+	stl = stash list
+
+	p = push
+	pf = push --force-with-lease
+	pl = pull
+	f = fetch --all --prune
+
+	unstage = reset HEAD --
+	undo = reset --soft HEAD~1
+
+	gone = "!git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D"
