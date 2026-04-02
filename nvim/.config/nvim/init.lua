@@ -166,10 +166,10 @@ vim.keymap.set("n", "gC", function()
 	vim.notify("Copied: " .. rel)
 end, { desc = "Copy current file path to clipboard" })
 
-vim.keymap.set("n", "<C-Left>",  "<C-w><", { desc = "Decrease width" })
+vim.keymap.set("n", "<C-Left>", "<C-w><", { desc = "Decrease width" })
 vim.keymap.set("n", "<C-Right>", "<C-w>>", { desc = "Increase width" })
-vim.keymap.set("n", "<C-Up>",    "<C-w>+", { desc = "Increase height" })
-vim.keymap.set("n", "<C-Down>",  "<C-w>-", { desc = "Decrease height" })
+vim.keymap.set("n", "<C-Up>", "<C-w>+", { desc = "Increase height" })
+vim.keymap.set("n", "<C-Down>", "<C-w>-", { desc = "Decrease height" })
 vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Window left" })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Window down" })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Window up" })
@@ -357,21 +357,31 @@ require("lazy").setup({
 				desc = "Outgoing calls",
 			},
 		},
-		opts = {
-			"hide",
-			winopts = { height = 0.85, width = 0.85, preview = { delay = 0 } },
-			fzf_opts = {
-				["--history"] = vim.fn.stdpath("data") .. "/fzf-lua-history",
-			},
-			keymap = {
-				fzf = {
-					true,
-					["ctrl-q"] = "select-all+accept",
-					["ctrl-n"] = "down",
-					["ctrl-p"] = "up",
+
+		config = function()
+			local actions = require("fzf-lua.actions")
+			require("fzf-lua").setup({
+				"hide",
+				winopts = { height = 0.85, width = 0.85, preview = { delay = 0 } },
+				fzf_opts = {
+					["--history"] = vim.fn.stdpath("data") .. "/fzf-lua-history",
 				},
-			},
-		},
+				keymap = {
+					fzf = {
+						true,
+						["ctrl-q"] = "select-all+accept",
+						["ctrl-n"] = "down",
+						["ctrl-p"] = "up",
+					},
+				},
+				grep = {
+					actions = {
+						["ctrl-g"] = false,
+						["ctrl-o"] = { actions.grep_lgrep },
+					},
+				},
+			})
+		end,
 	},
 	{ "echasnovski/mini.surround", event = "VeryLazy", opts = {} },
 	{ "tpope/vim-fugitive", cmd = { "Git", "G", "Gdiff", "Gvdiffsplit" } },
