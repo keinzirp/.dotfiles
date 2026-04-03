@@ -1,0 +1,31 @@
+{
+  "permissions": {
+    "defaultMode": "plan"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/keinzirp/.claude/statusline-command.sh"
+  },
+  "effortLevel": "medium",
+  "allowedTools": [
+    "Read",
+    "Glob",
+    "Grep",
+    "Bash(ansible-doc:*)",
+    "Bash(command -v:*)",
+    "Bash(fd:*)",
+    "Bash(find:*)",
+    "Bash(gh pr diff:*)",
+    "Bash(gh pr list:*)",
+    "Bash(gh pr review-comment list:*)",
+    "Bash(gh pr view:*)",
+    "Bash(grep:*)",
+    "Bash(hadolint:*)",
+    "Bash(helm template:*)",
+    "Bash(ls:*)",
+    "Bash(rg:*)",
+    "Bash(yamllint:*)",
+    "Bash(find:*)",
+    "Bash(rodney:*)"
+  ]
+}
