@@ -1,6 +1,10 @@
 [env]
 term = "xterm-256color"
 
+[terminal.shell]
+program = "/opt/homebrew/bin/zellij"
+# args = ["-l", "welcome"]
+
 [window]
 startup_mode = "Maximized"
 option_as_alt = "OnlyLeft"

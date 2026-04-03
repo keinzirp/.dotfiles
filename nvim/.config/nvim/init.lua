@@ -60,6 +60,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		local hl = vim.api.nvim_set_hl
 		hl(0, "Search", { fg = "#000000", bg = "#CCB800", bold = true })
 		hl(0, "IncSearch", { fg = "#000000", bg = "#FFFF00", bold = true })
+		hl(0, "ColorColumn", { link = "CursorLine" })
 
 		hl(0, "BlinkCmpKindFunction", { fg = "#C586C0" })
 		hl(0, "BlinkCmpKindMethod", { fg = "#C586C0" })
@@ -185,6 +186,7 @@ vim.keymap.set("n", "<leader>tn", "<cmd>tabnew<CR>", { desc = "New tab" })
 vim.keymap.set("n", "<leader>tc", "<cmd>tabclose<CR>", { desc = "Close tab" })
 vim.keymap.set("n", "<leader>to", "<cmd>tabonly<CR>", { desc = "Close other tabs" })
 
+-- Navigate diagnostics.
 vim.keymap.set("n", "[d", function()
 	vim.diagnostic.jump({ count = -1 })
 end, { desc = "Previous diagnostic" })
@@ -194,20 +196,32 @@ end, { desc = "Next diagnostic" })
 vim.keymap.set("n", "<leader>dq", vim.diagnostic.setqflist, { desc = "Diagnostics to quickfix" })
 vim.keymap.set("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Diagnostics to loclist" })
 
+-- Navigate quickfix.
 vim.keymap.set("n", "]q", "<cmd>cnext<CR>", { desc = "Next quickfix" })
 vim.keymap.set("n", "[q", "<cmd>cprev<CR>", { desc = "Previous quickfix" })
 vim.keymap.set("n", "]Q", "<cmd>clast<CR>", { desc = "Last quickfix" })
 vim.keymap.set("n", "[Q", "<cmd>cfirst<CR>", { desc = "First quickfix" })
 
+-- Navigate virtual lines.
+vim.keymap.set({ "n", "v" }, "j", function()
+	return vim.v.count == 0 and "gj" or "j"
+end, { expr = true })
+vim.keymap.set({ "n", "v" }, "k", function()
+	return vim.v.count == 0 and "gk" or "k"
+end, { expr = true })
+
+-- Center after page scroll.
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "N", "Nzz")
 
+-- Move lines.
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true })
 vim.keymap.set("n", "J", "mzJ`z")
 
+-- Insert newlines from normal mode.
 vim.keymap.set("n", "<leader>o", 'o<Esc>0"_D', { silent = true })
 vim.keymap.set("n", "<leader>O", 'O<Esc>0"_D', { silent = true })
 
@@ -464,6 +478,7 @@ require("lazy").setup({
 					javascriptreact = { "biome-check", "biome-organize-imports" },
 					typescript = { "biome-check", "biome-organize-imports" },
 					typescriptreact = { "biome-check", "biome-organize-imports" },
+					svelte = { "biome-check", "biome-organize-imports" },
 					cpp = { "clang-format" },
 					sql = { "sql_formatter" },
 				},
@@ -520,21 +535,12 @@ require("lazy").setup({
 	},
 	{ "echasnovski/mini.ai", event = "VeryLazy", opts = {} },
 	{
-		"andyg/leap.nvim",
-		url = "https://codeberg.org/andyg/leap.nvim",
-		event = "VeryLazy",
-		config = function()
-			vim.keymap.set({ "n", "x", "o" }, "s", "<Plug>(leap)")
-			vim.keymap.set("n", "S", "<Plug>(leap-from-window)")
-		end,
-	},
-	{
 		"wtfox/jellybeans.nvim",
 		lazy = false,
 		priority = 1000,
 		opts = {},
 		config = function()
-			vim.cmd([[colorscheme jellybeans-hc]])
+			vim.cmd([[colorscheme jellybeans]])
 		end,
 	},
 	{

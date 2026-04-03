@@ -1,7 +1,6 @@
 export ZELLIJ_AUTO_EXIT=true
-source <(zellij setup --generate-auto-start zsh)
+eval "$(/opt/homebrew/bin/brew shellenv zsh)"
 
-TERM=tmux-256color
 EDITOR=nvim
 PROMPT='%F{green}%n@%m%f:%F{blue}%1~%f %# '
 export DO_NOT_TRACK=1
