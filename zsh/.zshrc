@@ -1,5 +1,9 @@
 export ZELLIJ_AUTO_EXIT=true
-eval "$(/opt/homebrew/bin/brew shellenv zsh)"
+export PNPM_HOME=$HOME/.local/pnpm
+export GO_HOME=$HOME/go/bin
+MANUAL=$HOME/.local/bin
+export PATH="$PATH:$PNPM_HOME:$GO_HOME:$MANUAL"
+source <(zellij setup --generate-auto-start zsh)
 
 EDITOR=nvim
 PROMPT='%F{green}%n@%m%f:%F{blue}%1~%f %# '
@@ -8,11 +12,7 @@ HOMEBREW_NO_AUTO_UPDATE=1
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
-export PNPM_HOME=$HOME/.local/pnpm
-export GO_HOME=$HOME/go/bin
-MANUAL=$HOME/.local/bin
 export TWS_NOTES="$HOME/Documents/Notes"
-export PATH="$PATH:$PNPM_HOME:$GO_HOME:$MANUAL"
 
 setopt share_history
 setopt globdots
