@@ -1,5 +1,7 @@
 [ui]
 editor = "nvim"
+pager = "delta"
+diff-formatter = ":git"
 
 [user]
 name = "keinzirp"

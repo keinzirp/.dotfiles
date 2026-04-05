@@ -14,6 +14,8 @@
 [delta]
   navigate = true 
   dark = true
+  side-by-side = false
+  line-numbers = true
 [merge]
   conflictStyle = zdiff3
 [include]
