@@ -185,6 +185,9 @@ end, { desc = "Delete buffer" })
 vim.keymap.set("n", "<leader>tn", "<cmd>tabnew<CR>", { desc = "New tab" })
 vim.keymap.set("n", "<leader>tc", "<cmd>tabclose<CR>", { desc = "Close tab" })
 vim.keymap.set("n", "<leader>to", "<cmd>tabonly<CR>", { desc = "Close other tabs" })
+vim.keymap.set("n", "<C-w><C-]>", function()
+	vim.cmd("vertical stag " .. vim.fn.expand("<cword>"))
+end, { silent = true })
 
 -- Navigate diagnostics.
 vim.keymap.set("n", "[d", function()
@@ -275,7 +278,7 @@ require("lazy").setup({
 				},
 				root_markers = { "relay.config.json", "relay.config.js" },
 			})
-			vim.lsp.enable("relay_lsp")
+			-- vim.lsp.enable("relay_lsp")
 		end,
 	},
 	{
@@ -474,16 +477,19 @@ require("lazy").setup({
 					lua = { "lua-format", "stylua", stop_after_first = true },
 					python = { "black" },
 					ruby = { "rubocop" },
-					javascript = { "biome-check", "biome-organize-imports" },
-					javascriptreact = { "biome-check", "biome-organize-imports" },
-					typescript = { "biome-check", "biome-organize-imports" },
-					typescriptreact = { "biome-check", "biome-organize-imports" },
-					svelte = { "biome-check", "biome-organize-imports" },
+					javascript = { "biome", "biome-check", "biome-organize-imports" },
+					javascriptreact = { "biome", "biome-check", "biome-organize-imports" },
+					typescript = { "biome", "biome-check", "biome-organize-imports" },
+					typescriptreact = { "biome", "biome-check", "biome-organize-imports" },
+					-- svelte = { "biome", "biome-check", "biome-organize-imports" },
 					cpp = { "clang-format" },
 					sql = { "sql_formatter" },
 				},
 				format_on_save = function(bufnr)
 					if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+						return
+					end
+					if vim.bo[bufnr].filetype == "svelte" then
 						return
 					end
 					return { timeout_ms = 2000, lsp_format = "fallback" }
