@@ -2,6 +2,7 @@
 editor = "nvim"
 pager = "delta"
 diff-formatter = ":git"
+default-command = ["status"]
 
 [user]
 name = "keinzirp"

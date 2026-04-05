@@ -20,6 +20,8 @@ setopt globdots
 eval "$(zoxide init zsh --no-cmd)"
 alias z="__zoxide_z"
 alias zi="__zoxide_zi"
+alias rm="rip --graveyard ~/.local/share/trash"
+
 
 export NVM_DIR="$HOME/.nvm"
   [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
@@ -27,3 +29,4 @@ export NVM_DIR="$HOME/.nvm"
 
 source <(fzf --zsh)
 source <(COMPLETE=zsh jj)
+
