@@ -16,3 +16,6 @@ email = "andreas@rough.app"
 [signing]
 behavior = "own"
 backend = "gpg"
+
+[aliases]
+tug = ["bookmark", "move", "--from", "heads(::@- & bookmarks())", "--to", "@-"]
