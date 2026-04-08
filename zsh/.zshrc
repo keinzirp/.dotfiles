@@ -14,7 +14,18 @@ export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
 export TWS_NOTES="$HOME/Documents/Notes"
 
+HISTFILE=$HOME/.zsh_history
+HISTSIZE=100000
+SAVEHIST=100000
+
 setopt share_history
+setopt append_history
+setopt inc_append_history
+setopt hist_ignore_dups
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+setopt hist_verify
 setopt globdots
 
 eval "$(zoxide init zsh --no-cmd)"
