@@ -7,6 +7,9 @@ $env.XDG_DATA_HOME = ($env.HOME + "/.local/share")
 # $env.XDG_CONFIG_HOME = ($env.HOME + "/.config")
 $env.TWS_NOTES = ($env.HOME + "/Documents/Notes")
 $env.GPG_TTY = (^tty | str trim)
+$env.config.buffer_editor = "/opt/homebrew/bin/nvim"
+$env.ZELLIJ_AUTO_ATTACH = false
+$env.config.rm.always_trash = true
 
 $env.PATH = ($env.PATH | prepend [
     "/opt/homebrew/bin",
@@ -17,7 +20,6 @@ $env.PATH = ($env.PATH | prepend [
 ])
 
 zoxide init nushell | save -f ~/.zoxide.nu
-atuin init nu | save -f ~/.atuin.nu
 
 $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
 mkdir $"($nu.cache-dir)"
