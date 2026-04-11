@@ -1,12 +1,4 @@
 {
-  "permissions": {
-    "defaultMode": "default"
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "bash /Users/keinzirp/.claude/statusline-command.sh"
-  },
-  "effortLevel": "medium",
   "allowedTools": [
     "Read",
     "Glob",
@@ -27,5 +19,49 @@
     "Bash(yamllint:*)",
     "Bash(find:*)",
     "Bash(rodney:*)"
-  ]
+  ],
+  "effortLevel": "medium",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "atuin hook claude-code",
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash"
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "hooks": [
+          {
+            "command": "atuin hook claude-code",
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "command": "atuin hook claude-code",
+            "type": "command"
+          }
+        ],
+        "matcher": "Bash"
+      }
+    ]
+  },
+  "model": "opus",
+  "permissions": {
+    "defaultMode": "default"
+  },
+  "statusLine": {
+    "command": "bash /Users/keinzirp/.claude/statusline.sh",
+    "type": "command"
+  }
 }

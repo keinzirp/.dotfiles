@@ -11,12 +11,15 @@ $env.config.buffer_editor = "/opt/homebrew/bin/nvim"
 $env.ZELLIJ_AUTO_ATTACH = false
 $env.config.rm.always_trash = true
 
+source "~/.cargo/env.nu"
+
 $env.PATH = ($env.PATH | prepend [
     "/opt/homebrew/bin",
     ($env.HOME + "/.local/pnpm"),
     ($env.HOME + "/go/bin"),
     ($env.HOME + "/.local/bin"),
     ($env.HOME + "/.atuin/bin"),
+    ($env.HOME + "/.nvm/versions/node/v24.14.0/bin"),
 ])
 
 zoxide init nushell | save -f ~/.zoxide.nu

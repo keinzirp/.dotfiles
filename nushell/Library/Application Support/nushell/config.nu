@@ -10,10 +10,13 @@ $env.config.table.mode = "ascii_rounded"
 # $env.config.history.sync_on_enter = true
 # $env.config.history.file_format = "sqlite"
 
+# Run once to register: plugin add ~/.cargo/bin/nu_plugin_polars
+# plugin use polars
+
 alias rm = rip --graveyard ~/.local/share/trash
 
 # until I can figure out why atuin doesn't new history logs properly.
-# source ~/.local/share/atuin/init.nu 
+source ~/.local/share/atuin/init.nu 
 source $"($nu.cache-dir)/carapace.nu"
 source ~/.zoxide.nu
 

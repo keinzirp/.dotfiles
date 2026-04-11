@@ -61,6 +61,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 		hl(0, "Search", { fg = "#000000", bg = "#CCB800", bold = true })
 		hl(0, "IncSearch", { fg = "#000000", bg = "#FFFF00", bold = true })
 		hl(0, "ColorColumn", { link = "CursorLine" })
+		hl(0, "WinSeparator", { fg = "#0f0d0b", bg = "#0f0d0b" })
 
 		hl(0, "BlinkCmpKindFunction", { fg = "#C586C0" })
 		hl(0, "BlinkCmpKindMethod", { fg = "#C586C0" })
@@ -280,11 +281,10 @@ require("lazy").setup({
 				root_markers = { "relay.config.json", "relay.config.js" },
 			})
 			vim.lsp.config("nushell", {
-				cmd = { 'nu', '--lsp' },
-				filetypes = { 'nu' },
+				cmd = { "nu", "--lsp" },
+				filetypes = { "nu" },
 				root_dir = function(bufnr, on_dir)
-					on_dir(vim.fs.root(bufnr, { '.git' }) or
-						vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)))
+					on_dir(vim.fs.root(bufnr, { ".git" }) or vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)))
 				end,
 			})
 			-- vim.lsp.enable("relay_lsp")
@@ -326,15 +326,15 @@ require("lazy").setup({
 		"ibhagwan/fzf-lua",
 		cmd = "FzfLua",
 		keys = {
-			{ "<leader>ff", "<cmd>FzfLua files<cr>",     desc = "Find files" },
-			{ "<leader>fr", "<cmd>FzfLua resume<cr>",    desc = "Fzf resume" },
+			{ "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Find files" },
+			{ "<leader>fr", "<cmd>FzfLua resume<cr>", desc = "Fzf resume" },
 			{ "<leader>fg", "<cmd>FzfLua live_grep<cr>", desc = "Grep files" },
 			{
 				"<leader>fh",
 				"<cmd>FzfLua helptags<cr>",
 				desc = "Grep tags in help files",
 			},
-			{ "<leader>ft", "<cmd>FzfLua btags<cr>",   desc = "Search buffer tags" },
+			{ "<leader>ft", "<cmd>FzfLua btags<cr>", desc = "Search buffer tags" },
 			{
 				"<leader>fb",
 				"<cmd>FzfLua buffers<cr>",
@@ -400,6 +400,9 @@ require("lazy").setup({
 						["ctrl-p"] = "up",
 					},
 				},
+				files = {
+					cmd = "{ fd --color=never --type f --hidden --follow --exclude .git; fd --color=never --type f --hidden --no-ignore --follow --exclude .git -g '.env*'; } | sort -u",
+				},
 				grep = {
 					actions = {
 						["ctrl-g"] = false,
@@ -409,10 +412,10 @@ require("lazy").setup({
 			})
 		end,
 	},
-	{ "echasnovski/mini.surround", event = "VeryLazy",                          opts = {} },
-	{ "tpope/vim-fugitive",        cmd = { "Git", "G", "Gdiff", "Gvdiffsplit" } },
+	{ "echasnovski/mini.surround", event = "VeryLazy", opts = {} },
+	{ "tpope/vim-fugitive", cmd = { "Git", "G", "Gdiff", "Gvdiffsplit" } },
 	{ "tpope/vim-sleuth" },
-	{ "tpope/vim-abolish",         event = "VeryLazy" },
+	{ "tpope/vim-abolish", event = "VeryLazy" },
 	{
 		"airblade/vim-rooter",
 		lazy = false,
@@ -514,8 +517,7 @@ require("lazy").setup({
 					print("Global autoformat: " .. (vim.g.disable_autoformat and "off" or "on"))
 				end
 			end, { desc = "Toggle autoformat-on-save", bang = true })
-			vim.keymap.set("n", "<leader>tf", "<cmd>FormatToggle<CR>",
-				{ desc = "Toggle autoformat (global)" })
+			vim.keymap.set("n", "<leader>tf", "<cmd>FormatToggle<CR>", { desc = "Toggle autoformat (global)" })
 			vim.keymap.set("n", "<leader>fo", function()
 				conform.format({ bufnr = vim.api.nvim_get_current_buf() })
 			end, { desc = "Format buffer" })
@@ -549,14 +551,14 @@ require("lazy").setup({
 		cmd = { "DiffviewOpen", "DiffviewFileHistory" },
 		opts = {},
 	},
-	{ "echasnovski/mini.ai",  event = "VeryLazy", opts = {} },
+	{ "echasnovski/mini.ai", event = "VeryLazy", opts = {} },
 	{
 		"wtfox/jellybeans.nvim",
 		lazy = false,
 		priority = 1000,
 		opts = {},
 		config = function()
-			vim.cmd([[colorscheme jellybeans]])
+			vim.cmd([[colorscheme jellybeans-warm]])
 		end,
 	},
 	{
@@ -605,5 +607,50 @@ require("lazy").setup({
 				persistence.stop()
 			end, { desc = "Stop session" })
 		end,
+	},
+
+	{
+		"pwntester/octo.nvim",
+		cmd = "Octo",
+		opts = {
+			-- or "fzf-lua" or "snacks" or "default"
+			picker = "fzf-lua",
+			-- bare Octo command opens picker of commands
+			enable_builtin = true,
+		},
+		keys = {
+			{
+				"<leader>oi",
+				"<CMD>Octo issue list<CR>",
+				desc = "List GitHub Issues",
+			},
+			{
+				"<leader>op",
+				"<CMD>Octo pr list<CR>",
+				desc = "List GitHub PullRequests",
+			},
+			{
+				"<leader>od",
+				"<CMD>Octo discussion list<CR>",
+				desc = "List GitHub Discussions",
+			},
+			{
+				"<leader>on",
+				"<CMD>Octo notification list<CR>",
+				desc = "List GitHub Notifications",
+			},
+			{
+				"<leader>os",
+				function()
+					require("octo.utils").create_base_search_command({ include_current_repo = true })
+				end,
+				desc = "Search GitHub",
+			},
+		},
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"ibhagwan/fzf-lua",
+			"folke/snacks.nvim",
+		},
 	},
 })
