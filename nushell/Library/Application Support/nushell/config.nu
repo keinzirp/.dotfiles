@@ -12,9 +12,10 @@ $env.config.table.mode = "ascii_rounded"
 
 alias rm = rip --graveyard ~/.local/share/trash
 
+# until I can figure out why atuin doesn't new history logs properly.
+# source ~/.local/share/atuin/init.nu 
 source $"($nu.cache-dir)/carapace.nu"
 source ~/.zoxide.nu
-source ~/.local/share/atuin/init.nu
 
 def fg [] {
   let jobs = job list
