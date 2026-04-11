@@ -134,6 +134,7 @@ vim.api.nvim_create_autocmd("FileType", {
 		"toml",
 		"markdown",
 		"bash",
+		"nushell",
 	},
 	callback = function()
 		vim.treesitter.start()
@@ -278,6 +279,14 @@ require("lazy").setup({
 				},
 				root_markers = { "relay.config.json", "relay.config.js" },
 			})
+			vim.lsp.config("nushell", {
+				cmd = { 'nu', '--lsp' },
+				filetypes = { 'nu' },
+				root_dir = function(bufnr, on_dir)
+					on_dir(vim.fs.root(bufnr, { '.git' }) or
+						vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)))
+				end,
+			})
 			-- vim.lsp.enable("relay_lsp")
 		end,
 	},
@@ -317,15 +326,15 @@ require("lazy").setup({
 		"ibhagwan/fzf-lua",
 		cmd = "FzfLua",
 		keys = {
-			{ "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Find files" },
-			{ "<leader>fr", "<cmd>FzfLua resume<cr>", desc = "Fzf resume" },
+			{ "<leader>ff", "<cmd>FzfLua files<cr>",     desc = "Find files" },
+			{ "<leader>fr", "<cmd>FzfLua resume<cr>",    desc = "Fzf resume" },
 			{ "<leader>fg", "<cmd>FzfLua live_grep<cr>", desc = "Grep files" },
 			{
 				"<leader>fh",
 				"<cmd>FzfLua helptags<cr>",
 				desc = "Grep tags in help files",
 			},
-			{ "<leader>ft", "<cmd>FzfLua btags<cr>", desc = "Search buffer tags" },
+			{ "<leader>ft", "<cmd>FzfLua btags<cr>",   desc = "Search buffer tags" },
 			{
 				"<leader>fb",
 				"<cmd>FzfLua buffers<cr>",
@@ -400,10 +409,10 @@ require("lazy").setup({
 			})
 		end,
 	},
-	{ "echasnovski/mini.surround", event = "VeryLazy", opts = {} },
-	{ "tpope/vim-fugitive", cmd = { "Git", "G", "Gdiff", "Gvdiffsplit" } },
+	{ "echasnovski/mini.surround", event = "VeryLazy",                          opts = {} },
+	{ "tpope/vim-fugitive",        cmd = { "Git", "G", "Gdiff", "Gvdiffsplit" } },
 	{ "tpope/vim-sleuth" },
-	{ "tpope/vim-abolish", event = "VeryLazy" },
+	{ "tpope/vim-abolish",         event = "VeryLazy" },
 	{
 		"airblade/vim-rooter",
 		lazy = false,
@@ -505,7 +514,8 @@ require("lazy").setup({
 					print("Global autoformat: " .. (vim.g.disable_autoformat and "off" or "on"))
 				end
 			end, { desc = "Toggle autoformat-on-save", bang = true })
-			vim.keymap.set("n", "<leader>tf", "<cmd>FormatToggle<CR>", { desc = "Toggle autoformat (global)" })
+			vim.keymap.set("n", "<leader>tf", "<cmd>FormatToggle<CR>",
+				{ desc = "Toggle autoformat (global)" })
 			vim.keymap.set("n", "<leader>fo", function()
 				conform.format({ bufnr = vim.api.nvim_get_current_buf() })
 			end, { desc = "Format buffer" })
@@ -539,7 +549,7 @@ require("lazy").setup({
 		cmd = { "DiffviewOpen", "DiffviewFileHistory" },
 		opts = {},
 	},
-	{ "echasnovski/mini.ai", event = "VeryLazy", opts = {} },
+	{ "echasnovski/mini.ai",  event = "VeryLazy", opts = {} },
 	{
 		"wtfox/jellybeans.nvim",
 		lazy = false,

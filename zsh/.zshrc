@@ -41,3 +41,7 @@ export NVM_DIR="$HOME/.nvm"
 source <(fzf --zsh)
 source <(COMPLETE=zsh jj)
 
+
+. "$HOME/.atuin/bin/env"
+
+eval "$(atuin init zsh)"
