@@ -1,0 +1,32 @@
+swap_tiled_layout name="equal-columns" {
+    ui max_panes=2 {
+        pane split_direction="vertical" {
+            pane size="50%"
+            pane size="50%" { children; }
+        }
+    }
+    ui max_panes=3 {
+        pane split_direction="vertical" {
+            pane size="33%"
+            pane size="34%"
+            pane size="33%" { children; }
+        }
+    }
+    ui max_panes=4 {
+        pane split_direction="vertical" {
+            pane size="25%"
+            pane size="25%"
+            pane size="25%"
+            pane size="25%" { children; }
+        }
+    }
+    ui max_panes=5 {
+        pane split_direction="vertical" {
+            pane size="20%"
+            pane size="20%"
+            pane size="20%"
+            pane size="20%"
+            pane size="20%" { children; }
+        }
+    }
+}

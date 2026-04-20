@@ -1,5 +1,14 @@
 [font]
 size = 18.0
+# normal = {family = "Fira Code", style = "Regular"}
+# bold = {family = "Fira Code", style = "Bold"}
+# italic = {family = "Fira Code", style = "Italic"}
+# bold_italic = {family = "Fira Code", style = "Bold Italic"}
+
+normal = {family = "LiterationMono Nerd Font", style = "Regular"}
+bold = {family = "LiterationMono Nerd Font", style = "Bold"}
+italic = {family = "LiterationMono Nerd Font", style = "Italic"}
+bold_italic = {family = "LiterationMono Nerd Font", style = "Bold Italic"}
 
 [env]
 term = "xterm-256color"

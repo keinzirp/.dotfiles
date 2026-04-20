@@ -32,7 +32,7 @@ if vim.fn.executable("rg") == 1 then
 	vim.o.grepformat = "%f:%l:%c:%m"
 end
 vim.opt.clipboard = "unnamedplus"
-vim.o.laststatus = 3
+vim.o.laststatus = 2
 function _G.statusline()
 	local parts = { " %f%m%r%=" }
 	local d = vim.diagnostic.count(0)
@@ -231,6 +231,10 @@ vim.keymap.set("n", "<leader>o", 'o<Esc>0"_D', { silent = true })
 vim.keymap.set("n", "<leader>O", 'O<Esc>0"_D', { silent = true })
 
 -- Plugins.
+vim.cmd("packadd nvim.undotree")
+vim.cmd("packadd nvim.tohtml")
+vim.keymap.set("n", "<leader>u", require("undotree").open)
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
 	vim.fn.system({
@@ -386,6 +390,7 @@ require("lazy").setup({
 
 		config = function()
 			local actions = require("fzf-lua.actions")
+			local open_in_trouble = require("trouble.sources.fzf").actions.open
 			require("fzf-lua").setup({
 				"hide",
 				winopts = { height = 0.85, width = 0.85, preview = { delay = 0 } },
@@ -400,13 +405,17 @@ require("lazy").setup({
 						["ctrl-p"] = "up",
 					},
 				},
-				files = {
-					cmd = "{ fd --color=never --type f --hidden --follow --exclude .git; fd --color=never --type f --hidden --no-ignore --follow --exclude .git -g '.env*'; } | sort -u",
+				actions = {
+					files = {
+						true,
+						["ctrl-t"] = open_in_trouble,
+					},
 				},
 				grep = {
 					actions = {
 						["ctrl-g"] = false,
 						["ctrl-o"] = { actions.grep_lgrep },
+						["ctrl-t"] = open_in_trouble,
 					},
 				},
 			})
@@ -427,7 +436,29 @@ require("lazy").setup({
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
-		opts = { icons = { mappings = false } },
+		opts = function()
+			local keys = { C = "<C-", M = "<M-", D = "<D-", S = "<S-" }
+			for _, k in ipairs({
+				"Up", "Down", "Left", "Right", "CR", "Esc", "NL", "BS",
+				"Space", "Tab", "ScrollWheelDown", "ScrollWheelUp",
+			}) do
+				keys[k] = "<" .. k .. "> "
+			end
+			for i = 1, 12 do
+				keys["F" .. i] = "<F" .. i .. ">"
+			end
+			return {
+				icons = {
+					mappings = false,
+					rules = false,
+					breadcrumb = ">",
+					separator = "->",
+					group = "+",
+					ellipsis = "...",
+					keys = keys,
+				},
+			}
+		end,
 		keys = {
 			{
 				"<leader>?",
@@ -489,22 +520,22 @@ require("lazy").setup({
 					lua = { "lua-format", "stylua", stop_after_first = true },
 					python = { "black" },
 					ruby = { "rubocop" },
-					javascript = { "biome", "biome-check", "biome-organize-imports" },
-					javascriptreact = { "biome", "biome-check", "biome-organize-imports" },
-					typescript = { "biome", "biome-check", "biome-organize-imports" },
-					typescriptreact = { "biome", "biome-check", "biome-organize-imports" },
-					-- svelte = { "biome", "biome-check", "biome-organize-imports" },
+					javascript = { "biome-check" },
+					javascriptreact = { "biome-check" },
+					typescript = { "biome-check" },
+					typescriptreact = { "biome-check" },
+					-- svelte = { "biome-check" },
 					cpp = { "clang-format" },
 					sql = { "sql_formatter" },
 				},
-				format_on_save = function(bufnr)
+				format_after_save = function(bufnr)
 					if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
 						return
 					end
 					if vim.bo[bufnr].filetype == "svelte" then
 						return
 					end
-					return { timeout_ms = 2000, lsp_format = "fallback" }
+					return { lsp_format = "fallback" }
 				end,
 			})
 			vim.g.disable_autoformat = false
@@ -526,7 +557,7 @@ require("lazy").setup({
 	{
 		"stevearc/oil.nvim",
 		opts = {
-			columns = { "icon", "permissions", "size", "mtime" },
+			columns = { "permissions", "size", "mtime" },
 			view_options = { show_hidden = true },
 			delete_to_trash = true,
 			skip_confirm_for_simple_edits = true,
@@ -551,6 +582,44 @@ require("lazy").setup({
 		cmd = { "DiffviewOpen", "DiffviewFileHistory" },
 		opts = {},
 	},
+	{
+		"folke/trouble.nvim",
+		cmd = "Trouble",
+		init = function()
+			local function match_normal_bg()
+				vim.api.nvim_set_hl(0, "TroubleNormal", { link = "Normal" })
+				vim.api.nvim_set_hl(0, "TroubleNormalNC", { link = "Normal" })
+			end
+			match_normal_bg()
+			vim.api.nvim_create_autocmd("ColorScheme", { callback = match_normal_bg })
+		end,
+		opts = {
+			focus = false,
+			icons = {
+				indent = {
+					top = "  ",
+					middle = "  ",
+					last = "  ",
+					fold_open = "v ",
+					fold_closed = "> ",
+					ws = "  ",
+				},
+				folder_closed = "",
+				folder_open = "",
+				kinds = setmetatable({}, { __index = function() return "" end }),
+			},
+		},
+		keys = {
+			{ "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", desc = "Diagnostics (workspace)" },
+			{ "<leader>xd", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Diagnostics (buffer)" },
+			{ "<leader>xs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols" },
+			{ "<leader>xr", "<cmd>Trouble lsp toggle win.position=right<cr>", desc = "LSP refs/defs" },
+			{ "<leader>xq", "<cmd>Trouble qflist toggle<cr>", desc = "Quickfix list" },
+			{ "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "Location list" },
+			{ "]t", "<cmd>Trouble next jump=true<cr>", desc = "Next Trouble item" },
+			{ "[t", "<cmd>Trouble prev jump=true<cr>", desc = "Previous Trouble item" },
+		},
+	},
 	{ "echasnovski/mini.ai", event = "VeryLazy", opts = {} },
 	{
 		"wtfox/jellybeans.nvim",
@@ -558,7 +627,7 @@ require("lazy").setup({
 		priority = 1000,
 		opts = {},
 		config = function()
-			vim.cmd([[colorscheme jellybeans-warm]])
+			vim.cmd([[colorscheme lunaperche]])
 		end,
 	},
 	{
@@ -608,49 +677,39 @@ require("lazy").setup({
 			end, { desc = "Stop session" })
 		end,
 	},
-
 	{
-		"pwntester/octo.nvim",
-		cmd = "Octo",
-		opts = {
-			-- or "fzf-lua" or "snacks" or "default"
-			picker = "fzf-lua",
-			-- bare Octo command opens picker of commands
-			enable_builtin = true,
+		"mikavilpas/yazi.nvim",
+		version = "*",
+		event = "VeryLazy",
+		dependencies = {
+			{ "nvim-lua/plenary.nvim", lazy = true },
 		},
 		keys = {
 			{
-				"<leader>oi",
-				"<CMD>Octo issue list<CR>",
-				desc = "List GitHub Issues",
+				"<leader>-",
+				mode = { "n", "v" },
+				"<cmd>Yazi<cr>",
+				desc = "Open yazi at the current file",
 			},
 			{
-				"<leader>op",
-				"<CMD>Octo pr list<CR>",
-				desc = "List GitHub PullRequests",
+				"<leader>cw",
+				"<cmd>Yazi cwd<cr>",
+				desc = "Open the file manager in nvim's working directory",
 			},
 			{
-				"<leader>od",
-				"<CMD>Octo discussion list<CR>",
-				desc = "List GitHub Discussions",
-			},
-			{
-				"<leader>on",
-				"<CMD>Octo notification list<CR>",
-				desc = "List GitHub Notifications",
-			},
-			{
-				"<leader>os",
-				function()
-					require("octo.utils").create_base_search_command({ include_current_repo = true })
-				end,
-				desc = "Search GitHub",
+				"<leader>cr",
+				"<cmd>Yazi toggle<cr>",
+				desc = "Resume the last yazi session",
 			},
 		},
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"ibhagwan/fzf-lua",
-			"folke/snacks.nvim",
+		opts = {
+			open_for_directories = true,
+			keymaps = {
+				show_help = "<f1>",
+			},
 		},
+		init = function()
+			vim.g.loaded_netrwPlugin = 1
+		end,
 	},
 })

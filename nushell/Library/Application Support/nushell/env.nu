@@ -24,6 +24,19 @@ $env.PATH = ($env.PATH | prepend [
 
 zoxide init nushell | save -f ~/.zoxide.nu
 
+# TODO: Make this a plugin.
+# When the working directory changes, rename the current Zellij tab to match it.
+$env.config.hooks.env_change.PWD = (
+  $env.config.hooks.env_change.PWD?
+  | default []
+  | append { |before, after|
+    if ('ZELLIJ' in $env) {
+      let tab_name = ($after | path basename)
+      zellij action rename-tab $tab_name
+    }
+  }
+)
+
 $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
 mkdir $"($nu.cache-dir)"
 carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"
