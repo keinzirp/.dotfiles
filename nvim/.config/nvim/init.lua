@@ -284,6 +284,8 @@ require("lazy").setup({
 				},
 				root_markers = { "relay.config.json", "relay.config.js" },
 			})
+			-- vim.lsp.enable("relay_lsp")
+
 			vim.lsp.config("nushell", {
 				cmd = { "nu", "--lsp" },
 				filetypes = { "nu" },
@@ -291,7 +293,6 @@ require("lazy").setup({
 					on_dir(vim.fs.root(bufnr, { ".git" }) or vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)))
 				end,
 			})
-			-- vim.lsp.enable("relay_lsp")
 		end,
 	},
 	{
@@ -439,8 +440,18 @@ require("lazy").setup({
 		opts = function()
 			local keys = { C = "<C-", M = "<M-", D = "<D-", S = "<S-" }
 			for _, k in ipairs({
-				"Up", "Down", "Left", "Right", "CR", "Esc", "NL", "BS",
-				"Space", "Tab", "ScrollWheelDown", "ScrollWheelUp",
+				"Up",
+				"Down",
+				"Left",
+				"Right",
+				"CR",
+				"Esc",
+				"NL",
+				"BS",
+				"Space",
+				"Tab",
+				"ScrollWheelDown",
+				"ScrollWheelUp",
 			}) do
 				keys[k] = "<" .. k .. "> "
 			end
@@ -606,7 +617,11 @@ require("lazy").setup({
 				},
 				folder_closed = "",
 				folder_open = "",
-				kinds = setmetatable({}, { __index = function() return "" end }),
+				kinds = setmetatable({}, {
+					__index = function()
+						return ""
+					end,
+				}),
 			},
 		},
 		keys = {
@@ -710,6 +725,31 @@ require("lazy").setup({
 		},
 		init = function()
 			vim.g.loaded_netrwPlugin = 1
+		end,
+	},
+	{
+		"lowitea/aw-watcher.nvim",
+		opts = {
+			aw_server = {
+				host = "127.0.0.1",
+				port = 5600,
+			},
+		},
+		config = function(_, opts)
+			local aw = require("aw_watcher")
+			aw.setup(opts)
+			local client = aw.__private.aw
+			client.__post = function(self, url, data)
+				local body = vim.fn.json_encode(data)
+				local args = { "-X", "POST", url, "-H", "Content-Type: application/json", "--data-raw", body }
+				local handle
+				handle = vim.loop.spawn("curl", { args = args, verbatim = false }, function(code)
+					self.connected = code == 0
+					if handle and not handle:is_closing() then
+						handle:close()
+					end
+				end)
+			end
 		end,
 	},
 })

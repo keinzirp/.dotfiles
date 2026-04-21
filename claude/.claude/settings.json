@@ -1,4 +1,55 @@
 {
+  "permissions": {
+    "defaultMode": "default"
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "atuin hook claude-code"
+          }
+        ]
+      }
+    ],
+    "PostToolUseFailure": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "atuin hook claude-code"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "atuin hook claude-code"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash /Users/keinzirp/.claude/statusline.sh"
+  },
+  "extraKnownMarketplaces": {
+    "jj-workflow": {
+      "source": {
+        "source": "github",
+        "repo": "kalupa/jj-workflow"
+      }
+    }
+  },
+  "effortLevel": "medium",
   "allowedTools": [
     "Read",
     "Glob",
@@ -18,50 +69,10 @@
     "Bash(rg:*)",
     "Bash(yamllint:*)",
     "Bash(find:*)",
-    "Bash(rodney:*)"
+    "Bash(rodney:*)",
+    "Bash(jj:*)"
   ],
-  "effortLevel": "medium",
-  "hooks": {
-    "PostToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "atuin hook claude-code",
-            "type": "command"
-          }
-        ],
-        "matcher": "Bash"
-      }
-    ],
-    "PostToolUseFailure": [
-      {
-        "hooks": [
-          {
-            "command": "atuin hook claude-code",
-            "type": "command"
-          }
-        ],
-        "matcher": "Bash"
-      }
-    ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "command": "atuin hook claude-code",
-            "type": "command"
-          }
-        ],
-        "matcher": "Bash"
-      }
-    ]
-  },
-  "model": "opus",
-  "permissions": {
-    "defaultMode": "default"
-  },
-  "statusLine": {
-    "command": "bash /Users/keinzirp/.claude/statusline.sh",
-    "type": "command"
+  "enabledPlugins": {
+    "jj-workflow@jj-workflow": true
   }
 }

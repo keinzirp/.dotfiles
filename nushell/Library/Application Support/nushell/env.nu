@@ -10,6 +10,8 @@ $env.GPG_TTY = (^tty | str trim)
 $env.config.buffer_editor = "/opt/homebrew/bin/nvim"
 $env.ZELLIJ_AUTO_ATTACH = false
 $env.config.rm.always_trash = true
+$env.CARAPACE_MATCH = 1
+$env.CARAPACE_HIDDEN = 1
 
 source "~/.cargo/env.nu"
 

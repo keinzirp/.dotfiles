@@ -14,10 +14,19 @@ $env.config.table.mode = "ascii_rounded"
 # plugin use polars
 
 alias rm = rip --graveyard ~/.local/share/trash
+alias tw = timew
 
 # until I can figure out why atuin doesn't new history logs properly.
 source ~/.local/share/atuin/init.nu 
 source $"($nu.cache-dir)/carapace.nu"
+
+# Fall back to nushell's built-in file completer (which shows dotfiles) when
+# carapace returns nothing. Tracks https://github.com/nushell/nushell/issues/14595.
+let carapace_completer = $env.config.completions.external.completer
+$env.config.completions.external.completer = {|spans|
+    do $carapace_completer $spans | default [] | if ($in | is-empty) { null } else { $in }
+}
+
 source ~/.zoxide.nu
 
 def fg [] {
