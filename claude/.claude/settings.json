@@ -41,11 +41,21 @@
     "type": "command",
     "command": "bash /Users/keinzirp/.claude/statusline.sh"
   },
+  "enabledPlugins": {
+    "jj-workflow@jj-workflow": true,
+    "caveman@caveman": true
+  },
   "extraKnownMarketplaces": {
     "jj-workflow": {
       "source": {
         "source": "github",
         "repo": "kalupa/jj-workflow"
+      }
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
       }
     }
   },
@@ -71,8 +81,5 @@
     "Bash(find:*)",
     "Bash(rodney:*)",
     "Bash(jj:*)"
-  ],
-  "enabledPlugins": {
-    "jj-workflow@jj-workflow": true
-  }
+  ]
 }

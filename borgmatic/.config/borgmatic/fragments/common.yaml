@@ -9,7 +9,7 @@ source_directories:
   - ~/Desktop/
   - ~/Sync/
   - ~/.dotfiles/
-  - ~/Library/Application Support/Anki2/User 1/
+  - ~/Library/Application Support/Anki2/andreasknapper/
   - ~/.local/share/timewarrior/
 
 patterns:

@@ -15,6 +15,7 @@ $env.config.table.mode = "ascii_rounded"
 
 alias rm = rip --graveyard ~/.local/share/trash
 alias tw = timew
+alias backup = borgmatic --stats --progress --config ~/.config/borgmatic.d/removable.yaml
 
 # until I can figure out why atuin doesn't new history logs properly.
 source ~/.local/share/atuin/init.nu 
@@ -28,6 +29,8 @@ $env.config.completions.external.completer = {|spans|
 }
 
 source ~/.zoxide.nu
+
+use "~/Library/Application Support/nushell/modules/jj-agents.nu" *
 
 def fg [] {
   let jobs = job list

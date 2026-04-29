@@ -1,0 +1,45 @@
+// agents.kdl — zellij layout for managing parallel jj-backed Claude Code agents
+//
+// Launch with: zellij --layout agents
+//
+// What this gives you:
+//   • A "mayor" tab with your nu shell (where `ja` commands are issued from)
+//     plus a live `jj log` pane on the right so you see all agents at once.
+//   • Each `ja new <name>` call spawns a new tab named "🤖 <name>" running claude.
+//   • Flip between tabs: Alt+h / Alt+l (or Alt+1, Alt+2, ... — see config.kdl)
+//
+// Dependencies:
+//   - watch(1) for the live log pane. macOS users: `brew install watch`.
+//     Or replace the watch line with `viddy -n 2 ...` if you have viddy.
+
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+
+    // Tab #1: mayor. Your nu shell + live jj log of every agent's progress.
+    tab name="🎩 mayor" focus=true {
+        pane split_direction="vertical" {
+            // Main pane: nushell with jj-agents loaded. The `-e` line runs at startup
+            // and then drops you into an interactive nu shell with the module in scope.
+            pane command="nu" {
+                args "-e" "use \"~/Library/Application Support/nushell/modules/jj-agents.nu\" *; ja resume; ja list; nu"
+            }
+            // Side pane: live jj log. Refreshes every 2 seconds.
+            //
+            // The revset `working_copies() | (main..working_copies())` shows:
+            //   - every workspace's working-copy commit (the @ for each agent), AND
+            //   - every commit between main and any of those working copies.
+            // So you see exactly the in-flight work across all agents.
+            pane size="35%" command="watch" {
+                args "-n" "2" "-c" "jj log --revisions 'working_copies() | (main..working_copies())' --limit 30 --color always"
+            }
+        }
+    }
+}

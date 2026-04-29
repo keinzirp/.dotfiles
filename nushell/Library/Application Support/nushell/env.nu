@@ -22,22 +22,25 @@ $env.PATH = ($env.PATH | prepend [
     ($env.HOME + "/.local/bin"),
     ($env.HOME + "/.atuin/bin"),
     ($env.HOME + "/.nvm/versions/node/v24.14.0/bin"),
+    ($env.HOME + "/.orbstack/bin"),
+    ($env.HOME + "/opt/homebrew/opt/openjdk/bin"),
+
 ])
 
 zoxide init nushell | save -f ~/.zoxide.nu
 
 # TODO: Make this a plugin.
 # When the working directory changes, rename the current Zellij tab to match it.
-$env.config.hooks.env_change.PWD = (
-  $env.config.hooks.env_change.PWD?
-  | default []
-  | append { |before, after|
-    if ('ZELLIJ' in $env) {
-      let tab_name = ($after | path basename)
-      zellij action rename-tab $tab_name
-    }
-  }
-)
+# $env.config.hooks.env_change.PWD = (
+#   $env.config.hooks.env_change.PWD?
+#   | default []
+#   | append { |before, after|
+#     if ('ZELLIJ' in $env) {
+#       let tab_name = ($after | path basename)
+#       zellij action rename-tab $tab_name
+#     }
+#   }
+# )
 
 $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
 mkdir $"($nu.cache-dir)"
