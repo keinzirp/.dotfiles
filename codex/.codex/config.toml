@@ -1,0 +1,33 @@
+model_reasoning_effort = "medium"
+model_instructions_file = "/Users/keinzirp/.codex/instructions.md"
+
+[projects."/Users/keinzirp/Desktop/helix"]
+trust_level = "trusted"
+
+[projects."/Users/keinzirp/Desktop/testing"]
+trust_level = "trusted"
+
+[projects."/Users/keinzirp/Development/Personal/leetcode"]
+trust_level = "trusted"
+
+[projects."/Users/keinzirp/Desktop"]
+trust_level = "trusted"
+
+[projects."/Users/keinzirp/Development/Work/rough.app"]
+trust_level = "trusted"
+
+[projects."/Users/keinzirp/Desktop/aristocracy"]
+trust_level = "trusted"
+
+[tui]
+theme = "ansi"
+
+[tui.model_availability_nux]
+"gpt-5.5" = 4
+
+[features]
+terminal_resize_reflow = true
+memories = true
+mentions_v2 = true
+prevent_idle_sleep = true
+
