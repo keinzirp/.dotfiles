@@ -654,14 +654,20 @@ require("lazy").setup({
 			},
 			gitbrowse = {},
 			scratch = {
+				ft = "text",
+				win_by_ft = { lua = false },
 				filekey = {
 					branch = false,
 				},
 				win = {
 					position = "current",
-					minimal = true,
+					fixbuf = false,
 					footer_keys = false,
 					keys = { q = false },
+					on_buf = function(self)
+						vim.bo[self.buf].filetype = "text"
+						vim.bo[self.buf].syntax = ""
+					end,
 				},
 			},
 		},
@@ -670,6 +676,32 @@ require("lazy").setup({
 			if not snacks.did_setup then
 				snacks.setup(opts)
 			end
+			local function open_scratch(opts)
+				local scratch = snacks.scratch.get(opts)
+				local buf = vim.fn.bufnr(scratch.file)
+				local win = buf ~= -1 and vim.fn.bufwinid(buf) or -1
+				if win ~= -1 then
+					vim.api.nvim_set_current_win(win)
+					return
+				end
+				snacks.scratch.open(opts)
+			end
+
+			local function daily_scratch()
+				local today = os.date("%Y-%m-%d")
+				open_scratch({
+					name = "Daily Scratch " .. today,
+					ft = "text",
+					template = today .. "\n\n",
+					filekey = {
+						cwd = false,
+						branch = false,
+						count = false,
+					},
+				})
+			end
+
+			local last_scratch_delete_target_count = 0
 			local function select_scratch()
 				local fzf = require("fzf-lua")
 				local scratches = snacks.scratch.list()
@@ -692,20 +724,36 @@ require("lazy").setup({
 				local function open_selected(selected, win)
 					local file = file_from_entry(selected[1])
 					if file then
-						snacks.scratch.open({ file = file, win = win })
+						open_scratch({ file = file, win = win })
 					end
+				end
+				local function new_scratch()
+					open_scratch({
+						name = "Scratch " .. os.date("%Y-%m-%d %H:%M:%S") .. "." .. vim.uv.hrtime(),
+						ft = "text",
+						filekey = {
+							branch = false,
+						},
+					})
 				end
 				local function undo_deleted_scratch()
 					if vim.fn.executable("rip") ~= 1 then
 						vim.notify("rip not found; nothing was restored", vim.log.levels.ERROR)
 						return
 					end
-
-					local output = vim.fn.system({ "rip", "--graveyard", graveyard, "-u" })
-					if vim.v.shell_error ~= 0 then
-						vim.notify(output, vim.log.levels.ERROR)
+					if last_scratch_delete_target_count == 0 then
+						vim.notify("No scratch deletion to undo", vim.log.levels.WARN)
 						return
 					end
+
+					for _ = 1, last_scratch_delete_target_count do
+						local output = vim.fn.system({ "rip", "--graveyard", graveyard, "-u" })
+						if vim.v.shell_error ~= 0 then
+							vim.notify(output, vim.log.levels.ERROR)
+							return
+						end
+					end
+					last_scratch_delete_target_count = 0
 					vim.notify("Restored last scratch deletion")
 					vim.schedule(select_scratch)
 				end
@@ -715,14 +763,14 @@ require("lazy").setup({
 					local project = cwd ~= "" and vim.fn.fnamemodify(cwd, ":t") or "global"
 					local count = item.count and item.count > 1 and (" #" .. item.count) or ""
 					local title = first_nonempty_line(item.file) or ((item.name or "Scratch") .. count)
-					local display = string.format("%-20s %-12s %s", project, item.ft or "", title)
+					local display = string.format("%-20s %-12s %s", project, "text", title)
 					entries[#entries + 1] = display .. "\t" .. item.file
 				end
 
 				fzf.fzf_exec(entries, {
 					prompt = "Scratch> ",
 					header = "enter open | alt-n new | ctrl-v vsplit | ctrl-s split | ctrl-x del | alt-u undo",
-					preview = "bat --style=numbers --color=always {2} 2>/dev/null || cat {2}",
+					preview = "bat --style=numbers --color=always --language=txt {2} 2>/dev/null || cat {2}",
 					fzf_opts = {
 						["--delimiter"] = "\t",
 						["--with-nth"] = "1",
@@ -738,9 +786,7 @@ require("lazy").setup({
 						["ctrl-s"] = function(selected)
 							open_selected(selected, { position = "bottom", height = 0.4 })
 						end,
-						["alt-n"] = function()
-							snacks.scratch.open()
-						end,
+						["alt-n"] = new_scratch,
 						["alt-u"] = undo_deleted_scratch,
 						["ctrl-x"] = function(selected)
 							if vim.fn.executable("rip") ~= 1 then
@@ -756,6 +802,9 @@ require("lazy").setup({
 									scratch_count = scratch_count + 1
 									local buf = vim.fn.bufnr(file)
 									if buf ~= -1 and vim.api.nvim_buf_is_loaded(buf) then
+										vim.api.nvim_buf_call(buf, function()
+											vim.cmd("silent! write")
+										end)
 										pcall(vim.api.nvim_buf_delete, buf, { force = true })
 									end
 									targets[#targets + 1] = file
@@ -775,10 +824,13 @@ require("lazy").setup({
 								vim.notify(output, vim.log.levels.ERROR)
 								return
 							end
-							vim.notify(("Deleted %d scratch buffer%s with rip"):format(
-								scratch_count,
-								scratch_count == 1 and "" or "s"
-							))
+							last_scratch_delete_target_count = #targets
+							vim.notify(
+								("Deleted %d scratch buffer%s with rip"):format(
+									scratch_count,
+									scratch_count == 1 and "" or "s"
+								)
+							)
 							vim.schedule(select_scratch)
 						end,
 					},
@@ -786,9 +838,10 @@ require("lazy").setup({
 			end
 
 			vim.keymap.set("n", "<leader>.", function()
-				snacks.scratch()
-			end, { desc = "Toggle scratch buffer" })
-			vim.keymap.set("n", "<leader>S", select_scratch, { desc = "Select scratch buffer" })
+				open_scratch({})
+			end, { desc = "Open scratch buffer" })
+			vim.keymap.set("n", "<leader>s", select_scratch, { desc = "Select scratch buffer" })
+			vim.keymap.set("n", "<leader>S", daily_scratch, { desc = "Daily scratch buffer" })
 			vim.keymap.set("n", "<leader>gb", function()
 				snacks.gitbrowse()
 			end, { desc = "Git browse" })
