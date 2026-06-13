@@ -721,11 +721,12 @@ require("lazy").setup({
 
 				fzf.fzf_exec(entries, {
 					prompt = "Scratch> ",
-					header = "enter: open | ctrl-v: vsplit | ctrl-s: split | ctrl-x: delete | alt-u: undo",
+					header = "enter open | alt-n new | ctrl-v vsplit | ctrl-s split | ctrl-x del | alt-u undo",
 					preview = "bat --style=numbers --color=always {2} 2>/dev/null || cat {2}",
 					fzf_opts = {
 						["--delimiter"] = "\t",
 						["--with-nth"] = "1",
+						["--preview-window"] = "down,50%,border-top",
 					},
 					actions = {
 						["enter"] = function(selected)
@@ -736,6 +737,9 @@ require("lazy").setup({
 						end,
 						["ctrl-s"] = function(selected)
 							open_selected(selected, { position = "bottom", height = 0.4 })
+						end,
+						["alt-n"] = function()
+							snacks.scratch.open()
 						end,
 						["alt-u"] = undo_deleted_scratch,
 						["ctrl-x"] = function(selected)
