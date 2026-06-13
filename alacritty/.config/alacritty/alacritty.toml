@@ -22,7 +22,7 @@ term = "xterm-256color"
 startup_mode = "Maximized"
 option_as_alt = "OnlyLeft"
 blur = false
-decorations = "Buttonless"
+decorations = "None"
 dynamic_title = true
 
 [scrolling]
