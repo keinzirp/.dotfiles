@@ -29,18 +29,36 @@ $env.PATH = ($env.PATH | prepend [
 
 zoxide init nushell | save -f ~/.zoxide.nu
 
-# TODO: Make this a plugin.
-# When the working directory changes, rename the current Zellij tab to match it.
-# $env.config.hooks.env_change.PWD = (
-#   $env.config.hooks.env_change.PWD?
-#   | default []
-#   | append { |before, after|
-#     if ('ZELLIJ' in $env) {
-#       let tab_name = ($after | path basename)
-#       zellij action rename-tab $tab_name
-#     }
-#   }
-# )
+# Keep the terminal/window title in sync with the current directory. Zellij
+# forwards this OSC title to Alacritty, which lets aw-watcher-window see it.
+def set-cwd-window-title [cwd: string] {
+    let home = $env.HOME
+    let title = if $cwd == $home {
+        "~"
+    } else if ($cwd | str starts-with $"($home)/") {
+        $cwd | str replace $home "~"
+    } else {
+        $cwd
+    }
+
+    print -n ((ansi -o $"2;($title)") + (char bel))
+}
+
+if $nu.is-interactive {
+    set-cwd-window-title $env.PWD
+
+    $env.config.hooks.pre_prompt = (
+        $env.config.hooks.pre_prompt?
+        | default []
+        | append { || set-cwd-window-title $env.PWD }
+    )
+
+    $env.config.hooks.env_change.PWD = (
+        $env.config.hooks.env_change.PWD?
+        | default []
+        | append { |before, after| set-cwd-window-title $after }
+    )
+}
 
 $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
 mkdir $"($nu.cache-dir)"
