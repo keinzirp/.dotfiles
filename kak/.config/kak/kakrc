@@ -1,0 +1,87 @@
+# Basics
+colorscheme gruvbox-dark
+
+set-option global scrolloff 4,4
+set-option global autoreload ask
+set-option global incsearch true
+set-option global idle_timeout 300
+set-option global tabstop 4
+set-option global indentwidth 4
+set-option global grepcmd 'rg --vimgrep --smart-case'
+set-option global modelinefmt '%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}}'
+set-option global ui_options terminal_assistant=none terminal_enable_mouse=true terminal_set_title=true
+
+add-highlighter global/ number-lines -relative -hlcursor
+add-highlighter global/ show-matching -previous
+add-highlighter global/ show-whitespaces -spc '' -tab '→' -nbsp '␣' -lf '' -only-trailing
+add-highlighter global/ column 80 default,default+F
+add-highlighter global/ wrap -word -indent
+
+# User mode is <space> by default. Keep it for feature modes, not Vim-style aliases.
+
+# Built-in git integration.
+declare-user-mode user-git
+map global user g ':enter-user-mode user-git<ret>' -docstring 'git'
+map global user-git s ':git status<ret>' -docstring 'status'
+map global user-git d ':git diff<ret>' -docstring 'diff'
+map global user-git b ':git blame<ret>' -docstring 'blame'
+map global user-git n ':git next-hunk<ret>' -docstring 'next hunk'
+map global user-git p ':git prev-hunk<ret>' -docstring 'previous hunk'
+
+# Plugin manager bootstrap.
+evaluate-commands %sh{
+    plugins="$kak_config/plugins"
+    mkdir -p "$plugins"
+    [ -e "$plugins/plug.kak" ] || git clone -q https://github.com/andreyorst/plug.kak.git "$plugins/plug.kak"
+    printf "source '%s/rc/plug.kak'\n" "$plugins/plug.kak"
+}
+plug "andreyorst/plug.kak" noload
+
+# Fuzzy files, grep, buffers, VCS files, tags, and projects.
+plug "andreyorst/fzf.kak" config %{
+    map global user f ':fzf-mode<ret>' -docstring 'fzf'
+} defer fzf-file %{
+    set-option global fzf_file_command 'rg'
+} defer fzf-grep %{
+    set-option global fzf_grep_command 'rg'
+}
+
+# System clipboard integration for normal y/c/d/p/R flows.
+plug "lePerdu/kakboard" config %{
+    hook global WinCreate .* %{ kakboard-enable }
+}
+
+# EditorConfig + saner tab/indent behavior.
+plug "andreyorst/smarttab.kak" defer smarttab %{
+    set-option global softtabstop 4
+} config %{
+    hook global BufOpenFile .* %{ editorconfig-load; autoconfigtab }
+    hook global BufNewFile .* %{ editorconfig-load; autoconfigtab }
+}
+
+# LSP: install with :plug-install, then ensure language servers are in PATH.
+plug "kak-lsp/kak-lsp" do %{
+    cargo install --locked --force --path .
+} config %{
+    set-option global modelinefmt "%opt{lsp_modeline} %opt{modelinefmt}"
+    set-option global lsp_diagnostic_line_error_sign 'E'
+    set-option global lsp_diagnostic_line_warning_sign 'W'
+    set-option global lsp_diagnostic_line_info_sign 'I'
+    set-option global lsp_diagnostic_line_hint_sign 'H'
+    set-option global lsp_hover_anchor false
+    set-option global lsp_auto_show_code_actions true
+
+    hook global WinSetOption filetype=(rust|python|javascript|typescript|svelte|html|css|lua|c|cpp|ruby|json|yaml|toml|markdown|sh) %{
+        lsp-enable-window
+        lsp-auto-signature-help-enable
+        lsp-auto-hover-enable
+    }
+
+    hook global BufWritePre .* %{ try %{ lsp-formatting-sync } }
+
+    map global user l ':enter-user-mode lsp<ret>' -docstring 'LSP'
+    map global goto d '<esc>:lsp-definition<ret>' -docstring 'LSP definition'
+    map global goto r '<esc>:lsp-references<ret>' -docstring 'LSP references'
+    map global goto i '<esc>:lsp-implementation<ret>' -docstring 'LSP implementation'
+
+}
