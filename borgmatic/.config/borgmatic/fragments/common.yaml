@@ -7,10 +7,19 @@ encryption_passphrase: "{credential keepassxc ~/Sync/keepassxc.kdbx borgmatic}"
 
 source_directories:
   - ~/Desktop/
+  - ~/Documents/
+  - ~/Pictures/
+  - ~/Development/
   - ~/Sync/
   - ~/.dotfiles/
+  - ~/.ssh/
+  - ~/.gnupg/
+  - ~/.config/
+  - ~/.local/share/
+  - ~/.local/state/
   - ~/Library/Application Support/Anki2/andreasknapper/
-  - ~/.local/share/timewarrior/
+  - ~/Library/Application Support/activitywatch/
+  - ~/Library/Application Support/Firefox/Profiles/
 
 patterns:
   - '- **/.git'
