@@ -302,7 +302,15 @@ require("lazy").setup({
 		version = "*",
 		event = "InsertEnter",
 		config = function()
+			local function in_comment()
+				local ok, node = pcall(vim.treesitter.get_node)
+				return ok and node and vim.tbl_contains({ "comment", "line_comment", "block_comment" }, node:type())
+			end
+
 			require("blink.cmp").setup({
+				enabled = function()
+					return not in_comment()
+				end,
 				keymap = {
 					["<C-space>"] = { "show" },
 					["<C-e>"] = { "cancel" },
