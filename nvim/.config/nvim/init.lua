@@ -19,7 +19,8 @@ vim.o.splitright = true
 vim.o.splitbelow = true
 vim.o.inccommand = "split"
 vim.o.virtualedit = "block"
-vim.o.breakindent = true
+vim.o.wrap = true
+vim.o.breakindent = false
 vim.o.linebreak = true
 vim.o.jumpoptions = "stack"
 vim.o.confirm = true
@@ -32,7 +33,7 @@ if vim.fn.executable("rg") == 1 then
 	vim.o.grepformat = "%f:%l:%c:%m"
 end
 vim.opt.clipboard = "unnamedplus"
-vim.o.laststatus = 2
+vim.o.laststatus = 3
 function _G.statusline()
 	local parts = { " %f%m%r%=" }
 	local d = vim.diagnostic.count(0)
@@ -651,6 +652,7 @@ require("lazy").setup({
 		opts = {
 			indent = {
 				animate = { enabled = false },
+				indent = { enabled = false },
 				scope = { enabled = true },
 			},
 			gitbrowse = {},
