@@ -26,7 +26,7 @@ vim.o.jumpoptions = "stack"
 vim.o.confirm = true
 vim.o.title = true
 vim.o.winminwidth = 5
-vim.o.titlestring = "%t - nvim"
+vim.o.titlestring = "%F - nvim"
 vim.o.termguicolors = true
 if vim.fn.executable("rg") == 1 then
 	vim.o.grepprg = "rg --vimgrep --smart-case"
