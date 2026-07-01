@@ -16,6 +16,8 @@ $env.config.table.mode = "ascii_rounded"
 alias rm = rip --graveyard ~/.local/share/trash
 alias tw = timew
 alias backup = borgmatic --stats --progress --config ~/.config/borgmatic.d/removable.yaml
+alias backup-t7 = borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --progress --stats
+alias backup-t7-list = borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --stats --list
 
 # until I can figure out why atuin doesn't new history logs properly.
 source ~/.local/share/atuin/init.nu 
