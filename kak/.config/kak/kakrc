@@ -1,5 +1,5 @@
 # Basics
-colorscheme gruvbox-dark
+colorscheme desertex
 
 set-option global scrolloff 4,4
 set-option global autoreload ask
