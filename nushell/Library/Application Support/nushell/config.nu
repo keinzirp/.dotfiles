@@ -19,6 +19,22 @@ alias backup = borgmatic --stats --progress --config ~/.config/borgmatic.d/remov
 alias backup-t7 = borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --progress --stats
 alias backup-t7-list = borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --stats --list
 
+# morning — update Homebrew, the Rust toolchain, and nvim (lazy.nvim) plugins.
+def morning [] {
+    print "==> Homebrew"
+    try { brew update }
+    try { brew upgrade }
+    try { brew cleanup }
+
+    print ""
+    print "==> rustup"
+    try { rustup update }
+
+    print ""
+    print "==> nvim (lazy.nvim)"
+    try { nvim --headless "+Lazy! sync" +qa }
+}
+
 # until I can figure out why atuin doesn't new history logs properly.
 source ~/.local/share/atuin/init.nu 
 source $"($nu.cache-dir)/carapace.nu"
