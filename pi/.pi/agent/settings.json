@@ -1,0 +1,24 @@
+{
+  "lastChangelogVersion": "0.80.3",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.4",
+  "defaultThinkingLevel": "high",
+  "packages": [
+    "npm:@narumitw/pi-codex-usage",
+    "npm:@narumitw/pi-plan-mode",
+    "npm:@gotgenes/pi-permission-system"
+  ],
+  "skills": [
+    "~/.claude/plugins/cache/caveman/caveman/84cc3c14fa1e/skills",
+    "~/.claude/plugins/cache/jj-workflow/jj-workflow/1.0.0/skills"
+  ],
+  "theme": "dark",
+  "hideThinkingBlock": true,
+  "terminal": {
+    "showTerminalProgress": true
+  },
+  "steeringMode": "one-at-a-time",
+  "treeFilterMode": "all",
+  "outputPad": 0,
+  "autocompleteMaxVisible": 5
+}
