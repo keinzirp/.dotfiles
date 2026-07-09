@@ -34,6 +34,7 @@ if vim.fn.executable("rg") == 1 then
 end
 vim.opt.clipboard = "unnamedplus"
 vim.o.laststatus = 3
+
 function _G.statusline()
 	local parts = { " %f%m%r%=" }
 	local d = vim.diagnostic.count(0)
@@ -400,9 +401,38 @@ require("lazy").setup({
 		},
 
 		config = function()
+			local fzf_lua = require("fzf-lua")
 			local actions = require("fzf-lua.actions")
 			local open_in_trouble = require("trouble.sources.fzf").actions.open
-			require("fzf-lua").setup({
+			local function parse_file_query(query)
+				if type(query) ~= "string" or query == "" then
+					return
+				end
+				local path, line, col = query:match("^(.-):(%d+):(%d+)$")
+				if path and path ~= "" then
+					return path, tonumber(line), tonumber(col)
+				end
+				path, line = query:match("^(.-):(%d+)$")
+				if path and path ~= "" then
+					return path, tonumber(line)
+				end
+			end
+			local function jump_query_col()
+				local _, _, col = parse_file_query(fzf_lua.get_info().query)
+				if not col then
+					return
+				end
+				local pos = vim.api.nvim_win_get_cursor(0)
+				pcall(vim.api.nvim_win_set_cursor, 0, { pos[1], math.max(col - 1, 0) })
+				vim.cmd("normal! zvzz")
+			end
+			local function with_query_col(action)
+				return function(selected, opts)
+					action(selected, opts)
+					jump_query_col()
+				end
+			end
+			fzf_lua.setup({
 				"hide",
 				winopts = { height = 0.85, width = 0.85, preview = { delay = 0 } },
 				fzf_opts = {
@@ -419,6 +449,9 @@ require("lazy").setup({
 				actions = {
 					files = {
 						true,
+						["enter"] = with_query_col(actions.file_edit_or_qf),
+						["ctrl-s"] = with_query_col(actions.file_split),
+						["ctrl-v"] = with_query_col(actions.file_vsplit),
 						["ctrl-t"] = open_in_trouble,
 					},
 				},
@@ -428,6 +461,12 @@ require("lazy").setup({
 						["ctrl-o"] = { actions.grep_lgrep },
 						["ctrl-t"] = open_in_trouble,
 					},
+				},
+				files = {
+					line_query = function(query)
+						local path, line = parse_file_query(query)
+						return line, path
+					end,
 				},
 			})
 		end,
