@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Battery_battery_additional</key>
+	<string>percentageAndTime</string>
+	<key>Battery_state</key>
+	<true/>
+	<key>Bluetooth_label_position</key>
+	<integer>1</integer>
+	<key>Bluetooth_stack_position</key>
+	<integer>0</integer>
+	<key>Bluetooth_state</key>
+	<true/>
+	<key>Bluetooth_widget</key>
+	<string>sensors</string>
+	<key>CPU_state</key>
+	<false/>
+	<key>CPU_widget</key>
+	<string>mini</string>
+	<key>Clock_state</key>
+	<false/>
+	<key>CombinedModules</key>
+	<false/>
+	<key>Disk_state</key>
+	<false/>
+	<key>GPU_state</key>
+	<false/>
+	<key>LaunchAtLoginNext</key>
+	<true/>
+	<key>NSStatusItem Preferred Position Battery</key>
+	<real>260</real>
+	<key>NSStatusItem Preferred Position Bluetooth</key>
+	<real>306</real>
+	<key>NSStatusItem Restore Position Battery_battery</key>
+	<integer>390</integer>
+	<key>NSStatusItem Restore Position Bluetooth_sensors</key>
+	<integer>346</integer>
+	<key>NSToolbar Configuration eu.exelban.Stats.Settings.Toolbar</key>
+	<dict>
+		<key>TB Display Mode</key>
+		<integer>1</integer>
+		<key>TB Icon Size Mode</key>
+		<integer>1</integer>
+		<key>TB Is Shown</key>
+		<true/>
+		<key>TB Size Mode</key>
+		<integer>1</integer>
+	</dict>
+	<key>NSWindow Frame eu.exelban.Stats.Settings.WindowFrame</key>
+	<string>504 364 728 480 0 0 1728 1084 </string>
+	<key>Network_state</key>
+	<false/>
+	<key>RAM_state</key>
+	<false/>
+	<key>RAM_widget</key>
+	<string>mini</string>
+	<key>Sensors_state</key>
+	<false/>
+	<key>ble_cc-08-fa-e5-d9-4c</key>
+	<true/>
+	<key>keep_menubar_positions</key>
+	<true/>
+	<key>remote_tokens_migrated_to_keychain</key>
+	<true/>
+	<key>runAtLoginInitialized</key>
+	<true/>
+	<key>setupProcess</key>
+	<true/>
+	<key>support_ts</key>
+	<integer>1783704762</integer>
+	<key>updater_check_ts</key>
+	<integer>1783787603</integer>
+	<key>version</key>
+	<string>3.0.7</string>
+</dict>
+</plist>
