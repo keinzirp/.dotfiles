@@ -434,7 +434,19 @@ require("lazy").setup({
 			end
 			fzf_lua.setup({
 				"hide",
-				winopts = { height = 0.85, width = 0.85, preview = { delay = 0 } },
+				formatter = { name = "path.filename_first", v = 2 },
+				winopts = {
+					height = 0.85,
+					width = 0.85,
+					preview = { delay = 0 },
+				},
+				previewers = {
+					builtin = {
+						title_fnamemodify = function(s)
+							return vim.fn.fnamemodify(s, ":.")
+						end,
+					},
+				},
 				fzf_opts = {
 					["--history"] = vim.fn.stdpath("data") .. "/fzf-lua-history",
 				},
