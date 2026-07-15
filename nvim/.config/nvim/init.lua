@@ -499,6 +499,7 @@ require("lazy").setup({
 		end,
 	},
 	{ "echasnovski/mini.surround", event = "VeryLazy", opts = {} },
+	{ "echasnovski/mini.comment", event = "VeryLazy", opts = {} },
 	{ "tpope/vim-fugitive", cmd = { "Git", "G", "Gdiff", "Gvdiffsplit" } },
 	{ "tpope/vim-sleuth" },
 	{ "tpope/vim-abolish", event = "VeryLazy" },
@@ -647,6 +648,50 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>fo", function()
 				conform.format({ bufnr = vim.api.nvim_get_current_buf() })
 			end, { desc = "Format buffer" })
+		end,
+	},
+	{
+		"mfussenegger/nvim-lint",
+		event = { "BufReadPost", "BufNewFile" },
+		config = function()
+			local lint = require("lint")
+			lint.linters.biomejs.cmd = function()
+				local root = vim.fs.root(0, { ".git", ".jj" })
+				if root then
+					for _, path in ipairs({
+						root .. "/node_modules/.bin/biome",
+						root .. "/node_modules/.pnpm/node_modules/.bin/biome",
+					}) do
+						if vim.uv.fs_stat(path) then
+							return path
+						end
+					end
+				end
+				return "biome"
+			end
+			lint.linters_by_ft = {
+				javascript = { "biomejs" },
+				javascriptreact = { "biomejs" },
+				typescript = { "biomejs" },
+				typescriptreact = { "biomejs" },
+				json = { "biomejs" },
+				jsonc = { "biomejs" },
+				css = { "biomejs" },
+				sh = { "shellcheck" },
+				bash = { "shellcheck" },
+				zsh = { "shellcheck" },
+			}
+			local function lint_buffer(bufnr)
+				local cwd = vim.fs.root(bufnr, { "biome.json", "biome.jsonc" }) or vim.fs.root(bufnr, { ".git", ".jj" })
+				vim.api.nvim_buf_call(bufnr, function()
+					lint.try_lint(nil, { cwd = cwd, ignore_errors = true })
+				end)
+			end
+			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
+				callback = function(args)
+					lint_buffer(args.buf)
+				end,
+			})
 		end,
 	},
 	{
