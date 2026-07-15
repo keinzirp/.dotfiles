@@ -171,6 +171,16 @@ vim.keymap.set("n", "gC", function()
 	vim.notify("Copied: " .. rel)
 end, { desc = "Copy current file path to clipboard" })
 
+vim.api.nvim_create_user_command("CdRoot", function()
+	local root = vim.fs.root(0, { ".git", ".jj" })
+	if not root then
+		vim.notify("No project root found", vim.log.levels.WARN)
+		return
+	end
+	vim.cmd("cd " .. vim.fn.fnameescape(root))
+end, { desc = "Change working directory to project root" })
+vim.keymap.set("n", "<leader>cR", "<cmd>CdRoot<CR>", { desc = "Change to project root" })
+
 vim.keymap.set("n", "<C-Left>", "<C-w><", { desc = "Decrease width" })
 vim.keymap.set("n", "<C-Right>", "<C-w>>", { desc = "Increase width" })
 vim.keymap.set("n", "<C-Up>", "<C-w>+", { desc = "Increase height" })
@@ -203,6 +213,7 @@ vim.keymap.set("n", "]d", function()
 end, { desc = "Next diagnostic" })
 vim.keymap.set("n", "<leader>dq", vim.diagnostic.setqflist, { desc = "Diagnostics to quickfix" })
 vim.keymap.set("n", "<leader>dl", vim.diagnostic.setloclist, { desc = "Diagnostics to loclist" })
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Line diagnostics" })
 
 -- Navigate quickfix.
 vim.keymap.set("n", "]q", "<cmd>cnext<CR>", { desc = "Next quickfix" })
@@ -261,9 +272,13 @@ require("lazy").setup({
 		dependencies = {
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
+			"saghen/blink.cmp",
 		},
 		config = function()
 			require("mason").setup()
+			vim.lsp.config("*", {
+				capabilities = require("blink.cmp").get_lsp_capabilities(),
+			})
 			require("mason-lspconfig").setup({
 				handlers = { graphql = function() end },
 				ensure_installed = {
@@ -488,14 +503,6 @@ require("lazy").setup({
 	{ "tpope/vim-sleuth" },
 	{ "tpope/vim-abolish", event = "VeryLazy" },
 	{
-		"airblade/vim-rooter",
-		lazy = false,
-		init = function()
-			vim.g.rooter_silent_chdir = 1
-			vim.g.rooter_patterns = { ".git" }
-		end,
-	},
-	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
 		opts = function()
@@ -587,6 +594,15 @@ require("lazy").setup({
 		"stevearc/conform.nvim",
 		config = function()
 			local conform = require("conform")
+			local function format_opts(bufnr)
+				if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+					return
+				end
+				if vim.bo[bufnr].filetype == "svelte" then
+					return
+				end
+				return { lsp_format = "fallback" }
+			end
 			conform.setup({
 				formatters_by_ft = {
 					lua = { "lua-format", "stylua", stop_after_first = true },
@@ -600,14 +616,21 @@ require("lazy").setup({
 					cpp = { "clang-format" },
 					sql = { "sql_formatter" },
 				},
+				format_on_save = function(bufnr)
+					if vim.bo[bufnr].filetype == "ruby" then
+						return
+					end
+					local opts = format_opts(bufnr)
+					if opts then
+						opts.timeout_ms = 1000
+					end
+					return opts
+				end,
 				format_after_save = function(bufnr)
-					if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
+					if vim.bo[bufnr].filetype ~= "ruby" then
 						return
 					end
-					if vim.bo[bufnr].filetype == "svelte" then
-						return
-					end
-					return { lsp_format = "fallback" }
+					return format_opts(bufnr)
 				end,
 			})
 			vim.g.disable_autoformat = false
