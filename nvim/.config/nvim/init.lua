@@ -8,6 +8,10 @@ vim.o.number = true
 vim.o.relativenumber = true
 vim.o.undofile = true
 vim.o.undodir = vim.fn.stdpath("state") .. "/undo"
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.softtabstop = 2
+vim.o.expandtab = true
 vim.o.signcolumn = "yes"
 vim.o.cursorline = true
 vim.o.mouse = "a"
@@ -118,30 +122,10 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
-	pattern = {
-		"typescript",
-		"tsx",
-		"javascript",
-		"javascriptreact",
-		"svelte",
-		"html",
-		"css",
-		"lua",
-		"rust",
-		"python",
-		"graphql",
-		"cpp",
-		"ruby",
-		"json",
-		"yaml",
-		"toml",
-		"markdown",
-		"bash",
-		"nushell",
-	},
-	callback = function()
-		vim.treesitter.start()
-		vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+	callback = function(args)
+		if pcall(vim.treesitter.start, args.buf) then
+			vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+		end
 	end,
 })
 
@@ -280,7 +264,6 @@ require("lazy").setup({
 				capabilities = require("blink.cmp").get_lsp_capabilities(),
 			})
 			require("mason-lspconfig").setup({
-				handlers = { graphql = function() end },
 				ensure_installed = {
 					"rust_analyzer",
 					"pylsp",
@@ -308,9 +291,10 @@ require("lazy").setup({
 				cmd = { "nu", "--lsp" },
 				filetypes = { "nu" },
 				root_dir = function(bufnr, on_dir)
-					on_dir(vim.fs.root(bufnr, { ".git" }) or vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)))
+					on_dir(vim.fs.root(bufnr, { ".git", ".jj" }) or vim.fs.dirname(vim.api.nvim_buf_get_name(bufnr)))
 				end,
 			})
+			vim.lsp.enable("nushell")
 		end,
 	},
 	{
@@ -355,6 +339,7 @@ require("lazy").setup({
 	},
 	{
 		"ibhagwan/fzf-lua",
+		dependencies = { { "folke/trouble.nvim", lazy = true } },
 		cmd = "FzfLua",
 		keys = {
 			{ "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Find files" },
@@ -596,55 +581,28 @@ require("lazy").setup({
 		config = function()
 			local conform = require("conform")
 			local function format_opts(bufnr)
-				if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
-					return
-				end
 				if vim.bo[bufnr].filetype == "svelte" then
 					return
 				end
-				return { lsp_format = "fallback" }
+				return { timeout_ms = 1000, lsp_format = "fallback" }
 			end
 			conform.setup({
 				formatters_by_ft = {
-					lua = { "lua-format", "stylua", stop_after_first = true },
+					lua = { "stylua" },
 					python = { "black" },
-					ruby = { "rubocop" },
-					javascript = { "biome-check" },
-					javascriptreact = { "biome-check" },
-					typescript = { "biome-check" },
-					typescriptreact = { "biome-check" },
-					-- svelte = { "biome-check" },
+					ruby = { "rubyfmt" },
+					javascript = { "biome" },
+					javascriptreact = { "biome" },
+					typescript = { "biome" },
+					typescriptreact = { "biome" },
+					json = { "biome" },
+					jsonc = { "biome" },
+					css = { "biome" },
 					cpp = { "clang-format" },
 					sql = { "sql_formatter" },
 				},
-				format_on_save = function(bufnr)
-					if vim.bo[bufnr].filetype == "ruby" then
-						return
-					end
-					local opts = format_opts(bufnr)
-					if opts then
-						opts.timeout_ms = 1000
-					end
-					return opts
-				end,
-				format_after_save = function(bufnr)
-					if vim.bo[bufnr].filetype ~= "ruby" then
-						return
-					end
-					return format_opts(bufnr)
-				end,
+				format_on_save = format_opts,
 			})
-			vim.g.disable_autoformat = false
-			vim.api.nvim_create_user_command("FormatToggle", function(args)
-				if args.bang then
-					vim.b.disable_autoformat = not vim.b.disable_autoformat
-					print("Buffer autoformat: " .. (vim.b.disable_autoformat and "off" or "on"))
-				else
-					vim.g.disable_autoformat = not vim.g.disable_autoformat
-					print("Global autoformat: " .. (vim.g.disable_autoformat and "off" or "on"))
-				end
-			end, { desc = "Toggle autoformat-on-save", bang = true })
-			vim.keymap.set("n", "<leader>tf", "<cmd>FormatToggle<CR>", { desc = "Toggle autoformat (global)" })
 			vim.keymap.set("n", "<leader>fo", function()
 				conform.format({ bufnr = vim.api.nvim_get_current_buf() })
 			end, { desc = "Format buffer" })
@@ -655,20 +613,7 @@ require("lazy").setup({
 		event = { "BufReadPost", "BufNewFile" },
 		config = function()
 			local lint = require("lint")
-			lint.linters.biomejs.cmd = function()
-				local root = vim.fs.root(0, { ".git", ".jj" })
-				if root then
-					for _, path in ipairs({
-						root .. "/node_modules/.bin/biome",
-						root .. "/node_modules/.pnpm/node_modules/.bin/biome",
-					}) do
-						if vim.uv.fs_stat(path) then
-							return path
-						end
-					end
-				end
-				return "biome"
-			end
+			lint.linters.biomejs.cmd = "biome"
 			lint.linters_by_ft = {
 				javascript = { "biomejs" },
 				javascriptreact = { "biomejs" },
@@ -678,18 +623,14 @@ require("lazy").setup({
 				jsonc = { "biomejs" },
 				css = { "biomejs" },
 				sh = { "shellcheck" },
-				bash = { "shellcheck" },
 				zsh = { "shellcheck" },
 			}
-			local function lint_buffer(bufnr)
-				local cwd = vim.fs.root(bufnr, { "biome.json", "biome.jsonc" }) or vim.fs.root(bufnr, { ".git", ".jj" })
-				vim.api.nvim_buf_call(bufnr, function()
-					lint.try_lint(nil, { cwd = cwd, ignore_errors = true })
-				end)
-			end
-			vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
+			vim.api.nvim_create_autocmd("BufWritePost", {
 				callback = function(args)
-					lint_buffer(args.buf)
+					if vim.bo[args.buf].buftype ~= "" or vim.api.nvim_buf_get_name(args.buf) == "" then
+						return
+					end
+					lint.try_lint(nil, { ignore_errors = true })
 				end,
 			})
 		end,
@@ -776,7 +717,9 @@ require("lazy").setup({
 	},
 	{
 		"folke/snacks.nvim",
+		priority = 1000,
 		opts = {
+			picker = {},
 			indent = {
 				animate = { enabled = false },
 				indent = { enabled = false },
@@ -803,9 +746,7 @@ require("lazy").setup({
 		},
 		config = function(_, opts)
 			local snacks = require("snacks")
-			if not snacks.did_setup then
-				snacks.setup(opts)
-			end
+			snacks.setup(opts)
 			local function open_scratch(opts)
 				local scratch = snacks.scratch.get(opts)
 				local buf = vim.fn.bufnr(scratch.file)
@@ -831,146 +772,10 @@ require("lazy").setup({
 				})
 			end
 
-			local last_scratch_delete_target_count = 0
-			local function select_scratch()
-				local fzf = require("fzf-lua")
-				local scratches = snacks.scratch.list()
-				local graveyard = vim.fn.stdpath("data") .. "/scratch-graveyard"
-				local function file_from_entry(entry)
-					return entry and entry:match("\t([^\t]+)$")
-				end
-				local function first_nonempty_line(file)
-					local ok, lines = pcall(vim.fn.readfile, file, "", 20)
-					if not ok then
-						return nil
-					end
-					for _, line in ipairs(lines) do
-						line = vim.trim(line):gsub("\t", " ")
-						if line ~= "" then
-							return line:sub(1, 80)
-						end
-					end
-				end
-				local function open_selected(selected, win)
-					local file = file_from_entry(selected[1])
-					if file then
-						open_scratch({ file = file, win = win })
-					end
-				end
-				local function new_scratch()
-					open_scratch({
-						name = "Scratch " .. os.date("%Y-%m-%d %H:%M:%S") .. "." .. vim.uv.hrtime(),
-						ft = "text",
-						filekey = {
-							branch = false,
-						},
-					})
-				end
-				local function undo_deleted_scratch()
-					if vim.fn.executable("rip") ~= 1 then
-						vim.notify("rip not found; nothing was restored", vim.log.levels.ERROR)
-						return
-					end
-					if last_scratch_delete_target_count == 0 then
-						vim.notify("No scratch deletion to undo", vim.log.levels.WARN)
-						return
-					end
-
-					for _ = 1, last_scratch_delete_target_count do
-						local output = vim.fn.system({ "rip", "--graveyard", graveyard, "-u" })
-						if vim.v.shell_error ~= 0 then
-							vim.notify(output, vim.log.levels.ERROR)
-							return
-						end
-					end
-					last_scratch_delete_target_count = 0
-					vim.notify("Restored last scratch deletion")
-					vim.schedule(select_scratch)
-				end
-				local entries = {}
-				for _, item in ipairs(scratches) do
-					local cwd = item.cwd and vim.fn.fnamemodify(item.cwd, ":~") or ""
-					local project = cwd ~= "" and vim.fn.fnamemodify(cwd, ":t") or "global"
-					local count = item.count and item.count > 1 and (" #" .. item.count) or ""
-					local title = first_nonempty_line(item.file) or ((item.name or "Scratch") .. count)
-					local display = string.format("%-20s %-12s %s", project, "text", title)
-					entries[#entries + 1] = display .. "\t" .. item.file
-				end
-
-				fzf.fzf_exec(entries, {
-					prompt = "Scratch> ",
-					header = "enter open | alt-n new | ctrl-v vsplit | ctrl-s split | ctrl-x del | alt-u undo",
-					preview = "bat --style=numbers --color=always --language=txt {2} 2>/dev/null || cat {2}",
-					fzf_opts = {
-						["--delimiter"] = "\t",
-						["--with-nth"] = "1",
-						["--preview-window"] = "down,50%,border-top",
-					},
-					actions = {
-						["enter"] = function(selected)
-							open_selected(selected)
-						end,
-						["ctrl-v"] = function(selected)
-							open_selected(selected, { position = "right", width = 0.5 })
-						end,
-						["ctrl-s"] = function(selected)
-							open_selected(selected, { position = "bottom", height = 0.4 })
-						end,
-						["alt-n"] = new_scratch,
-						["alt-u"] = undo_deleted_scratch,
-						["ctrl-x"] = function(selected)
-							if vim.fn.executable("rip") ~= 1 then
-								vim.notify("rip not found; scratch was not deleted", vim.log.levels.ERROR)
-								return
-							end
-
-							local targets = {}
-							local scratch_count = 0
-							for _, entry in ipairs(selected) do
-								local file = file_from_entry(entry)
-								if file then
-									scratch_count = scratch_count + 1
-									local buf = vim.fn.bufnr(file)
-									if buf ~= -1 and vim.api.nvim_buf_is_loaded(buf) then
-										vim.api.nvim_buf_call(buf, function()
-											vim.cmd("silent! write")
-										end)
-										pcall(vim.api.nvim_buf_delete, buf, { force = true })
-									end
-									targets[#targets + 1] = file
-									if vim.uv.fs_stat(file .. ".meta") then
-										targets[#targets + 1] = file .. ".meta"
-									end
-								end
-							end
-							if #targets == 0 then
-								return
-							end
-
-							local args = { "rip", "--graveyard", graveyard }
-							vim.list_extend(args, targets)
-							local output = vim.fn.system(args)
-							if vim.v.shell_error ~= 0 then
-								vim.notify(output, vim.log.levels.ERROR)
-								return
-							end
-							last_scratch_delete_target_count = #targets
-							vim.notify(
-								("Deleted %d scratch buffer%s with rip"):format(
-									scratch_count,
-									scratch_count == 1 and "" or "s"
-								)
-							)
-							vim.schedule(select_scratch)
-						end,
-					},
-				})
-			end
-
 			vim.keymap.set("n", "<leader>.", function()
 				open_scratch({})
 			end, { desc = "Open scratch buffer" })
-			vim.keymap.set("n", "<leader>s", select_scratch, { desc = "Select scratch buffer" })
+			vim.keymap.set("n", "<leader>s", snacks.scratch.select, { desc = "Select scratch buffer" })
 			vim.keymap.set("n", "<leader>S", daily_scratch, { desc = "Daily scratch buffer" })
 			vim.keymap.set("n", "<leader>gb", function()
 				snacks.gitbrowse()
