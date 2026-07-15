@@ -38,27 +38,7 @@ if vim.fn.executable("rg") == 1 then
 end
 vim.opt.clipboard = "unnamedplus"
 vim.o.laststatus = 3
-
-function _G.statusline()
-	local parts = { " %f%m%r%=" }
-	local d = vim.diagnostic.count(0)
-	local e = d[vim.diagnostic.severity.ERROR] or 0
-	local w = d[vim.diagnostic.severity.WARN] or 0
-	if e > 0 then
-		table.insert(parts, "E:" .. e .. " ")
-	end
-	if w > 0 then
-		table.insert(parts, "W:" .. w .. " ")
-	end
-	local branch = vim.b.gitsigns_head
-	if branch and branch ~= "" then
-		table.insert(parts, branch .. " ")
-	end
-	table.insert(parts, "%l:%c %p%% ")
-	return table.concat(parts)
-end
-
-vim.o.statusline = "%!v:lua.statusline()"
+vim.o.statusline = " %f%m%r%=%l:%c %p%% "
 
 -- Highlights.
 vim.api.nvim_create_autocmd("ColorScheme", {
@@ -491,39 +471,16 @@ require("lazy").setup({
 	{
 		"folke/which-key.nvim",
 		event = "VeryLazy",
-		opts = function()
-			local keys = { C = "<C-", M = "<M-", D = "<D-", S = "<S-" }
-			for _, k in ipairs({
-				"Up",
-				"Down",
-				"Left",
-				"Right",
-				"CR",
-				"Esc",
-				"NL",
-				"BS",
-				"Space",
-				"Tab",
-				"ScrollWheelDown",
-				"ScrollWheelUp",
-			}) do
-				keys[k] = "<" .. k .. "> "
-			end
-			for i = 1, 12 do
-				keys["F" .. i] = "<F" .. i .. ">"
-			end
-			return {
-				icons = {
-					mappings = false,
-					rules = false,
-					breadcrumb = ">",
-					separator = "->",
-					group = "+",
-					ellipsis = "...",
-					keys = keys,
-				},
-			}
-		end,
+		opts = {
+			icons = {
+				mappings = false,
+				rules = false,
+				breadcrumb = ">",
+				separator = "->",
+				group = "+",
+				ellipsis = "...",
+			},
+		},
 		keys = {
 			{
 				"<leader>?",
@@ -726,69 +683,43 @@ require("lazy").setup({
 				scope = { enabled = true },
 			},
 			gitbrowse = {},
-			scratch = {
-				ft = "text",
-				win_by_ft = { lua = false },
-				filekey = {
-					branch = false,
-				},
-				win = {
-					position = "current",
-					fixbuf = false,
-					footer_keys = false,
-					keys = { q = false },
-					on_buf = function(self)
-						vim.bo[self.buf].filetype = "text"
-						vim.bo[self.buf].syntax = ""
-					end,
-				},
+			scratch = {},
+		},
+		keys = {
+			{
+				"<leader>.",
+				function()
+					Snacks.scratch()
+				end,
+				desc = "Open scratch buffer",
+			},
+			{
+				"<leader>s",
+				function()
+					Snacks.scratch.select()
+				end,
+				desc = "Select scratch buffer",
+			},
+			{
+				"<leader>gb",
+				function()
+					Snacks.gitbrowse()
+				end,
+				desc = "Git browse",
+			},
+			{
+				"<leader>gB",
+				function()
+					Snacks.gitbrowse({
+						open = function(url)
+							vim.fn.setreg("+", url)
+							vim.notify("Copied: " .. url)
+						end,
+					})
+				end,
+				desc = "Copy git browse URL",
 			},
 		},
-		config = function(_, opts)
-			local snacks = require("snacks")
-			snacks.setup(opts)
-			local function open_scratch(opts)
-				local scratch = snacks.scratch.get(opts)
-				local buf = vim.fn.bufnr(scratch.file)
-				local win = buf ~= -1 and vim.fn.bufwinid(buf) or -1
-				if win ~= -1 then
-					vim.api.nvim_set_current_win(win)
-					return
-				end
-				snacks.scratch.open(opts)
-			end
-
-			local function daily_scratch()
-				local today = os.date("%Y-%m-%d")
-				open_scratch({
-					name = "Daily Scratch " .. today,
-					ft = "text",
-					template = today .. "\n\n",
-					filekey = {
-						cwd = false,
-						branch = false,
-						count = false,
-					},
-				})
-			end
-
-			vim.keymap.set("n", "<leader>.", function()
-				open_scratch({})
-			end, { desc = "Open scratch buffer" })
-			vim.keymap.set("n", "<leader>s", snacks.scratch.select, { desc = "Select scratch buffer" })
-			vim.keymap.set("n", "<leader>S", daily_scratch, { desc = "Daily scratch buffer" })
-			vim.keymap.set("n", "<leader>gb", function()
-				snacks.gitbrowse()
-			end, { desc = "Git browse" })
-			vim.keymap.set("n", "<leader>gB", function()
-				snacks.gitbrowse({
-					open = function(url)
-						vim.fn.setreg("+", url)
-						vim.notify("Copied: " .. url)
-					end,
-				})
-			end, { desc = "Copy git browse URL" })
-		end,
 	},
 	{
 		"folke/persistence.nvim",

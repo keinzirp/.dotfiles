@@ -1,0 +1,28 @@
+# macOS-only additions layered on top of config.toml.
+
+[bootstrap.user]
+login_shell = "/opt/homebrew/bin/nu"
+
+[bootstrap.packages]
+"brew:pinentry-mac" = "latest"
+"brew:sleepwatcher" = "latest"
+
+"brew-cask:alt-tab" = "latest"
+"brew-cask:android-platform-tools" = "latest"
+"brew-cask:anki" = "latest"
+"brew-cask:codex" = "latest"
+"brew-cask:whatcable" = "latest"
+"brew-cask:gimp" = "latest"
+"brew-cask:hammerspoon" = "latest"
+"brew-cask:hiddenbar" = "latest"
+"brew-cask:keepassxc" = "latest"
+"brew-cask:meld" = "latest"
+"brew-cask:music-decoy" = "latest"
+"brew-cask:obs" = "latest"
+"brew-cask:sol" = "latest"
+"brew-cask:stats" = "latest"
+"brew-cask:vlc" = "latest"
+
+# Left out for now:
+# - unsupported or awkward in mise brew-cask: font-* , colemak-dh, orbstack
+# - tap casks without the API metadata mise expects: aerospace, pear-desktop, switch, codexbar

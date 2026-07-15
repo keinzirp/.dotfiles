@@ -1,0 +1,2 @@
+# Load platform-specific config files such as config.macos.toml automatically.
+auto_env = true
