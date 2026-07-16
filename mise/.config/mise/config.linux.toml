@@ -1,0 +1,18 @@
+# Linux-specific bootstrap packages for a rough.app devbox.
+# Loaded automatically because miserc.toml sets auto_env = true.
+
+[bootstrap.packages]
+"apt:curl" = "latest"
+"apt:git" = "latest"
+"apt:gh" = "latest"
+"apt:git-delta" = "latest"
+"apt:jq" = "latest"
+"apt:just" = "latest"
+"apt:neovim" = "latest"
+"apt:ripgrep" = "latest"
+"apt:stow" = "latest"
+"apt:tmux" = "latest"
+
+# commented out for now
+# "apt:nushell" = "latest"   # not in Debian stable by default
+# "apt:jj" = "latest"        # not in Debian stable by default

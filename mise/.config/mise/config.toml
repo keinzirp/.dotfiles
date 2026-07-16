@@ -1,82 +1,30 @@
-# Core mise bootstrap config.
-# This file is kept SSH/devbox-safe.
-# macOS desktop extras live in config.macos.toml.
-
-[bootstrap.packages]
-"brew:act" = "latest"
-"brew:anomalyco/tap/opencode" = "latest"
-"brew:borgbackup" = "latest"
-"brew:borgmatic" = "latest"
-"brew:bottom" = "latest"
-"brew:bruno-cli" = "latest"
-"brew:carapace" = "latest"
-"brew:cmake" = "latest"
-"brew:dive" = "latest"
-"brew:fd" = "latest"
-"brew:ffmpeg-full" = "latest"
-"brew:fheroes2" = "latest"
-"brew:fzf" = "latest"
-"brew:gh" = "latest"
-"brew:git-delta" = "latest"
-"brew:helix" = "latest"
-"brew:httpie" = "latest"
-"brew:imagemagick-full" = "latest"
-"brew:irssi" = "latest"
-"brew:jj" = "latest"
-"brew:jq" = "latest"
-"brew:just" = "latest"
-"brew:kakoune" = "latest"
-"brew:kubernetes-cli" = "latest"
-"brew:mkcert" = "latest"
-"brew:mprocs" = "latest"
-"brew:neovim" = "latest"
-"brew:ninja" = "latest"
-"brew:nushell" = "latest"
-"brew:ollama" = "latest"
-"brew:openjdk" = "latest"
-"brew:overmind" = "latest"
-"brew:pgcli" = "latest"
-"brew:poppler" = "latest"
-"brew:postgresql@18" = "latest"
-"brew:ranger" = "latest"
-"brew:rclone" = "latest"
-"brew:resvg" = "latest"
-"brew:rm-improved" = "latest"
-"brew:ripgrep" = "latest"
-"brew:scc" = "latest"
-"brew:scrcpy" = "latest"
-"brew:sevenzip" = "latest"
-"brew:shellcheck" = "latest"
-"brew:stow" = "latest"
-"brew:timewarrior" = "latest"
-"brew:toot" = "latest"
-"brew:watch" = "latest"
-"brew:watchman" = "latest"
-"brew:yazi" = "latest"
-"brew:zellij" = "latest"
-"brew:zola" = "latest"
-"brew:zoxide" = "latest"
+# Shared mise config for rough.app-oriented dev machines.
+# Platform-specific OS packages live in config.linux.toml and config.macos.toml.
 
 [tools]
-node = "26.5.0"
-python = "3.14.6"
-go = "1.26.5"
-rust = "1.96.1"
-pnpm = "10.33.0"
-yarn = "1.22.22"
+# rough.app repo requirements
+node = "26.1.0"
+pnpm = "11.5.0"
+"github:DarthSim/overmind" = "latest"
 
-"npm:@earendil-works/pi-coding-agent" = "0.80.6"
-"npm:tau-mirror" = "1.0.8"
+# commented out for this rough.app devbox profile
+# ruby = "3.4" # only needed for Kamal deploy work, not normal rough.app dev
+# "npm:@earendil-works/pi-coding-agent" = "0.80.6"
+# python = "3.14.6"
+# go = "1.26.5"
+# rust = "1.96.1"
+# yarn = "1.22.22"
+# "npm:tau-mirror" = "1.0.8"
+# "cargo:cargo-license" = "0.7.0"
+# "cargo:eza" = "0.23.4"
+# "cargo:nu_plugin_polars" = "0.112.1"
+# "cargo:sd" = "1.0.0"
+# "cargo:sleek" = "0.5.0"
+# "cargo:stylua" = "2.4.0"
+# "cargo:tree-sitter-cli" = "0.26.7"
+# "cargo:ttyper" = "1.6.0"
 
-"cargo:cargo-license" = "0.7.0"
-"cargo:eza" = "0.23.4"
-"cargo:nu_plugin_polars" = "0.112.1"
-"cargo:sd" = "1.0.0"
-"cargo:sleek" = "0.5.0"
-"cargo:stylua" = "2.4.0"
-"cargo:tree-sitter-cli" = "0.26.7"
-"cargo:ttyper" = "1.6.0"
-
-# Intentionally omitted:
-# - local/path cargo crates: kak-lsp, ki, majjit
-# - GUI / macOS-specific packages (see config.macos.toml)
+# Notes:
+# - rough.app docs also require Docker; I left that out here because installing
+#   the engine is usually distro/root-specific on a remote Linux box.
+# - local/path cargo crates are still intentionally omitted.
