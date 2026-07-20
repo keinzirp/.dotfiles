@@ -3,3 +3,4 @@ pgcli/.config/pgcli/log
 pgcli/.pgpass
 nushell/Library/Application Support/nushell/history.txt
 kak/.config/kak/plugins/
+zellij/.config/zellij/plugins/

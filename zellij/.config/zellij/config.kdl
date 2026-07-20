@@ -46,7 +46,13 @@ keybinds clear-defaults=true {
         bind "j" { GoToNextTab; }
         bind "k" { GoToPreviousTab; }
         bind "l" { GoToNextTab; }
-        bind "n" { NewTab; SwitchToMode "locked"; }
+        bind "n" {
+            MessagePlugin "file:~/.config/zellij/plugins/zellij-new-tab-next-to-current.wasm" {
+                name "new-tab-right"
+                launch_new false
+            }
+            SwitchToMode "locked"
+        }
         bind "r" { SwitchToMode "renametab"; TabNameInput 0; }
         bind "s" { ToggleActiveSyncTab; SwitchToMode "locked"; }
         bind "t" { SwitchToMode "normal"; }
@@ -168,6 +174,12 @@ keybinds clear-defaults=true {
         bind "Ctrl Alt k" { MoveFocus "up"; }
         bind "Ctrl Alt l" { MoveFocusOrTab "right"; }
         bind "Ctrl Alt n" { NewPane; }
+        bind "Alt n" {
+            MessagePlugin "file:~/.config/zellij/plugins/zellij-new-tab-next-to-current.wasm" {
+                name "new-tab-right"
+                launch_new false
+            }
+        }
         bind "Ctrl Alt o" { MoveTab "right"; }
         bind "Ctrl Alt p" { FocusLastPane; }
         bind "Ctrl Alt t" { ToggleTab; }
@@ -271,6 +283,7 @@ plugins {
 // eg. "https://example.com/my-plugin.wasm"
 load_plugins {
     zellij:link
+    "file:~/.config/zellij/plugins/zellij-new-tab-next-to-current.wasm"
 }
 web_client {
     font "monospace"
@@ -322,7 +335,7 @@ default_shell "/opt/homebrew/bin/nu"
 // The name of the default layout to load on startup
 // Default: "default"
 // 
-default_layout "default"
+default_layout "compact"
  
 // The folder in which Zellij will look for layouts
 // (Requires restart)
