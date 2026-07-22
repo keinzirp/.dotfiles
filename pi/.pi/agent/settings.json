@@ -1,12 +1,17 @@
 {
-  "lastChangelogVersion": "0.80.6",
+  "lastChangelogVersion": "0.82.1",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.5",
   "defaultThinkingLevel": "high",
   "packages": [
-    "npm:@narumitw/pi-codex-usage",
     "npm:@narumitw/pi-plan-mode",
-    "npm:@gotgenes/pi-permission-system"
+    "npm:@gotgenes/pi-permission-system",
+    "npm:@narumitw/pi-usage",
+    "git:github.com/therynamo/pi-auto-session-name",
+    "npm:pi-web-access",
+    "npm:pi-lens",
+    "npm:@ff-labs/pi-fff",
+    "npm:@dietrichgebert/ponytail"
   ],
   "skills": [
     "~/.claude/plugins/cache/caveman/caveman/84cc3c14fa1e/skills",

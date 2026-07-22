@@ -180,63 +180,63 @@ layout {
     swap_floating_layout name="enlarged" {
         floating_panes max_panes=10 {
             pane {
-                height "90%"
-                width "90%"
-                x "5%"
+                height "96%"
+                width "96%"
+                x "2%"
                 y 1
             }
             pane {
-                height "90%"
-                width "90%"
-                x "5%"
+                height "96%"
+                width "96%"
+                x "2%"
                 y 2
             }
             pane {
-                height "90%"
-                width "90%"
-                x "5%"
+                height "96%"
+                width "96%"
+                x "2%"
                 y 3
             }
             pane {
-                height "90%"
-                width "90%"
-                x "5%"
+                height "96%"
+                width "96%"
+                x "2%"
                 y 4
             }
             pane {
-                height "90%"
-                width "90%"
-                x "5%"
+                height "96%"
+                width "96%"
+                x "2%"
                 y 5
             }
             pane {
-                height "90%"
-                width "90%"
-                x "5%"
+                height "96%"
+                width "96%"
+                x "2%"
                 y 6
             }
             pane {
-                height "90%"
-                width "90%"
-                x "5%"
+                height "96%"
+                width "96%"
+                x "2%"
                 y 7
             }
             pane {
-                height "90%"
-                width "90%"
-                x "5%"
+                height "96%"
+                width "96%"
+                x "2%"
                 y 8
             }
             pane {
-                height "90%"
-                width "90%"
-                x "5%"
+                height "96%"
+                width "96%"
+                x "2%"
                 y 9
             }
             pane {
-                height "90%"
-                width "90%"
-                x 10
+                height "96%"
+                width "96%"
+                x "2%"
                 y 10
             }
         }

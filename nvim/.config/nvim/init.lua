@@ -111,20 +111,51 @@ vim.api.nvim_create_autocmd("FileType", {
 
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(ev)
-		local opts = { buffer = ev.buf }
-		vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-		vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-		vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-		vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, opts)
-		vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, opts)
+		local function o(desc)
+			return { buffer = ev.buf, desc = desc }
+		end
+		vim.keymap.set("n", "gd", vim.lsp.buf.definition, o("Go to definition"))
+		vim.keymap.set("n", "gr", vim.lsp.buf.references, o("References"))
+		vim.keymap.set("n", "gD", vim.lsp.buf.declaration, o("Go to declaration"))
+		vim.keymap.set("n", "gi", vim.lsp.buf.implementation, o("Go to implementation"))
+		vim.keymap.set("n", "K", vim.lsp.buf.hover, o("Hover"))
+		vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, o("Rename symbol"))
+		vim.keymap.set("n", "<leader>ca", vim.lsp.buf.code_action, o("Code action"))
+		vim.keymap.set("i", "<C-s>", vim.lsp.buf.signature_help, o("Signature help"))
 	end,
 })
 
 -- Keymaps.
-vim.keymap.set("n", "gC", function()
+local function command_output(cmd)
+	if vim.system then
+		local ok, job = pcall(vim.system, cmd, { text = true })
+		if not ok then
+			return {}
+		end
+		local result = job:wait()
+		if result.code ~= 0 then
+			return {}
+		end
+		return vim.split(vim.trim(result.stdout or ""), "\n", { plain = true })
+	end
+
+	local output = vim.fn.system(cmd)
+	if vim.v.shell_error ~= 0 then
+		return {}
+	end
+	return vim.split(vim.trim(output), "\n", { plain = true })
+end
+
+local function first_output_line(lines)
+	for _, line in ipairs(lines) do
+		line = vim.trim(line)
+		if line ~= "" then
+			return line
+		end
+	end
+end
+
+local function copy_current_file_path()
 	local abs = vim.fn.expand("%:p")
 	if abs == "" then
 		vim.notify("No file name for current buffer", vim.log.levels.WARN)
@@ -133,7 +164,55 @@ vim.keymap.set("n", "gC", function()
 	local rel = vim.fn.fnamemodify(abs, ":.")
 	vim.fn.setreg("+", rel)
 	vim.notify("Copied: " .. rel)
-end, { desc = "Copy current file path to clipboard" })
+end
+
+local function git_browse_branch()
+	local file = vim.api.nvim_buf_get_name(0)
+	local cwd = file ~= "" and vim.fn.fnamemodify(file, ":h") or vim.fn.getcwd()
+	local branch = first_output_line(command_output({ "git", "-C", cwd, "rev-parse", "--abbrev-ref", "HEAD" }))
+	if branch and branch ~= "HEAD" then
+		return branch
+	end
+
+	local root = first_output_line(command_output({ "git", "-C", cwd, "rev-parse", "--show-toplevel" }))
+	if not root then
+		return nil
+	end
+
+	return first_output_line(command_output({
+		"jj",
+		"--repository",
+		root,
+		"--ignore-working-copy",
+		"log",
+		"-r",
+		"heads(::@ & bookmarks())",
+		"--no-graph",
+		"-T",
+		[=[bookmarks.map(|b| b.name()).join("\n")]=],
+	})) or first_output_line(command_output({
+		"jj",
+		"--repository",
+		root,
+		"--ignore-working-copy",
+		"log",
+		"-r",
+		"heads(::@ & remote_bookmarks())",
+		"--no-graph",
+		"-T",
+		[=[remote_bookmarks.map(|b| b.name()).join("\n")]=],
+	}))
+end
+
+local function snacks_gitbrowse(opts)
+	opts = opts or {}
+	opts.branch = opts.branch or git_browse_branch()
+	Snacks.gitbrowse(opts)
+end
+
+vim.keymap.set("n", "gC", copy_current_file_path, { desc = "Copy relative file path" })
+vim.keymap.set("n", "<leader>gC", copy_current_file_path, { desc = "Copy relative file path" })
+vim.keymap.set("n", "<leader>cp", copy_current_file_path, { desc = "Copy relative file path" })
 
 vim.api.nvim_create_user_command("CdRoot", function()
 	local root = vim.fs.root(0, { ".git", ".jj" })
@@ -166,7 +245,7 @@ vim.keymap.set("n", "<leader>tc", "<cmd>tabclose<CR>", { desc = "Close tab" })
 vim.keymap.set("n", "<leader>to", "<cmd>tabonly<CR>", { desc = "Close other tabs" })
 vim.keymap.set("n", "<C-w><C-]>", function()
 	vim.cmd("vertical stag " .. vim.fn.expand("<cword>"))
-end, { silent = true })
+end, { silent = true, desc = "Open tag in vertical split" })
 
 -- Navigate diagnostics.
 vim.keymap.set("n", "[d", function()
@@ -205,13 +284,13 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { silent = true })
 vim.keymap.set("n", "J", "mzJ`z")
 
 -- Insert newlines from normal mode.
-vim.keymap.set("n", "<leader>o", 'o<Esc>0"_D', { silent = true })
-vim.keymap.set("n", "<leader>O", 'O<Esc>0"_D', { silent = true })
+vim.keymap.set("n", "<leader>o", 'o<Esc>0"_D', { silent = true, desc = "Insert line below" })
+vim.keymap.set("n", "<leader>O", 'O<Esc>0"_D', { silent = true, desc = "Insert line above" })
 
 -- Plugins.
 vim.cmd("packadd nvim.undotree")
 vim.cmd("packadd nvim.tohtml")
-vim.keymap.set("n", "<leader>u", require("undotree").open)
+vim.keymap.set("n", "<leader>u", require("undotree").open, { desc = "Undo tree" })
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.uv.fs_stat(lazypath) then
@@ -703,14 +782,14 @@ require("lazy").setup({
 			{
 				"<leader>gb",
 				function()
-					Snacks.gitbrowse()
+					snacks_gitbrowse()
 				end,
 				desc = "Git browse",
 			},
 			{
 				"<leader>gB",
 				function()
-					Snacks.gitbrowse({
+					snacks_gitbrowse({
 						open = function(url)
 							vim.fn.setreg("+", url)
 							vim.notify("Copied: " .. url)
@@ -804,4 +883,7 @@ require("lazy").setup({
 			end
 		end,
 	},
+}, {
+	checker = { enabled = true, notify = false },
+	change_detection = { notify = false },
 })
