@@ -15,6 +15,16 @@ $env.config.table.mode = "ascii_rounded"
 
 alias rm = rip --graveyard ~/.local/share/trash
 alias tw = timew
+
+def --env y [...args] {
+    let tmp = (mktemp -t "yazi-cwd.XXXXXX")
+    ^yazi ...$args --cwd-file $tmp
+    let cwd = (open $tmp)
+    if $cwd != $env.PWD and ($cwd | path exists) {
+        cd $cwd
+    }
+    rm -fp $tmp
+}
 alias backup = borgmatic --stats --progress --config ~/.config/borgmatic.d/removable.yaml
 alias backup-t7 = borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --progress --stats
 alias backup-t7-list = borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --stats --list
