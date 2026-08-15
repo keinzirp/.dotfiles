@@ -9,7 +9,7 @@ set-option global tabstop 4
 set-option global indentwidth 4
 set-option global grepcmd 'rg --vimgrep --smart-case'
 set-option global modelinefmt '%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}}'
-set-option global ui_options terminal_assistant=none terminal_enable_mouse=true terminal_set_title=true
+set-option global ui_options terminal_assistant=cat terminal_enable_mouse=true terminal_set_title=true
 
 add-highlighter global/ number-lines -relative -hlcursor
 add-highlighter global/ show-matching -previous
@@ -45,6 +45,25 @@ plug "andreyorst/fzf.kak" config %{
 } defer fzf-grep %{
     set-option global fzf_grep_command 'rg'
 }
+
+# Open a file selected in Yazi in the current Kakoune client.
+define-command yazi-open -docstring 'Open a file with Yazi' %{
+    terminal sh -c %{
+        chooser=$(mktemp -t kak-yazi.XXXXXX)
+        target=$3
+        [ -e "$target" ] || target=$PWD
+        yazi "$target" --chooser-file="$chooser"
+        selected=$(head -n 1 "$chooser")
+        rm -f "$chooser"
+        [ -n "$selected" ] || exit 0
+
+        kakquote() { printf '%s' "$1" | sed "s/'/''/g; 1s/^/'/; \$s/\$/'/"; }
+        command="edit -existing $(kakquote "$selected")"
+        printf 'evaluate-commands -client %s %s\n' \
+            "$(kakquote "$1")" "$(kakquote "$command")" | kak -p "$2"
+    } yazi-open %val{client} %val{session} %val{buffile}
+}
+map global user y ':yazi-open<ret>' -docstring 'Yazi'
 
 # System clipboard integration for normal y/c/d/p/R flows.
 plug "lePerdu/kakboard" config %{

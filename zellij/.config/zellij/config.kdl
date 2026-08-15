@@ -180,12 +180,6 @@ keybinds clear-defaults=true {
         bind "Ctrl Alt k" { MoveFocus "up"; }
         bind "Ctrl Alt l" { MoveFocusOrTab "right"; }
         bind "Ctrl Alt n" { NewPane; }
-        bind "Alt n" {
-            MessagePlugin "file:~/.config/zellij/plugins/zellij-new-tab-next-to-current.wasm" {
-                name "new-tab-right"
-                launch_new false
-            }
-        }
         bind "Ctrl Alt o" { MoveTab "right"; }
         bind "Ctrl Alt p" { FocusLastPane; }
         bind "Ctrl Alt t" { ToggleTab; }

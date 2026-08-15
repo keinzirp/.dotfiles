@@ -61,5 +61,8 @@ if $nu.is-interactive {
 }
 
 $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
+
+mise activate nu | save -f ~/.cache/mise.nu
+source ~/.cache/mise.nu
 mkdir $"($nu.cache-dir)"
 carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"

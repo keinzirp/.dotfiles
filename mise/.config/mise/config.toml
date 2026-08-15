@@ -7,6 +7,18 @@ node = "26.1.0"
 pnpm = "11.5.0"
 "github:DarthSim/overmind" = "latest"
 
+# Editor-independent language servers. Neovim and Kakoune use these from PATH.
+uv = "latest"
+"aqua:LuaLS/lua-language-server" = "latest"
+"aqua:rust-lang/rust-analyzer" = "latest"
+"npm:typescript" = "6.0.3"
+"npm:typescript-language-server" = "latest"
+"npm:vscode-langservers-extracted" = "latest"
+"npm:yaml-language-server" = "latest"
+"npm:svelte-language-server" = "latest"
+"npm:bash-language-server" = "latest"
+"pipx:python-lsp-server" = "latest"
+
 # commented out for this rough.app devbox profile
 # ruby = "3.4" # only needed for Kamal deploy work, not normal rough.app dev
 # "npm:@earendil-works/pi-coding-agent" = "0.80.6"
