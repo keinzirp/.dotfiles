@@ -32,3 +32,14 @@ history = 10000
 key = "Return"
 mods = "Shift"
 chars = "\u001B\r"
+
+# Forward either Option+Shift+9/0 as Kakoune's <a-(>/<a-)>.
+[[keyboard.bindings]]
+key = "9"
+mods = "Alt|Shift"
+chars = "\u001B("
+
+[[keyboard.bindings]]
+key = "0"
+mods = "Alt|Shift"
+chars = "\u001B)"

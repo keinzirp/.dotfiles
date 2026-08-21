@@ -1,5 +1,5 @@
 # Basics
-colorscheme desertex
+colorscheme default
 
 set-option global scrolloff 4,4
 set-option global autoreload ask
@@ -13,13 +13,12 @@ set-option global ui_options terminal_assistant=cat terminal_enable_mouse=true t
 
 add-highlighter global/ number-lines -relative -hlcursor
 add-highlighter global/ show-matching -previous
-add-highlighter global/ show-whitespaces -spc '' -tab '→' -nbsp '␣' -lf '' -only-trailing
+add-highlighter global/ show-whitespaces -spc '.' -tab '>' -nbsp '~' -lf '' -only-trailing
 add-highlighter global/ column 80 default,default+F
 add-highlighter global/ wrap -word -indent
 
 # User mode is <space> by default. Keep it for feature modes, not Vim-style aliases.
 
-# Built-in git integration.
 declare-user-mode user-git
 map global user g ':enter-user-mode user-git<ret>' -docstring 'git'
 map global user-git s ':git status<ret>' -docstring 'status'
@@ -27,6 +26,11 @@ map global user-git d ':git diff<ret>' -docstring 'diff'
 map global user-git b ':git blame<ret>' -docstring 'blame'
 map global user-git n ':git next-hunk<ret>' -docstring 'next hunk'
 map global user-git p ':git prev-hunk<ret>' -docstring 'previous hunk'
+
+declare-user-mode user-jj
+map global user j ':enter-user-mode user-jj<ret>' -docstring 'jj'
+map global user-jj s ':jj status<ret>' -docstring 'status'
+map global user-jj d ':jj diff<ret>' -docstring 'diff'
 
 # Plugin manager bootstrap.
 evaluate-commands %sh{
@@ -36,10 +40,18 @@ evaluate-commands %sh{
     printf "source '%s/rc/plug.kak'\n" "$plugins/plug.kak"
 }
 plug "andreyorst/plug.kak" noload
+plug "greenfork/active-window.kak"
+plug "delapouite/kakoune-buffers" config %{
+    map global user b ':enter-buffers-mode<ret>' -docstring 'buffers'
+    map global user B ':enter-user-mode -lock buffers<ret>' -docstring 'buffers (lock)'
+}
 
 # Fuzzy files, grep, buffers, VCS files, tags, and projects.
 plug "andreyorst/fzf.kak" config %{
     map global user f ':fzf-mode<ret>' -docstring 'fzf'
+} defer fzf %{
+    set-option global fzf_default_opts '--color=dark'
+    set-option global fzf_highlight_command 'bat'
 } defer fzf-file %{
     set-option global fzf_file_command 'rg'
 } defer fzf-grep %{
@@ -90,13 +102,15 @@ plug "kak-lsp/kak-lsp" do %{
     set-option global lsp_hover_anchor false
     set-option global lsp_auto_show_code_actions true
 
-    hook global WinSetOption filetype=(rust|python|javascript|typescript|svelte|html|css|lua|c|cpp|ruby|json|yaml|toml|markdown|sh) %{
+    hook global WinSetOption filetype=(rust|python|javascript|typescript|svelte|html|css|lua|c|cpp|ruby|json|yaml|markdown|sh) %{
         lsp-enable-window
-        lsp-auto-signature-help-enable
-        lsp-auto-hover-enable
     }
+    lsp-auto-signature-help-enable
+    lsp-auto-hover-enable
 
-    hook global BufWritePre .* %{ try %{ lsp-formatting-sync } }
+    hook global BufSetOption filetype=(rust|python|javascript|typescript|svelte|html|css|lua|c|cpp|ruby|json|yaml|markdown|sh) %{
+        hook buffer BufWritePre .* %{ try %{ lsp-formatting-sync } }
+    }
 
     map global user l ':enter-user-mode lsp<ret>' -docstring 'LSP'
     map global goto d '<esc>:lsp-definition<ret>' -docstring 'LSP definition'

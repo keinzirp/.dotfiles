@@ -1,0 +1,34 @@
+Engineering
+Andrew Kelley	http://andrewkelley.me/rss.xml
+Armin Ronacher's Thoughts and Writings	https://lucumr.pocoo.org/feed.xml
+build mode	https://newsletter.posthog.com/feed
+Computer, Enhance!	https://www.computerenhance.com/feed
+Dan Luu	http://danluu.com/atom.xml
+Digital Grove	https://www.dgtlgrove.com/feed
+featherweight musings	http://www.ncameron.org/blog/rss/
+gingerBill - Articles	https://www.gingerbill.org/article/index.xml
+mandates	https://ethanding.substack.com/feed
+Mitchell Hashimoto	https://mitchellh.com/feed.xml
+moq.dev | Blog	https://moq.dev/rss.xml
+seangoedecke.com RSS feed	https://seangoedecke.com/rss.xml
+
+Shitposting
+elliot.my	https://elliot.my/feed/
+Herman's blog	https://herman.bearblog.dev/feed/
+Hong Minhee on Things	https://writings.hongminhee.org/feed.en.xml
+Lobsters Comments by @jado - Notado Feeds	https://notado.app/rss/jado/lobsters-comments/feed.rss
+purplesyringa's blog	https://purplesyringa.moe/blog/feed.rss
+the singularity is nearer	https://geohot.github.io/blog/feed.xml
+Xe Iaso's blog	https://xeiaso.net/blog.rss
+
+Youtube
+EthosLab	https://www.youtube.com/feeds/videos.xml?channel_id=UCFKDEp9si4RmHFWJW1vYsMA
+exurb1a	https://www.youtube.com/feeds/videos.xml?channel_id=UCimiUgDLbi6P17BdaCZpVbg
+exurb2a	https://www.youtube.com/feeds/videos.xml?channel_id=UCcoO-8J0EYQHGPFQqwmAzVQ
+find404	https://www.youtube.com/feeds/videos.xml?channel_id=UCywgAD0hS71ILnNWkOGfdBQ
+hbomberguy	https://www.youtube.com/feeds/videos.xml?channel_id=UCGwu0nbY2wSkW8N-cghnLpA
+JaidenAnimations	https://www.youtube.com/feeds/videos.xml?channel_id=UCGwu0nbY2wSkW8N-cghnLpA
+Low Key Loki	https://www.youtube.com/feeds/videos.xml?channel_id=UCVv7qZYD82iHA9TKBPu2yBw
+MandaloreGaming	https://www.youtube.com/feeds/videos.xml?channel_id=UClOGLGPOqlAiLmOvXW5lKbw
+SsethTzeentach	https://www.youtube.com/feeds/videos.xml?channel_id=UCD6VugMZKRhSyzWEWA9W2fg
+The Tren Twins	https://www.youtube.com/feeds/videos.xml?channel_id=UCRBALvAmmqxBX4qiDSpV3PA

@@ -157,7 +157,7 @@ keybinds clear-defaults=true {
             SwitchToMode "locked"
         }
     }
-    shared_among "normal" "locked" {
+    normal {
         bind "Ctrl Alt left" { MoveFocusOrTab "left"; }
         bind "Ctrl Alt down" { MoveFocus "down"; }
         bind "Ctrl Alt up" { MoveFocus "up"; }
@@ -174,11 +174,7 @@ keybinds clear-defaults=true {
                 launch_new false
             }
         }
-        bind "Ctrl Alt h" { MoveFocusOrTab "left"; }
         bind "Ctrl Alt i" { MoveTab "left"; }
-        bind "Ctrl Alt j" { MoveFocus "down"; }
-        bind "Ctrl Alt k" { MoveFocus "up"; }
-        bind "Ctrl Alt l" { MoveFocusOrTab "right"; }
         bind "Ctrl Alt n" { NewPane; }
         bind "Ctrl Alt o" { MoveTab "right"; }
         bind "Ctrl Alt p" { FocusLastPane; }
@@ -186,15 +182,11 @@ keybinds clear-defaults=true {
         bind "Alt p" { TogglePaneInGroup; }
         bind "Alt Shift p" { ToggleGroupMarking; }
     }
-    shared {
-        bind "F1" {
-            MessagePlugin "compact-bar" {
-                name "toggle_tooltip"
-                payload "1"
-                floating false
-                tooltip "F1"
-            }
-        }
+    shared_among "normal" "locked" {
+        bind "Ctrl Alt h" { MoveFocusOrTab "left"; }
+        bind "Ctrl Alt j" { MoveFocus "down"; }
+        bind "Ctrl Alt k" { MoveFocus "up"; }
+        bind "Ctrl Alt l" { MoveFocusOrTab "right"; }
     }
     shared_except "locked" "renametab" "renamepane" {
         bind "Ctrl g" { SwitchToMode "locked"; }
@@ -261,9 +253,7 @@ keybinds clear-defaults=true {
 // changing these requires a restart to take effect
 plugins {
     about location="zellij:about"
-    compact-bar location="zellij:compact-bar" {
-        tooltip "F1"
-    }
+    compact-bar location="zellij:compact-bar"
     configuration location="zellij:configuration"
     filepicker location="zellij:strider" {
         cwd "/"
@@ -553,6 +543,7 @@ show_startup_tips false
 // Whether to enable mouse hover visual effects (frame highlight and help text)
 // default is true
 // mouse_hover_effects false
+mouse_hover_tips false
  
 // Whether to show visual bell indicators (pane/tab frame flash and [!] suffix)
 // default is true
@@ -575,6 +566,8 @@ mouse_click_through true
 // Default: 8082
 // (Requires restart)
 // web_server_port 8082
+
+mouse_scroll_resize false
  
 // A command to run (will be wrapped with sh -c and provided the RESURRECT_COMMAND env variable) 
 // after Zellij attempts to discover a command inside a pane when resurrecting sessions, the STDOUT

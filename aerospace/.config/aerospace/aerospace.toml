@@ -96,10 +96,11 @@ outer.right = 0
 
 # All possible commands: https://nikitabobko.github.io/AeroSpace/commands
 
-# Window-manager leader. Press alt-shift-semicolon, release it, then use a mode key.
-alt-shift-semicolon = 'mode wm'
+# Window-manager leader. Press alt-enter again to leave WM mode.
+alt-enter = 'mode wm'
 
 [mode.wm.binding]
+alt-enter = 'mode main'
 space = ['layout tiles accordion', 'mode main']
 slash = ['layout tiles horizontal vertical', 'mode main']
 comma = ['layout accordion horizontal vertical', 'mode main']
