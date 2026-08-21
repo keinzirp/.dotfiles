@@ -1,0 +1,49 @@
+schema_version = 4
+
+[app_settings]
+launch_at_login = false
+check_for_updates = true
+auto_install_updates = false
+update_prompt_seen = true
+show_in_menu_bar = true
+capture_mouse_events = true
+auto_download_assets = true
+asset_source = "automatic"
+thumbwheel_sensitivity = 14
+appearance = "system"
+
+[devices]
+
+[devices."direct:046d:b037:serial:2536zaf0t928".identity]
+display_name = "MX Anywhere 3S"
+codename = "MX Anywhere 3S"
+kind = "mouse"
+
+[devices."direct:046d:b037:serial:2536zaf0t928".identity.model_info]
+entity_count = 3
+unit_id = [0, 0, 0, 0]
+model_ids = [45111, 0, 0]
+extended_model_id = 0
+
+[keyboard]
+
+[devices."direct:046d:b037:serial:2536zaf0t928".identity.model_info.transports]
+usb = false
+equad = false
+btle = true
+bluetooth = false
+
+[devices."direct:046d:b037:serial:2536zaf0t928".smartshift]
+mode = "ratchet"
+auto_disengage = 10
+tunable_torque = 60
+
+[devices."direct:046d:b037:serial:2536zaf0t928".identity.capabilities]
+buttons = true
+pointer = true
+lighting = false
+scroll_inversion = true
+hires_wheel = true
+thumbwheel = false
+haptic_feedback = false
+haptic_panel = false
