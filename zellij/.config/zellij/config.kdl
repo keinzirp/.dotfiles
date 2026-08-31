@@ -188,6 +188,16 @@ keybinds clear-defaults=true {
         bind "Ctrl Alt k" { MoveFocus "up"; }
         bind "Ctrl Alt l" { MoveFocusOrTab "right"; }
     }
+    shared {
+        bind "F1" {
+            MessagePlugin "compact-bar" {
+                name "toggle_tooltip"
+                payload "1"
+                floating false
+                tooltip "F1"
+            }
+        }
+    }
     shared_except "locked" "renametab" "renamepane" {
         bind "Ctrl g" { SwitchToMode "locked"; }
         bind "Ctrl q" { Quit; }
@@ -253,7 +263,9 @@ keybinds clear-defaults=true {
 // changing these requires a restart to take effect
 plugins {
     about location="zellij:about"
-    compact-bar location="zellij:compact-bar"
+    compact-bar location="zellij:compact-bar" {
+        tooltip "F1"
+    }
     configuration location="zellij:configuration"
     filepicker location="zellij:strider" {
         cwd "/"
