@@ -11,13 +11,20 @@ set-option global grepcmd 'rg --vimgrep --smart-case'
 set-option global modelinefmt '%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}}'
 set-option global ui_options terminal_assistant=cat terminal_enable_mouse=true terminal_set_title=true
 
-add-highlighter global/ number-lines -relative -hlcursor
+add-highlighter global/ number-lines -hlcursor
 add-highlighter global/ show-matching -previous
 add-highlighter global/ show-whitespaces -spc '.' -tab '>' -nbsp '~' -lf '' -only-trailing
 add-highlighter global/ column 80 default,default+F
 add-highlighter global/ wrap -word -indent
 
 # User mode is <space> by default. Keep it for feature modes, not Vim-style aliases.
+declare-user-mode user-nu
+map global user n ':enter-user-mode user-nu<ret>' -docstring 'Nushell'
+map global user-nu p "|nu --stdin -c '$in | '<left>" -docstring 'pipe selections and replace'
+map global user-nu d "<a-|>nu --stdin -c '$in | '<left>" -docstring 'pipe selections and discard output'
+map global user-nu i "!nu -c ''<left>" -docstring 'insert command output'
+map global user-nu a "<a-!>nu -c ''<left>" -docstring 'append command output'
+map global user-nu f "$nu --stdin -c '$in | '<left>" -docstring 'keep selections when command succeeds'
 
 declare-user-mode user-git
 map global user g ':enter-user-mode user-git<ret>' -docstring 'git'
@@ -27,17 +34,19 @@ map global user-git b ':git blame<ret>' -docstring 'blame'
 map global user-git n ':git next-hunk<ret>' -docstring 'next hunk'
 map global user-git p ':git prev-hunk<ret>' -docstring 'previous hunk'
 
-declare-user-mode user-jj
-map global user j ':enter-user-mode user-jj<ret>' -docstring 'jj'
-map global user-jj s ':jj status<ret>' -docstring 'status'
-map global user-jj d ':jj diff<ret>' -docstring 'diff'
+define-command nu -params 1 -docstring 'Run Nushell and evaluate its output as Kakoune commands' %{
+    evaluate-commands %sh{ nu -c "$1" }
+}
 
 # Plugin manager bootstrap.
-evaluate-commands %sh{
-    plugins="$kak_config/plugins"
-    mkdir -p "$plugins"
-    [ -e "$plugins/plug.kak" ] || git clone -q https://github.com/andreyorst/plug.kak.git "$plugins/plug.kak"
-    printf "source '%s/rc/plug.kak'\n" "$plugins/plug.kak"
+nu %{
+    let plugins = $"($env.kak_config)/plugins"
+    mkdir $plugins
+    let plug = $"($plugins)/plug.kak"
+    if not ($plug | path exists) {
+        git clone -q https://github.com/andreyorst/plug.kak.git $plug
+    }
+    print $"source '($plug)/rc/plug.kak'"
 }
 plug "andreyorst/plug.kak" noload
 plug "greenfork/active-window.kak"
@@ -46,7 +55,6 @@ plug "delapouite/kakoune-buffers" config %{
     map global user B ':enter-user-mode -lock buffers<ret>' -docstring 'buffers (lock)'
 }
 
-# Fuzzy files, grep, buffers, VCS files, tags, and projects.
 plug "andreyorst/fzf.kak" config %{
     map global user f ':fzf-mode<ret>' -docstring 'fzf'
 } defer fzf %{
@@ -101,20 +109,24 @@ plug "kak-lsp/kak-lsp" do %{
     set-option global lsp_diagnostic_line_hint_sign 'H'
     set-option global lsp_hover_anchor false
     set-option global lsp_auto_show_code_actions true
+    set-option global lsp_completion_trigger fail
 
     hook global WinSetOption filetype=(rust|python|javascript|typescript|svelte|html|css|lua|c|cpp|ruby|json|yaml|markdown|sh) %{
         lsp-enable-window
     }
     lsp-auto-signature-help-enable
-    lsp-auto-hover-enable
-
-    hook global BufSetOption filetype=(rust|python|javascript|typescript|svelte|html|css|lua|c|cpp|ruby|json|yaml|markdown|sh) %{
-        hook buffer BufWritePre .* %{ try %{ lsp-formatting-sync } }
-    }
 
     map global user l ':enter-user-mode lsp<ret>' -docstring 'LSP'
     map global goto d '<esc>:lsp-definition<ret>' -docstring 'LSP definition'
     map global goto r '<esc>:lsp-references<ret>' -docstring 'LSP references'
     map global goto i '<esc>:lsp-implementation<ret>' -docstring 'LSP implementation'
+
+    define-command lsp-manual-completion -docstring 'Request LSP completion' %{
+        set-option window lsp_completion_trigger nop
+        lsp-completion
+        unset-option window lsp_completion_trigger
+    }
+    map global insert <c-space> '<a-;>:lsp-manual-completion<ret>' -docstring 'LSP completion'
+    map global insert <c-[> <esc> -docstring 'Leave insert mode'
 
 }

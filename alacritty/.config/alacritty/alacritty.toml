@@ -33,6 +33,13 @@ key = "Return"
 mods = "Shift"
 chars = "\u001B\r"
 
+# Force Option+Shift+K to Kakoune's <a-K>; macOS layouts otherwise treat
+# Option+K as text/dead-key input.
+[[keyboard.bindings]]
+key = "K"
+mods = "Alt|Shift"
+chars = "\u001BK"
+
 # Forward either Option+Shift+9/0 as Kakoune's <a-(>/<a-)>.
 [[keyboard.bindings]]
 key = "9"
@@ -43,3 +50,4 @@ chars = "\u001B("
 key = "0"
 mods = "Alt|Shift"
 chars = "\u001B)"
+

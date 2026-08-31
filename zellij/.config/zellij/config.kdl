@@ -167,7 +167,6 @@ keybinds clear-defaults=true {
         bind "Ctrl Alt =" { Resize "Increase"; }
         bind "Ctrl Alt [" { PreviousSwapLayout; }
         bind "Ctrl Alt ]" { NextSwapLayout; }
-        bind "Ctrl Alt f" { ToggleFloatingPanes; }
         bind "Alt f" {
             MessagePlugin "file:~/.config/zellij/plugins/zellij-file-jump.wasm" {
                 name "scan"
@@ -183,6 +182,7 @@ keybinds clear-defaults=true {
         bind "Alt Shift p" { ToggleGroupMarking; }
     }
     shared_among "normal" "locked" {
+        bind "Ctrl Alt f" { ToggleFloatingPanes; }
         bind "Ctrl Alt h" { MoveFocusOrTab "left"; }
         bind "Ctrl Alt j" { MoveFocus "down"; }
         bind "Ctrl Alt k" { MoveFocus "up"; }
