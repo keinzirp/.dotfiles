@@ -10,11 +10,23 @@ set-option global grepcmd 'rg --vimgrep --smart-case'
 set-option global modelinefmt '%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}}'
 set-option global ui_options terminal_assistant=clippy terminal_enable_mouse=true terminal_set_title=true
 
+hook global KakBegin .* %{
+    evaluate-commands %sh{
+        if command -v kak-tree-sitter >/dev/null; then
+            kak-tree-sitter --init "$kak_session" --kakoune --daemonize --server --with-highlighting
+        fi
+    }
+    colorscheme base16-default-dark-treesitter
+}
+hook global BufCreate .*\.nu %{ set-option buffer filetype nu }
+
 add-highlighter global/ number-lines -hlcursor
 add-highlighter global/ show-matching -previous
 add-highlighter global/ show-whitespaces -spc '.' -tab '>' -nbsp '~' -lf '' -only-trailing
 add-highlighter global/ column 80 default,default+F
 add-highlighter global/ wrap -word -indent
+
+map global insert <c-[> <esc> -docstring 'Leave insert mode'
 
 declare-user-mode user-nu
 map global user n ':enter-user-mode user-nu<ret>' -docstring 'nushell'
@@ -51,12 +63,18 @@ plug "delapouite/kakoune-buffers" config %{
     map global user b ':enter-buffers-mode<ret>' -docstring 'buffers'
     map global user B ':enter-user-mode -lock buffers<ret>' -docstring 'buffers (lock)'
 }
+map global user c ':comment-line<ret>' -docstring 'toggle comments'
+map global user s ':grep<space>' -docstring 'search project'
 
 plug "andreyorst/fzf.kak" config %{
     map global user f ':fzf-mode<ret>' -docstring 'fzf'
 } defer fzf %{
-    set-option global fzf_default_opts '--color=dark'
+    set-option global fzf_default_opts '--color=dark --bind=start:toggle-preview --bind=ctrl-/:toggle-preview'
     set-option global fzf_highlight_command 'bat'
+    set-option global fzf_preview_pos top
+    set-option global fzf_preview_height '40%'
+    set-option global fzf_grep_preview_command 'bat'
+    map global fzf 'f' '<esc>:require-module fzf-file; fzf-file buffile-dir<ret>' -docstring 'open file in buffer directory'
 } defer fzf-file %{
     set-option global fzf_file_command 'rg'
 } defer fzf-grep %{
@@ -120,6 +138,5 @@ plug "kak-lsp/kak-lsp" do %{
         unset-option window lsp_completion_trigger
     }
     map global insert <c-space> '<a-;>:lsp-manual-completion<ret>' -docstring 'LSP completion'
-    map global insert <c-[> <esc> -docstring 'Leave insert mode'
 
 }

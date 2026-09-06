@@ -46,13 +46,7 @@ keybinds clear-defaults=true {
         bind "j" { GoToNextTab; }
         bind "k" { GoToPreviousTab; }
         bind "l" { GoToNextTab; }
-        bind "n" {
-            MessagePlugin "file:~/.config/zellij/plugins/zellij-new-tab-next-to-current.wasm" {
-                name "new-tab-right"
-                launch_new false
-            }
-            SwitchToMode "locked"
-        }
+        bind "n" { NewTab; SwitchToMode "locked"; }
         bind "r" { SwitchToMode "renametab"; TabNameInput 0; }
         bind "s" { ToggleActiveSyncTab; SwitchToMode "locked"; }
         bind "t" { SwitchToMode "normal"; }
@@ -286,7 +280,6 @@ plugins {
 load_plugins {
     zellij:link
     "file:~/.config/zellij/plugins/zellij-file-jump.wasm"
-    "file:~/.config/zellij/plugins/zellij-new-tab-next-to-current.wasm"
 }
 web_client {
     font "monospace"

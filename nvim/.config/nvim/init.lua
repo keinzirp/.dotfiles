@@ -1,5 +1,6 @@
 -- Options.
-vim.g.mapleader = ","
+vim.g.mapleader = " "
+vim.keymap.set({ "n", "v" }, ",", "<leader>", { remap = true })
 vim.o.colorcolumn = "80"
 vim.o.belloff = "all"
 vim.o.ignorecase = true
@@ -401,6 +402,7 @@ require("lazy").setup({
 		dependencies = { { "folke/trouble.nvim", lazy = true } },
 		cmd = "FzfLua",
 		keys = {
+			{ "<leader>f", "<cmd>FzfLua files<cr>", desc = "Find files" },
 			{ "<leader>ff", "<cmd>FzfLua files<cr>", desc = "Find files" },
 			{ "<leader>fr", "<cmd>FzfLua resume<cr>", desc = "Fzf resume" },
 			{ "<leader>fg", "<cmd>FzfLua live_grep<cr>", desc = "Grep files" },
@@ -410,6 +412,7 @@ require("lazy").setup({
 				desc = "Grep tags in help files",
 			},
 			{ "<leader>ft", "<cmd>FzfLua btags<cr>", desc = "Search buffer tags" },
+			{ "<leader>b", "<cmd>FzfLua buffers<cr>", desc = "Search opened buffers" },
 			{
 				"<leader>fb",
 				"<cmd>FzfLua buffers<cr>",
@@ -543,8 +546,38 @@ require("lazy").setup({
 		end,
 	},
 	{ "echasnovski/mini.surround", event = "VeryLazy", opts = {} },
-	{ "echasnovski/mini.comment", event = "VeryLazy", opts = {} },
-	{ "tpope/vim-fugitive", cmd = { "Git", "G", "Gdiff", "Gvdiffsplit" } },
+	{
+		"echasnovski/mini.comment",
+		event = "VeryLazy",
+		keys = {
+			{
+				"<leader>c",
+				function()
+					local line = vim.api.nvim_win_get_cursor(0)[1]
+					require("mini.comment").toggle_lines(line, line)
+				end,
+				desc = "Toggle comment",
+			},
+			{
+				"<leader>c",
+				function()
+					require("mini.comment").toggle_lines(vim.fn.line("'<"), vim.fn.line("'>"))
+				end,
+				mode = "x",
+				desc = "Toggle comment selection",
+			},
+		},
+		opts = {},
+	},
+	{
+		"tpope/vim-fugitive",
+		cmd = { "Git", "G", "Gdiff", "Gvdiffsplit" },
+		keys = {
+			{ "<leader>gs", "<cmd>Git<cr>", desc = "Git status" },
+			{ "<leader>gd", "<cmd>Git diff<cr>", desc = "Git diff" },
+			{ "<leader>gb", "<cmd>Git blame<cr>", desc = "Git blame" },
+		},
+	},
 	{ "tpope/vim-sleuth" },
 	{ "tpope/vim-abolish", event = "VeryLazy" },
 	{
@@ -593,6 +626,12 @@ require("lazy").setup({
 						gs.nav_hunk("next")
 					end, o("Next hunk"))
 					vim.keymap.set("n", "[c", function()
+						gs.nav_hunk("prev")
+					end, o("Previous hunk"))
+					vim.keymap.set("n", "<leader>gn", function()
+						gs.nav_hunk("next")
+					end, o("Next hunk"))
+					vim.keymap.set("n", "<leader>gp", function()
 						gs.nav_hunk("prev")
 					end, o("Previous hunk"))
 					vim.keymap.set("n", "<leader>hs", gs.stage_hunk, o("Stage hunk"))
@@ -832,18 +871,18 @@ require("lazy").setup({
 		},
 		keys = {
 			{
-				"<leader>-",
+				"<leader>y",
 				mode = { "n", "v" },
 				"<cmd>Yazi<cr>",
 				desc = "Open yazi at the current file",
 			},
 			{
-				"<leader>cw",
+				"<leader>yw",
 				"<cmd>Yazi cwd<cr>",
 				desc = "Open the file manager in nvim's working directory",
 			},
 			{
-				"<leader>cr",
+				"<leader>yr",
 				"<cmd>Yazi toggle<cr>",
 				desc = "Resume the last yazi session",
 			},

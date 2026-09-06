@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.85.1",
+  "lastChangelogVersion": "0.86.0",
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-terra",
   "defaultThinkingLevel": "high",
@@ -9,7 +9,6 @@
     "npm:@narumitw/pi-usage",
     "git:github.com/therynamo/pi-auto-session-name",
     "npm:pi-web-access",
-    "npm:pi-lens",
     "npm:@ff-labs/pi-fff",
     "npm:@dietrichgebert/ponytail"
   ],
