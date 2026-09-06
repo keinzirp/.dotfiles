@@ -29,7 +29,7 @@ alias backup = borgmatic --stats --progress --config ~/.config/borgmatic.d/remov
 alias backup-t7 = borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --progress --stats
 alias backup-t7-list = borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --stats --list
 
-# morning — update Homebrew, the Rust toolchain, and nvim (lazy.nvim) plugins.
+# morning — update Homebrew, Rust, pi and extensions, and editor plugins.
 def morning [] {
     print "==> Homebrew"
     try { brew update }
@@ -37,12 +37,25 @@ def morning [] {
     try { brew cleanup }
 
     print ""
+    print "==> mise and managed tools"
+    try { mise self-update -y }
+    try { mise upgrade -y }
+
+    print ""
     print "==> rustup"
     try { rustup update }
 
     print ""
+    print "==> pi and extensions"
+    try { pi update --all }
+
+    print ""
     print "==> nvim (lazy.nvim)"
     try { nvim --headless "+Lazy! sync" +qa }
+
+    print ""
+    print "==> kak (plug.kak)"
+    try { kak -n -ui dummy -e 'source ~/.config/kak/kakrc; set-option global plug_block_ui true; plug-update; quit!' }
 }
 
 # until I can figure out why atuin doesn't new history logs properly.

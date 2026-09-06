@@ -4,7 +4,7 @@ layout {
         pane command="/opt/homebrew/bin/nvim" cwd="/Users/keinzirp/Development/Work/rough.app"
         pane size=1 borderless=true {
             plugin location="zellij:compact-bar" {
-                tooltip "F1"
+                tooltip "F12"
             }
         }
     }
@@ -17,7 +17,7 @@ layout {
         }
         pane size=1 borderless=true {
             plugin location="zellij:compact-bar" {
-                tooltip "F1"
+                tooltip "F12"
             }
         }
     }
@@ -25,7 +25,7 @@ layout {
         pane cwd="/Users/keinzirp/Development/Work/rough.app"
         pane size=1 borderless=true {
             plugin location="zellij:compact-bar" {
-                tooltip "F1"
+                tooltip "F12"
             }
         }
     }
@@ -41,7 +41,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -61,7 +61,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -87,7 +87,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -100,7 +100,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -120,7 +120,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -146,7 +146,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -160,7 +160,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -172,7 +172,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }

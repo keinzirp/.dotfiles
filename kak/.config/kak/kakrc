@@ -1,5 +1,4 @@
-# Basics
-colorscheme base16-default-dark
+colorscheme default
 
 set-option global scrolloff 4,4
 set-option global autoreload ask
@@ -9,7 +8,7 @@ set-option global tabstop 4
 set-option global indentwidth 4
 set-option global grepcmd 'rg --vimgrep --smart-case'
 set-option global modelinefmt '%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}}'
-set-option global ui_options terminal_assistant=cat terminal_enable_mouse=true terminal_set_title=true
+set-option global ui_options terminal_assistant=clippy terminal_enable_mouse=true terminal_set_title=true
 
 add-highlighter global/ number-lines -hlcursor
 add-highlighter global/ show-matching -previous
@@ -17,9 +16,8 @@ add-highlighter global/ show-whitespaces -spc '.' -tab '>' -nbsp '~' -lf '' -onl
 add-highlighter global/ column 80 default,default+F
 add-highlighter global/ wrap -word -indent
 
-# User mode is <space> by default. Keep it for feature modes, not Vim-style aliases.
 declare-user-mode user-nu
-map global user n ':enter-user-mode user-nu<ret>' -docstring 'Nushell'
+map global user n ':enter-user-mode user-nu<ret>' -docstring 'nushell'
 map global user-nu p "|nu --stdin -c '$in | '<left>" -docstring 'pipe selections and replace'
 map global user-nu d "<a-|>nu --stdin -c '$in | '<left>" -docstring 'pipe selections and discard output'
 map global user-nu i "!nu -c ''<left>" -docstring 'insert command output'
@@ -34,11 +32,10 @@ map global user-git b ':git blame<ret>' -docstring 'blame'
 map global user-git n ':git next-hunk<ret>' -docstring 'next hunk'
 map global user-git p ':git prev-hunk<ret>' -docstring 'previous hunk'
 
-define-command nu -params 1 -docstring 'Run Nushell and evaluate its output as Kakoune commands' %{
+define-command nu -params 1 -docstring 'run nushell and evaluate its output as kakoune commands' %{
     evaluate-commands %sh{ nu -c "$1" }
 }
 
-# Plugin manager bootstrap.
 nu %{
     let plugins = $"($env.kak_config)/plugins"
     mkdir $plugins
@@ -66,7 +63,6 @@ plug "andreyorst/fzf.kak" config %{
     set-option global fzf_grep_command 'rg'
 }
 
-# Open a file selected in Yazi in the current Kakoune client.
 define-command yazi-open -docstring 'Open a file with Yazi' %{
     terminal sh -c %{
         chooser=$(mktemp -t kak-yazi.XXXXXX)
@@ -85,12 +81,10 @@ define-command yazi-open -docstring 'Open a file with Yazi' %{
 }
 map global user y ':yazi-open<ret>' -docstring 'Yazi'
 
-# System clipboard integration for normal y/c/d/p/R flows.
 plug "lePerdu/kakboard" config %{
     hook global WinCreate .* %{ kakboard-enable }
 }
 
-# EditorConfig + saner tab/indent behavior.
 plug "andreyorst/smarttab.kak" defer smarttab %{
     set-option global softtabstop 4
 } config %{
@@ -98,7 +92,6 @@ plug "andreyorst/smarttab.kak" defer smarttab %{
     hook global BufNewFile .* %{ editorconfig-load; autoconfigtab }
 }
 
-# LSP: install with :plug-install, then ensure language servers are in PATH.
 plug "kak-lsp/kak-lsp" do %{
     cargo install --locked --force --path .
 } config %{

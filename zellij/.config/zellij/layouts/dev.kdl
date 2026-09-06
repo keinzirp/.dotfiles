@@ -9,7 +9,7 @@ layout {
         }
         pane size=1 borderless=true {
             plugin location="zellij:compact-bar" {
-                tooltip "F1"
+                tooltip "F12"
             }
         }
     }
@@ -18,7 +18,7 @@ layout {
         pane
         pane size=1 borderless=true {
             plugin location="zellij:compact-bar" {
-                tooltip "F1"
+                tooltip "F12"
             }
         }
     }
@@ -33,7 +33,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -46,7 +46,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -60,7 +60,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -74,7 +74,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -87,7 +87,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -101,7 +101,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -114,7 +114,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }
@@ -124,7 +124,7 @@ layout {
             }
             pane size=1 borderless=true {
                 plugin location="zellij:compact-bar" {
-                    tooltip "F1"
+                    tooltip "F12"
                 }
             }
         }

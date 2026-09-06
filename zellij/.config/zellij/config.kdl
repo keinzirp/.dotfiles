@@ -189,12 +189,12 @@ keybinds clear-defaults=true {
         bind "Ctrl Alt l" { MoveFocusOrTab "right"; }
     }
     shared {
-        bind "F1" {
+        bind "F12" {
             MessagePlugin "compact-bar" {
                 name "toggle_tooltip"
                 payload "1"
                 floating false
-                tooltip "F1"
+                tooltip "F12"
             }
         }
     }
@@ -264,7 +264,7 @@ keybinds clear-defaults=true {
 plugins {
     about location="zellij:about"
     compact-bar location="zellij:compact-bar" {
-        tooltip "F1"
+        tooltip "F12"
     }
     configuration location="zellij:configuration"
     filepicker location="zellij:strider" {

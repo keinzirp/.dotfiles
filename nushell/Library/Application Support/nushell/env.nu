@@ -16,10 +16,10 @@ $env.CARAPACE_HIDDEN = 1
 source "~/.cargo/env.nu"
 
 $env.PATH = ($env.PATH | prepend [
+    ($env.HOME + "/.local/bin"),
     "/opt/homebrew/bin",
     ($env.HOME + "/.local/pnpm"),
     ($env.HOME + "/go/bin"),
-    ($env.HOME + "/.local/bin"),
     ($env.HOME + "/.atuin/bin"),
     ($env.HOME + "/.nvm/versions/node/v24.14.0/bin"),
     ($env.HOME + "/.orbstack/bin"),
