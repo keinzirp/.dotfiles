@@ -3,7 +3,7 @@
 # Code
 face global value rgb:dc9656
 face global type rgb:f7ca88
-face global variable rgb:ab4642
+face global variable rgb:d8d8d8
 face global module rgb:ba8baf
 face global function rgb:7cafc2
 face global string rgb:a1b56c
@@ -26,7 +26,7 @@ face global list rgb:ab4642
 
 # Interface
 face global Default rgb:d8d8d8,rgb:181818
-face global PrimarySelection rgb:d8d8d8,rgb:383838+fg
+face global PrimarySelection rgb:d8d8d8,rgb:585858+fg
 face global SecondarySelection rgb:d8d8d8,rgb:383838+fg
 face global PrimaryCursor rgb:181818,rgb:d8d8d8+fg
 face global SecondaryCursor rgb:181818,rgb:b8b8b8+fg

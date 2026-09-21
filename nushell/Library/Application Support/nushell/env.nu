@@ -13,19 +13,18 @@ $env.config.rm.always_trash = true
 $env.CARAPACE_MATCH = 1
 $env.CARAPACE_HIDDEN = 1
 
-source "~/.cargo/env.nu"
-
 $env.PATH = ($env.PATH | prepend [
     ($env.HOME + "/.local/bin"),
     "/opt/homebrew/bin",
     ($env.HOME + "/.local/pnpm"),
     ($env.HOME + "/go/bin"),
     ($env.HOME + "/.atuin/bin"),
-    ($env.HOME + "/.nvm/versions/node/v24.14.0/bin"),
+    ($env.HOME + "/Library/Application Support/carapace/bin"),
     ($env.HOME + "/.orbstack/bin"),
-    ($env.HOME + "/opt/homebrew/opt/openjdk/bin"),
+    "/opt/homebrew/opt/openjdk/bin",
+] | uniq)
 
-])
+source "~/.cargo/env.nu"
 
 zoxide init nushell | save -f ~/.zoxide.nu
 
@@ -62,7 +61,6 @@ if $nu.is-interactive {
 
 $env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense'
 
-mise activate nu | save -f ~/.cache/mise.nu
-source ~/.cache/mise.nu
-mkdir $"($nu.cache-dir)"
+mkdir $nu.cache-dir
+^mise activate nu | save --force ($nu.cache-dir | path join "mise.nu")
 carapace _carapace nushell | save --force $"($nu.cache-dir)/carapace.nu"

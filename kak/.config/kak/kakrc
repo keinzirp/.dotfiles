@@ -1,14 +1,10 @@
-colorscheme default
-
 set-option global scrolloff 4,4
-set-option global autoreload ask
-set-option global incsearch true
 set-option global idle_timeout 300
 set-option global tabstop 4
 set-option global indentwidth 4
 set-option global grepcmd 'rg --vimgrep --smart-case'
 set-option global modelinefmt '%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}}'
-set-option global ui_options terminal_assistant=clippy terminal_enable_mouse=true terminal_set_title=true
+set-option global ui_options terminal_assistant=none terminal_enable_mouse=true terminal_set_title=true
 
 hook global KakBegin .* %{
     evaluate-commands %sh{
@@ -29,56 +25,66 @@ add-highlighter global/ wrap -word -indent
 map global insert <c-[> <esc> -docstring 'Leave insert mode'
 
 declare-user-mode user-nu
-map global user n ':enter-user-mode user-nu<ret>' -docstring 'nushell'
-map global user-nu p "|nu --stdin -c '$in | '<left>" -docstring 'pipe selections and replace'
-map global user-nu d "<a-|>nu --stdin -c '$in | '<left>" -docstring 'pipe selections and discard output'
-map global user-nu i "!nu -c ''<left>" -docstring 'insert command output'
-map global user-nu a "<a-!>nu -c ''<left>" -docstring 'append command output'
-map global user-nu f "$nu --stdin -c '$in | '<left>" -docstring 'keep selections when command succeeds'
+map global user n ':enter-user-mode user-nu<ret>' -docstring 'Enter Nushell mode'
+map global user-nu p "|nu --stdin -c '$in | '<left>" -docstring 'Pipe selections and replace with output'
+map global user-nu d "<a-|>nu --stdin -c '$in | '<left>" -docstring 'Pipe selections and discard output'
+map global user-nu i "!nu -c ''<left>" -docstring 'Insert command output'
+map global user-nu a "<a-!>nu -c ''<left>" -docstring 'Append command output'
+map global user-nu f "$nu --stdin -c '$in | '<left>" -docstring 'Keep selections when the command succeeds'
+
+define-command -hidden git-refresh-diff %{ evaluate-commands %sh{
+    git -C "${kak_buffile%/*}" ls-files --error-unmatch -- "$kak_buffile" >/dev/null 2>&1 &&
+        echo 'git show-diff'
+}}
+hook global WinCreate .* git-refresh-diff
+hook global BufWritePost .* git-refresh-diff
+hook global BufReload .* git-refresh-diff
 
 declare-user-mode user-git
-map global user g ':enter-user-mode user-git<ret>' -docstring 'git'
-map global user-git s ':git status<ret>' -docstring 'status'
-map global user-git d ':git diff<ret>' -docstring 'diff'
-map global user-git b ':git blame<ret>' -docstring 'blame'
-map global user-git n ':git next-hunk<ret>' -docstring 'next hunk'
-map global user-git p ':git prev-hunk<ret>' -docstring 'previous hunk'
+map global user g ':enter-user-mode user-git<ret>' -docstring 'Enter Git mode'
+map global user-git s ':git status<ret>' -docstring 'Show Git status'
+map global user-git d ':git diff<ret>' -docstring 'Show Git diff'
+map global user-git b ':git blame<ret>' -docstring 'Show Git blame'
+map global user-git n ':git next-hunk<ret>' -docstring 'Go to next hunk'
+map global user-git p ':git prev-hunk<ret>' -docstring 'Go to previous hunk'
 
-define-command nu -params 1 -docstring 'run nushell and evaluate its output as kakoune commands' %{
-    evaluate-commands %sh{ nu -c "$1" }
+nop %sh{
+    plug="$kak_config/plugins/plug.kak"
+    [ -d "$plug" ] || git clone -q https://github.com/andreyorst/plug.kak.git "$plug" >&2
 }
-
-nu %{
-    let plugins = $"($env.kak_config)/plugins"
-    mkdir $plugins
-    let plug = $"($plugins)/plug.kak"
-    if not ($plug | path exists) {
-        git clone -q https://github.com/andreyorst/plug.kak.git $plug
-    }
-    print $"source '($plug)/rc/plug.kak'"
-}
+source "%val{config}/plugins/plug.kak/rc/plug.kak"
+set-option global plug_always_ensure true
 plug "andreyorst/plug.kak" noload
 plug "greenfork/active-window.kak"
 plug "delapouite/kakoune-buffers" config %{
-    map global user b ':enter-buffers-mode<ret>' -docstring 'buffers'
-    map global user B ':enter-user-mode -lock buffers<ret>' -docstring 'buffers (lock)'
+    map global user b ':enter-buffers-mode<ret>' -docstring 'Enter buffer mode'
+    map global user B ':enter-user-mode -lock buffers<ret>' -docstring 'Enter locked buffer mode'
 }
-map global user c ':comment-line<ret>' -docstring 'toggle comments'
-map global user s ':grep<space>' -docstring 'search project'
+map global user c ':comment-line<ret>' -docstring 'Toggle comments'
+map global user s ':grep<space>' -docstring 'Search project contents'
 
 plug "andreyorst/fzf.kak" config %{
-    map global user f ':fzf-mode<ret>' -docstring 'fzf'
+    map global user f ':fzf-mode<ret>' -docstring 'Enter fzf mode'
+    hook global ModuleLoaded fzf %{
+        map global fzf 'F' '<esc>:fzf-buffer-files<ret>' -docstring 'Open files in the buffer directory'
+    }
 } defer fzf %{
     set-option global fzf_default_opts '--color=dark --bind=start:toggle-preview --bind=ctrl-/:toggle-preview'
     set-option global fzf_highlight_command 'bat'
     set-option global fzf_preview_pos top
     set-option global fzf_preview_height '40%'
-    set-option global fzf_grep_preview_command 'bat'
-    map global fzf 'f' '<esc>:require-module fzf-file; fzf-file buffile-dir<ret>' -docstring 'open file in buffer directory'
+    # Avoid fzf-file buffile-dir's unquoted paths; rg emits full paths here.
+    define-command fzf-buffer-files -docstring 'Open files in the buffer directory' %{
+        fzf -preview -kak-cmd 'edit -existing' -fzf-args "-m --expect %opt{fzf_window_map},%opt{fzf_vertical_map},%opt{fzf_horizontal_map}" -items-cmd %sh{
+            dir=$(dirname "$kak_buffile")
+            printf "rg -L --hidden --files -- '%s'" "$(printf '%s' "$dir" | sed "s/'/'\\\\''/g")"
+        }
+    }
 } defer fzf-file %{
     set-option global fzf_file_command 'rg'
 } defer fzf-grep %{
     set-option global fzf_grep_command 'rg'
+    set-option global fzf_grep_preview_command 'bat'
 }
 
 define-command yazi-open -docstring 'Open a file with Yazi' %{
@@ -97,7 +103,7 @@ define-command yazi-open -docstring 'Open a file with Yazi' %{
             "$(kakquote "$1")" "$(kakquote "$command")" | kak -p "$2"
     } yazi-open %val{client} %val{session} %val{buffile}
 }
-map global user y ':yazi-open<ret>' -docstring 'Yazi'
+map global user y ':yazi-open<ret>' -docstring 'Open a file with Yazi'
 
 plug "lePerdu/kakboard" config %{
     hook global WinCreate .* %{ kakboard-enable }
@@ -106,8 +112,8 @@ plug "lePerdu/kakboard" config %{
 plug "andreyorst/smarttab.kak" defer smarttab %{
     set-option global softtabstop 4
 } config %{
-    hook global BufOpenFile .* %{ editorconfig-load; autoconfigtab }
-    hook global BufNewFile .* %{ editorconfig-load; autoconfigtab }
+    hook global BufOpenFile .* %{ try %{ editorconfig-load }; autoconfigtab }
+    hook global BufNewFile .* %{ try %{ editorconfig-load }; autoconfigtab }
 }
 
 plug "kak-lsp/kak-lsp" do %{
@@ -122,21 +128,26 @@ plug "kak-lsp/kak-lsp" do %{
     set-option global lsp_auto_show_code_actions true
     set-option global lsp_completion_trigger fail
 
-    hook global WinSetOption filetype=(rust|python|javascript|typescript|svelte|html|css|lua|c|cpp|ruby|json|yaml|markdown|sh) %{
-        lsp-enable-window
+    hook global BufSetOption filetype=nu %{
+        set-option buffer lsp_servers %{
+            [nu]
+            args = ["--lsp"]
+            root_globs = [".jj", ".git"]
+        }
     }
+    lsp-enable
     lsp-auto-signature-help-enable
 
-    map global user l ':enter-user-mode lsp<ret>' -docstring 'LSP'
-    map global goto d '<esc>:lsp-definition<ret>' -docstring 'LSP definition'
-    map global goto r '<esc>:lsp-references<ret>' -docstring 'LSP references'
-    map global goto i '<esc>:lsp-implementation<ret>' -docstring 'LSP implementation'
+    map global user l ':enter-user-mode lsp<ret>' -docstring 'Enter LSP mode'
+    map global goto d '<esc>:lsp-definition<ret>' -docstring 'Go to definition'
+    map global goto r '<esc>:lsp-references<ret>' -docstring 'Find references'
+    map global goto i '<esc>:lsp-implementation<ret>' -docstring 'Go to implementation'
 
     define-command lsp-manual-completion -docstring 'Request LSP completion' %{
         set-option window lsp_completion_trigger nop
         lsp-completion
         unset-option window lsp_completion_trigger
     }
-    map global insert <c-space> '<a-;>:lsp-manual-completion<ret>' -docstring 'LSP completion'
+    map global insert <c-space> '<a-;>:lsp-manual-completion<ret>' -docstring 'Request LSP completion'
 
 }

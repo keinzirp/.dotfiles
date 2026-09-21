@@ -1,17 +1,15 @@
-# Shared mise config for rough.app-oriented dev machines.
-# Platform-specific OS packages live in config.linux.toml and config.macos.toml.
+[settings]
+idiomatic_version_file_enable_tools = ["node", "pnpm", "yarn"]
 
 [tools]
-# rough.app repo requirements
-node = "26.1.0"
-pnpm = "11.5.0"
-"github:DarthSim/overmind" = "latest"
-
-# Editor-independent language servers. Neovim and Kakoune use these from PATH.
+node = "24"
+pnpm = "12"
+go = "1.27"
 uv = "latest"
+
 "aqua:LuaLS/lua-language-server" = "latest"
 "aqua:rust-lang/rust-analyzer" = "latest"
-"npm:typescript" = "6.0.3"
+"npm:typescript" = "6"
 "npm:typescript-language-server" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
 "npm:yaml-language-server" = "latest"
@@ -19,24 +17,26 @@ uv = "latest"
 "npm:bash-language-server" = "latest"
 "pipx:python-lsp-server" = "latest"
 
-# commented out for this rough.app devbox profile
-# ruby = "3.4" # only needed for Kamal deploy work, not normal rough.app dev
-# "npm:@earendil-works/pi-coding-agent" = "0.80.6"
-# python = "3.14.6"
-# go = "1.26.5"
-# rust = "1.96.1"
-# yarn = "1.22.22"
-# "npm:tau-mirror" = "1.0.8"
-# "cargo:cargo-license" = "0.7.0"
-# "cargo:eza" = "0.23.4"
-# "cargo:nu_plugin_polars" = "0.112.1"
-# "cargo:sd" = "1.0.0"
-# "cargo:sleek" = "0.5.0"
-# "cargo:stylua" = "2.4.0"
-# "cargo:tree-sitter-cli" = "0.26.7"
-# "cargo:ttyper" = "1.6.0"
+[bootstrap.user]
+login_shell = "/opt/homebrew/bin/nu"
 
-# Notes:
-# - rough.app docs also require Docker; I left that out here because installing
-#   the engine is usually distro/root-specific on a remote Linux box.
-# - local/path cargo crates are still intentionally omitted.
+[bootstrap.packages]
+"brew:overmind" = "latest"
+"brew:pinentry-mac" = "latest"
+"brew:sleepwatcher" = "latest"
+
+"brew-cask:alt-tab" = "latest"
+"brew-cask:android-platform-tools" = "latest"
+"brew-cask:anki" = "latest"
+"brew-cask:codex" = "latest"
+"brew-cask:whatcable" = "latest"
+"brew-cask:gimp" = "latest"
+"brew-cask:hammerspoon" = "latest"
+"brew-cask:hiddenbar" = "latest"
+"brew-cask:keepassxc" = "latest"
+"brew-cask:meld" = "latest"
+"brew-cask:music-decoy" = "latest"
+"brew-cask:obs" = "latest"
+"brew-cask:sol" = "latest"
+"brew-cask:stats" = "latest"
+"brew-cask:vlc" = "latest"

@@ -55,7 +55,7 @@ def morning [] {
 
     print ""
     print "==> kak (plug.kak)"
-    try { kak -n -ui dummy -e 'source ~/.config/kak/kakrc; set-option global plug_block_ui true; plug-update; quit!' }
+    try { kak -ui dummy -e 'set-option global plug_block_ui true; plug-update; quit!' }
 }
 
 # until I can figure out why atuin doesn't new history logs properly.
@@ -81,6 +81,8 @@ def fg [] {
   }
   $jobs | first | get id | job unfreeze
 }
+
+use ($nu.cache-dir | path join "mise.nu")
 
 # (port of: zellij setup --generate-auto-start zsh)
 if not ("ZELLIJ" in $env) {

@@ -2,8 +2,8 @@ export ZELLIJ_AUTO_EXIT=true
 export PNPM_HOME=$HOME/.local/pnpm
 export GO_HOME=$HOME/go/bin
 MANUAL=$HOME/.local/bin
-export PATH="$PATH:$PNPM_HOME:$GO_HOME:$MANUAL"
-source <(zellij setup --generate-auto-start zsh)
+typeset -U path
+export PATH="$MANUAL:$HOME/.cargo/bin:/opt/homebrew/bin:/opt/homebrew/opt/openjdk/bin:$PATH:$PNPM_HOME:$GO_HOME"
 
 EDITOR=nvim
 PROMPT='%F{green}%n@%m%f:%F{blue}%1~%f %# '
@@ -34,10 +34,8 @@ alias zi="__zoxide_zi"
 alias rm="rip --graveyard ~/.local/share/trash"
 
 
-export NVM_DIR="$HOME/.nvm"
-  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-
+autoload -Uz compinit
+compinit
 source <(fzf --zsh)
 source <(COMPLETE=zsh jj)
 
@@ -45,3 +43,6 @@ source <(COMPLETE=zsh jj)
 # . "$HOME/.atuin/bin/env"
 #
 # eval "$(atuin init zsh)"
+
+eval "$(mise activate zsh)"
+source <(zellij setup --generate-auto-start zsh)
