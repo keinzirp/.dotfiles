@@ -7,3 +7,8 @@ desc = "Enter directory or open file"
 on = "z"
 run = "plugin repo-fzf"
 desc = "Fuzzy find from repository root"
+
+[[mgr.prepend_keymap]]
+on = "T"
+run = "plugin toggle-pane max-preview"
+desc = "Maximize or restore the preview pane"

@@ -50,6 +50,8 @@ face global StatusLineValue rgb:a1b56c,rgb:282828
 face global StatusCursor rgb:181818,rgb:d8d8d8
 face global Prompt rgb:e8e8e8,rgb:282828
 face global MatchingChar rgb:f7ca88,rgb:181818+u
+face global SearchMatch default,rgb:3b3528
+face global YankMatch default,rgb:283b35
 face global Whitespace rgb:585858+f
 face global BufferPadding rgb:585858,rgb:181818
 

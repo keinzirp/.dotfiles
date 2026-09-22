@@ -9,7 +9,7 @@ set-option global ui_options terminal_assistant=none terminal_enable_mouse=true 
 hook global KakBegin .* %{
     evaluate-commands %sh{
         if command -v kak-tree-sitter >/dev/null; then
-            kak-tree-sitter --init "$kak_session" --kakoune --daemonize --server --with-highlighting
+            kak-tree-sitter --init "$kak_session" --kakoune --daemonize --server --with-highlighting --with-text-objects
         fi
     }
     colorscheme base16-default-dark-treesitter
@@ -23,6 +23,114 @@ add-highlighter global/ column 80 default,default+F
 add-highlighter global/ wrap -word -indent
 
 map global insert <c-[> <esc> -docstring 'Leave insert mode'
+map global user t ':enter-user-mode tree-sitter<ret>' -docstring 'Enter Tree-sitter mode'
+
+define-command doc-key -docstring 'Look up a built-in key in the documentation' %{
+    echo 'Press a built-in key to look up (Escape cancels)'
+    on-key %{
+        echo ''
+        %sh{ [ "$kak_key" = '<esc>' ] && printf nop || printf evaluate-commands } %{
+            evaluate-commands -try-client %opt{docsclient} -save-regs / %{
+                try %{ buffer *doc-keys* } catch %{ doc keys }
+                doc-jump-to-anchor movement
+                set-register / %sh{
+                    key=$kak_key
+                    case "$key" in
+                        '<a-w>'|'<a-b>'|'<a-e>') key='<a-[wbe]>' ;;
+                        '<a-f>'|'<a-t>') key='<a-[ft]>' ;;
+                        '+') key='<plus>' ;;
+                        '<quote>') key="'" ;;
+                        '<dquote>') key='"' ;;
+                    esac
+                    printf '%s' '^(?:\S+,\h+)*\Q' "$key" '\E(?:,|$)'
+                }
+                try %{ execute-keys nvv } catch %{
+                    echo "No dedicated built-in entry for %val{key}"
+                }
+            }
+        }
+    }
+}
+map global user '?' ':doc-key<ret>' -docstring 'Look up a built-in key'
+
+declare-option -hidden str next_occurrence_origin
+define-command add-next-occurrence -docstring 'Select the word or add its next occurrence' %{
+    set-option local next_occurrence_origin "%val{selections_desc}"
+    evaluate-commands %sh{
+        if [ "$kak_selection_count" -eq 1 ] && [ "$kak_selection_length" -eq 1 ]; then
+            echo "execute-keys '<a-i>w'"
+        fi
+    }
+    evaluate-commands %sh{
+        keys='*N'
+        [ "$kak_selections_desc" != "$kak_opt_next_occurrence_origin" ] && keys='*'
+        printf "execute-keys -with-hooks -save-regs '' '%s'\n" "$keys"
+    }
+}
+map global normal <c-n> ':add-next-occurrence<ret>' -docstring 'Select the word or add its next occurrence'
+
+declare-option -hidden range-specs color_swatches
+# ponytail: RGB swatches ignore alpha; add RGBA previews if opacity matters
+define-command -hidden color-swatches-update %{
+    set-option window color_swatches %val{timestamp}
+    evaluate-commands -draft -save-regs /1234 %{
+        execute-keys 'gtGbx'
+        try %{ evaluate-commands -draft %{
+            execute-keys 's(?:\B#|\b0[xX]|\brgba?:)([0-9A-Fa-f]{6})(?:[0-9A-Fa-f]{2})?\b<ret><a-;>'
+            evaluate-commands -itersel %{
+                set-option -add window color_swatches "%val{cursor_line}.%val{cursor_column}+0|{rgb:%reg{1}+f}■"
+            }
+        }}
+        try %{ evaluate-commands -draft %{
+            execute-keys 's\B#([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])[0-9A-Fa-f]?\b<ret><a-;>'
+            evaluate-commands -itersel %{
+                set-option -add window color_swatches "%val{cursor_line}.%val{cursor_column}+0|{rgb:%reg{1}%reg{1}%reg{2}%reg{2}%reg{3}%reg{3}+f}■"
+            }
+        }}
+    }
+}
+define-command color-swatches-toggle -docstring 'Toggle inline hexadecimal color swatches' %{
+    try %{
+        remove-highlighter global/color-swatches
+        remove-hooks global color-swatches
+    } catch %{
+        add-highlighter global/color-swatches replace-ranges color_swatches
+        hook -group color-swatches global NormalIdle .* color-swatches-update
+        hook -group color-swatches global InsertIdle .* color-swatches-update
+        hook -group color-swatches global WinDisplay .* color-swatches-update
+        hook -group color-swatches global WinResize .* color-swatches-update
+        try color-swatches-update
+    }
+}
+color-swatches-toggle
+map global user h ':color-swatches-toggle<ret>' -docstring 'Toggle inline hexadecimal color swatches'
+
+hook global NormalKey '[/?*nN]|<a-[/?*nN]>' %{
+    try %{ add-highlighter window/search-feedback dynregex '%reg{/}' 0:SearchMatch }
+}
+hook global NormalKey <esc> %{ try %{ remove-highlighter window/search-feedback } }
+
+hook global NormalKey .* %{ try %{ remove-highlighter window/yank-feedback } }
+hook global InsertKey .* %{ try %{ remove-highlighter window/yank-feedback } }
+hook global NormalKey 'y|p|P|R|<a-[pPR]>' %{
+    add-highlighter window/yank-feedback group
+    evaluate-commands -draft -itersel -save-regs / %{
+        execute-keys -save-regs '' '<a-*>'
+        add-highlighter "window/yank-feedback/%val{selections_desc}" regex "%reg{/}" 0:YankMatch
+    }
+}
+
+define-command -hidden history-load %{ evaluate-commands %sh{
+    python3 "$kak_config/history.py" load
+}}
+define-command -hidden history-save %{ nop %sh{
+    # Export the full, shell-quoted history lists for the helper
+    # kak_quoted_reg_colon kak_quoted_reg_slash kak_quoted_reg_pipe
+    python3 "$kak_config/history.py" save
+}}
+hook global KakBegin .* history-load
+hook global KakEnd .* history-save
+hook global FocusOut .* history-save
 
 declare-user-mode user-nu
 map global user n ':enter-user-mode user-nu<ret>' -docstring 'Enter Nushell mode'
@@ -69,9 +177,9 @@ plug "andreyorst/fzf.kak" config %{
         map global fzf 'F' '<esc>:fzf-buffer-files<ret>' -docstring 'Open files in the buffer directory'
     }
 } defer fzf %{
-    set-option global fzf_default_opts '--color=dark --bind=start:toggle-preview --bind=ctrl-/:toggle-preview'
+    set-option global fzf_default_opts '--color=dark --bind=ctrl-/:toggle-preview'
+    set-option global fzf_terminal_command 'picker-terminal kak -c %val{session} -e "%arg{@}"'
     set-option global fzf_highlight_command 'bat'
-    set-option global fzf_preview_pos top
     set-option global fzf_preview_height '40%'
     # Avoid fzf-file buffile-dir's unquoted paths; rg emits full paths here.
     define-command fzf-buffer-files -docstring 'Open files in the buffer directory' %{
@@ -87,23 +195,37 @@ plug "andreyorst/fzf.kak" config %{
     set-option global fzf_grep_preview_command 'bat'
 }
 
-define-command yazi-open -docstring 'Open a file with Yazi' %{
-    terminal sh -c %{
-        chooser=$(mktemp -t kak-yazi.XXXXXX)
+declare-option -hidden str picker_title fzf
+
+define-command -hidden picker-zellij -params 1.. %{
+    zellij-run "--floating --name %opt{picker_title} --close-on-exit --width 94%% --height 90%%" %arg{@}
+}
+
+define-command -hidden picker-terminal -params 1.. %{ evaluate-commands %sh{
+    # Keep fzf's new-editor action in a normal terminal.
+    [ "$1" = kak ] || echo 'alias local zellij-terminal-window picker-zellij'
+    echo 'terminal %arg{@}'
+}}
+
+define-command yazi-open -docstring 'Open files with Yazi' %{
+    set-option local picker_title Yazi
+    picker-terminal sh -c %{
+        chooser=$(mktemp -t kak-yazi.XXXXXX) || exit 1
+        trap 'rm -f "$chooser"' EXIT
         target=$3
         [ -e "$target" ] || target=$PWD
-        yazi "$target" --chooser-file="$chooser"
-        selected=$(head -n 1 "$chooser")
-        rm -f "$chooser"
-        [ -n "$selected" ] || exit 0
+        yazi "$target" --chooser-file="$chooser" || exit
 
         kakquote() { printf '%s' "$1" | sed "s/'/''/g; 1s/^/'/; \$s/\$/'/"; }
-        command="edit -existing $(kakquote "$selected")"
+        command=$(while IFS= read -r selected || [ -n "$selected" ]; do
+            [ -n "$selected" ] && printf 'edit -existing %s\n' "$(kakquote "$selected")"
+        done < "$chooser")
+        [ -n "$command" ] || exit 0
         printf 'evaluate-commands -client %s %s\n' \
             "$(kakquote "$1")" "$(kakquote "$command")" | kak -p "$2"
     } yazi-open %val{client} %val{session} %val{buffile}
 }
-map global user y ':yazi-open<ret>' -docstring 'Open a file with Yazi'
+map global user y ':yazi-open<ret>' -docstring 'Open files with Yazi'
 
 plug "lePerdu/kakboard" config %{
     hook global WinCreate .* %{ kakboard-enable }

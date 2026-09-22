@@ -1,5 +1,8 @@
 [mgr]
 show_hidden = true
-ratio = [1, 4, 3]
-linemode = "permissions"
+ratio = [1, 3, 4]
+linemode = "none"
 mouse_events = []
+
+[preview]
+wrap = "yes"
