@@ -1,0 +1,60 @@
+diff --git a/src/terminal_ui.cc b/src/terminal_ui.cc
+index b74c57a..9f86781 100644
+--- a/src/terminal_ui.cc
++++ b/src/terminal_ui.cc
+@@ -9,6 +9,7 @@
+ #include "format.hh"
+ #include "diff.hh"
+ #include "string_utils.hh"
++#include "unit_tests.hh"
+ 
+ #include <algorithm>
+ 
+@@ -689,6 +690,32 @@ void TerminalUI::check_resize(bool force)
+     set_resize_pending();
+ }
+ 
++static Key normalize_shifted_key(Key key, Codepoint shifted_key = 0)
++{
++    if (not (key.modifiers & Key::Modifiers::Shift))
++        return key;
++
++    if (shifted_key != 0)
++    {
++        key.modifiers &= ~Key::Modifiers::Shift;
++        key.key = shifted_key;
++    }
++    else if (is_basic_alpha(key.key))
++    {
++        // Multiplexers that do not support alternate keys report shifted
++        // letters with their unshifted codepoint and a Shift modifier.
++        key.modifiers &= ~Key::Modifiers::Shift;
++        key.key = to_upper(key.key);
++    }
++    return key;
++}
++
++UnitTest test_terminal_shifted_key_fallback{[]()
++{
++    kak_assert(normalize_shifted_key({Key::Modifiers::Alt | Key::Modifiers::Shift, 'o'}) == alt('O'));
++    kak_assert(normalize_shifted_key({Key::Modifiers::Alt | Key::Modifiers::Shift, 'o'}, 'O') == alt('O'));
++}};
++
+ Optional<Key> TerminalUI::get_next_key()
+ {
+     if (terminal_hungup)
+@@ -828,13 +855,7 @@ Optional<Key> TerminalUI::get_next_key()
+ 
+         auto masked_key = [&](Codepoint key, Codepoint shifted_key = 0) {
+             int mask = std::max(params[1][0] - 1, 0);
+-            Key::Modifiers modifiers = parse_mask(mask);
+-            if (shifted_key != 0 and (modifiers & Key::Modifiers::Shift))
+-            {
+-                modifiers &= ~Key::Modifiers::Shift;
+-                key = shifted_key;
+-            }
+-            return Key{modifiers, key};
++            return normalize_shifted_key({parse_mask(mask), key}, shifted_key);
+         };
+ 
+         switch (c)
