@@ -1,6 +1,6 @@
 $env.ZELLIJ_AUTO_EXIT = "true"
 $env.PNPM_HOME = ($env.HOME + "/.local/pnpm")
-$env.EDITOR = "nvim"
+$env.EDITOR = "kak"
 $env.DO_NOT_TRACK = "1"
 $env.HOMEBREW_NO_AUTO_UPDATE = "1"
 $env.XDG_DATA_HOME = ($env.HOME + "/.local/share")

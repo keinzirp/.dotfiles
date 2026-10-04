@@ -4,7 +4,7 @@ set-option global tabstop 4
 set-option global indentwidth 4
 set-option global grepcmd 'rg --vimgrep --smart-case'
 set-option global modelinefmt '%val{bufname} %val{cursor_line}:%val{cursor_char_column} {{context_info}} {{mode_info}}'
-set-option global ui_options terminal_assistant=none terminal_enable_mouse=true terminal_set_title=true
+set-option global ui_options terminal_assistant=none terminal_enable_mouse=true terminal_set_title=false
 
 hook global KakBegin .* %{
     evaluate-commands %sh{
@@ -24,34 +24,7 @@ add-highlighter global/ wrap -word -indent
 
 map global insert <c-[> <esc> -docstring 'Leave insert mode'
 map global user t ':enter-user-mode tree-sitter<ret>' -docstring 'Enter Tree-sitter mode'
-
-define-command doc-key -docstring 'Look up a built-in key in the documentation' %{
-    echo 'Press a built-in key to look up (Escape cancels)'
-    on-key %{
-        echo ''
-        %sh{ [ "$kak_key" = '<esc>' ] && printf nop || printf evaluate-commands } %{
-            evaluate-commands -try-client %opt{docsclient} -save-regs / %{
-                try %{ buffer *doc-keys* } catch %{ doc keys }
-                doc-jump-to-anchor movement
-                set-register / %sh{
-                    key=$kak_key
-                    case "$key" in
-                        '<a-w>'|'<a-b>'|'<a-e>') key='<a-[wbe]>' ;;
-                        '<a-f>'|'<a-t>') key='<a-[ft]>' ;;
-                        '+') key='<plus>' ;;
-                        '<quote>') key="'" ;;
-                        '<dquote>') key='"' ;;
-                    esac
-                    printf '%s' '^(?:\S+,\h+)*\Q' "$key" '\E(?:,|$)'
-                }
-                try %{ execute-keys nvv } catch %{
-                    echo "No dedicated built-in entry for %val{key}"
-                }
-            }
-        }
-    }
-}
-map global user '?' ':doc-key<ret>' -docstring 'Look up a built-in key'
+map global object e '<a-;>tree-sitter-object-text-objects xml-element<ret>' -docstring 'HTML element (tree-sitter)'
 
 declare-option -hidden str next_occurrence_origin
 define-command add-next-occurrence -docstring 'Select the word or add its next occurrence' %{
@@ -68,69 +41,6 @@ define-command add-next-occurrence -docstring 'Select the word or add its next o
     }
 }
 map global normal <c-n> ':add-next-occurrence<ret>' -docstring 'Select the word or add its next occurrence'
-
-declare-option -hidden range-specs color_swatches
-# ponytail: RGB swatches ignore alpha; add RGBA previews if opacity matters
-define-command -hidden color-swatches-update %{
-    set-option window color_swatches %val{timestamp}
-    evaluate-commands -draft -save-regs /1234 %{
-        execute-keys 'gtGbx'
-        try %{ evaluate-commands -draft %{
-            execute-keys 's(?:\B#|\b0[xX]|\brgba?:)([0-9A-Fa-f]{6})(?:[0-9A-Fa-f]{2})?\b<ret><a-;>'
-            evaluate-commands -itersel %{
-                set-option -add window color_swatches "%val{cursor_line}.%val{cursor_column}+0|{rgb:%reg{1}+f}■"
-            }
-        }}
-        try %{ evaluate-commands -draft %{
-            execute-keys 's\B#([0-9A-Fa-f])([0-9A-Fa-f])([0-9A-Fa-f])[0-9A-Fa-f]?\b<ret><a-;>'
-            evaluate-commands -itersel %{
-                set-option -add window color_swatches "%val{cursor_line}.%val{cursor_column}+0|{rgb:%reg{1}%reg{1}%reg{2}%reg{2}%reg{3}%reg{3}+f}■"
-            }
-        }}
-    }
-}
-define-command color-swatches-toggle -docstring 'Toggle inline hexadecimal color swatches' %{
-    try %{
-        remove-highlighter global/color-swatches
-        remove-hooks global color-swatches
-    } catch %{
-        add-highlighter global/color-swatches replace-ranges color_swatches
-        hook -group color-swatches global NormalIdle .* color-swatches-update
-        hook -group color-swatches global InsertIdle .* color-swatches-update
-        hook -group color-swatches global WinDisplay .* color-swatches-update
-        hook -group color-swatches global WinResize .* color-swatches-update
-        try color-swatches-update
-    }
-}
-color-swatches-toggle
-map global user h ':color-swatches-toggle<ret>' -docstring 'Toggle inline hexadecimal color swatches'
-
-hook global NormalKey '[/?*nN]|<a-[/?*nN]>' %{
-    try %{ add-highlighter window/search-feedback dynregex '%reg{/}' 0:SearchMatch }
-}
-hook global NormalKey <esc> %{ try %{ remove-highlighter window/search-feedback } }
-
-hook global NormalKey .* %{ try %{ remove-highlighter window/yank-feedback } }
-hook global InsertKey .* %{ try %{ remove-highlighter window/yank-feedback } }
-hook global NormalKey 'y|p|P|R|<a-[pPR]>' %{
-    add-highlighter window/yank-feedback group
-    evaluate-commands -draft -itersel -save-regs / %{
-        execute-keys -save-regs '' '<a-*>'
-        add-highlighter "window/yank-feedback/%val{selections_desc}" regex "%reg{/}" 0:YankMatch
-    }
-}
-
-define-command -hidden history-load %{ evaluate-commands %sh{
-    python3 "$kak_config/history.py" load
-}}
-define-command -hidden history-save %{ nop %sh{
-    # Export the full, shell-quoted history lists for the helper
-    # kak_quoted_reg_colon kak_quoted_reg_slash kak_quoted_reg_pipe
-    python3 "$kak_config/history.py" save
-}}
-hook global KakBegin .* history-load
-hook global KakEnd .* history-save
-hook global FocusOut .* history-save
 
 declare-user-mode user-nu
 map global user n ':enter-user-mode user-nu<ret>' -docstring 'Enter Nushell mode'
@@ -155,7 +65,6 @@ map global user-git d ':git diff<ret>' -docstring 'Show Git diff'
 map global user-git b ':git blame<ret>' -docstring 'Show Git blame'
 map global user-git n ':git next-hunk<ret>' -docstring 'Go to next hunk'
 map global user-git p ':git prev-hunk<ret>' -docstring 'Go to previous hunk'
-
 nop %sh{
     plug="$kak_config/plugins/plug.kak"
     [ -d "$plug" ] || git clone -q https://github.com/andreyorst/plug.kak.git "$plug" >&2
@@ -198,11 +107,11 @@ plug "andreyorst/fzf.kak" config %{
 declare-option -hidden str picker_title fzf
 
 define-command -hidden picker-zellij -params 1.. %{
-    zellij-run "--floating --name %opt{picker_title} --close-on-exit --width 94%% --height 90%%" %arg{@}
+    zellij-run "--floating --name %opt{picker_title} --close-on-exit --block-until-exit --width 94%% --height 90%%" %arg{@}
+    zellij-action hide-floating-panes
 }
 
 define-command -hidden picker-terminal -params 1.. %{ evaluate-commands %sh{
-    # Keep fzf's new-editor action in a normal terminal.
     [ "$1" = kak ] || echo 'alias local zellij-terminal-window picker-zellij'
     echo 'terminal %arg{@}'
 }}
@@ -218,6 +127,9 @@ define-command yazi-open -docstring 'Open files with Yazi' %{
 
         kakquote() { printf '%s' "$1" | sed "s/'/''/g; 1s/^/'/; \$s/\$/'/"; }
         command=$(while IFS= read -r selected || [ -n "$selected" ]; do
+            if [ "${selected#search://}" != "$selected" ]; then
+                selected=$(printf '%s\n' "$selected" | sed 's,^search://[^/]*/,,' )
+            fi
             [ -n "$selected" ] && printf 'edit -existing %s\n' "$(kakquote "$selected")"
         done < "$chooser")
         [ -n "$command" ] || exit 0
