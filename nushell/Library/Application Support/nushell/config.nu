@@ -60,8 +60,9 @@ def morning [] {
 
 source ~/.local/share/atuin/init.nu 
 
-$env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
+$env.CARAPACE_BRIDGES = 'zsh,bash' # optional
 source $"($nu.cache-dir)/carapace.nu"
+source $"($nu.cache-dir)/carapace-bridge.nu"
 
 source ~/.zoxide.nu
 

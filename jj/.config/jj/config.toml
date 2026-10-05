@@ -1,5 +1,5 @@
 [ui]
-editor = "nvim"
+editor = "kak"
 pager = "delta"
 diff-formatter = ":git"
 default-command = ["status"]

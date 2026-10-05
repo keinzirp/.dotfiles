@@ -16,6 +16,7 @@ uv = "latest"
 "npm:svelte-language-server" = "latest"
 "npm:bash-language-server" = "latest"
 "pipx:python-lsp-server" = "latest"
+bun = "1.4.2"
 
 [bootstrap.user]
 login_shell = "/opt/homebrew/bin/nu"

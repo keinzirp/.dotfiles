@@ -169,6 +169,21 @@ plug "kak-lsp/kak-lsp" do %{
             root_globs = [".jj", ".git"]
         }
     }
+    hook global BufSetOption filetype=typescript %{
+        set-option buffer lsp_servers %{
+            [typescript-language-server]
+            root_globs = ["package.json", "tsconfig.json", "jsconfig.json", ".git", ".hg"]
+            args = ["--stdio"]
+
+            [eslint-language-server]
+            command = "vscode-eslint-language-server"
+            root_globs = ["eslint.config.js", "eslint.config.mjs", "eslint.config.cjs", ".eslintrc", "package.json", ".git", ".hg"]
+            args = ["--stdio"]
+            workaround_eslint = true
+            [eslint-language-server.settings]
+            format = { enable = false }
+        }
+    }
     lsp-enable
     lsp-auto-signature-help-enable
 
