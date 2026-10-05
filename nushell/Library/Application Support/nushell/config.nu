@@ -58,16 +58,10 @@ def morning [] {
     try { kak -ui dummy -e 'set-option global plug_block_ui true; plug-update; quit!' }
 }
 
-# until I can figure out why atuin doesn't new history logs properly.
 source ~/.local/share/atuin/init.nu 
-source $"($nu.cache-dir)/carapace.nu"
 
-# Fall back to nushell's built-in file completer (which shows dotfiles) when
-# carapace returns nothing. Tracks https://github.com/nushell/nushell/issues/14595.
-let carapace_completer = $env.config.completions.external.completer
-$env.config.completions.external.completer = {|spans|
-    do $carapace_completer $spans | default [] | if ($in | is-empty) { null } else { $in }
-}
+$env.CARAPACE_BRIDGES = 'zsh,fish,bash,inshellisense' # optional
+source $"($nu.cache-dir)/carapace.nu"
 
 source ~/.zoxide.nu
 
