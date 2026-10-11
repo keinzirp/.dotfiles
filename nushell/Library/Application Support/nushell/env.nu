@@ -7,7 +7,7 @@ $env.XDG_DATA_HOME = ($env.HOME + "/.local/share")
 # $env.XDG_CONFIG_HOME = ($env.HOME + "/.config")
 $env.TWS_NOTES = ($env.HOME + "/Documents/Notes")
 $env.GPG_TTY = (^tty | str trim)
-$env.config.buffer_editor = "/opt/homebrew/bin/nvim"
+$env.config.buffer_editor = "kak"
 $env.ZELLIJ_AUTO_ATTACH = false
 $env.config.rm.always_trash = true
 $env.CARAPACE_MATCH = 1
@@ -21,7 +21,6 @@ $env.PATH = ($env.PATH | prepend [
     ($env.HOME + "/.atuin/bin"),
     ($env.HOME + "/Library/Application Support/carapace/bin"),
     ($env.HOME + "/.orbstack/bin"),
-    "/opt/homebrew/opt/openjdk/bin",
 ] | uniq)
 
 source "~/.cargo/env.nu"

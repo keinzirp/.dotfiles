@@ -3,9 +3,9 @@ export PNPM_HOME=$HOME/.local/pnpm
 export GO_HOME=$HOME/go/bin
 MANUAL=$HOME/.local/bin
 typeset -U path
-export PATH="$MANUAL:$HOME/.cargo/bin:/opt/homebrew/bin:/opt/homebrew/opt/openjdk/bin:$PATH:$PNPM_HOME:$GO_HOME"
+export PATH="$MANUAL:$HOME/.cargo/bin:/opt/homebrew/bin:$PATH:$PNPM_HOME:$GO_HOME"
 
-EDITOR=nvim
+export EDITOR=kak
 PROMPT='%F{green}%n@%m%f:%F{blue}%1~%f %# '
 export DO_NOT_TRACK=1
 HOMEBREW_NO_AUTO_UPDATE=1
