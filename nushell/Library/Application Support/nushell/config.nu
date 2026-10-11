@@ -17,7 +17,6 @@ $env.PATH = ($env.PATH | prepend [
     ($env.HOME + "/.local/share/mise/shims"),
     $env.PNPM_HOME,
     ($env.HOME + "/go/bin"),
-    ($env.HOME + "/Library/Application Support/carapace/bin"),
     ($env.HOME + "/.orbstack/bin"),
 ] | uniq)
 
@@ -34,7 +33,6 @@ const integrations = {
     atuin: [init nu]
     zoxide: [init nushell]
     carapace: [_carapace nushell]
-    carapace-bridge: [_carapace nushell]
 }
 let integration_loader = ($nu.user-autoload-dirs | first | path join "dotfiles-integrations.nu")
 
@@ -45,10 +43,11 @@ def refresh-integrations [] {
         if $result.exit_code != 0 {
             error make {msg: $"($integration.tool): ($result.stderr | str trim)"}
         }
-        if not ($result.stdout | nu-check) {
+        let script = ($result.stdout | str replace --all '{|spans|' '{|place| let spans = $place.command;')
+        if not ($script | nu-check) {
             error make {msg: $"Invalid initialization script from ($integration.tool)"}
         }
-        $result.stdout | save --force ($nu.cache-dir | path join $"($integration.tool).nu")
+        $script | save --force ($nu.cache-dir | path join $"($integration.tool).nu")
     }
     $integrations | columns
     | each { |tool| 'source ($nu.cache-dir | path join "' + $tool + '.nu")' }

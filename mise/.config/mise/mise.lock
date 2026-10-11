@@ -2,6 +2,16 @@
 
 lockfile_version = 3
 
+[[tools."aqua:BurntSushi/ripgrep"]]
+version = "15.2.0"
+backend = "aqua:BurntSushi/ripgrep"
+specifiers = ["latest"]
+
+[tools."aqua:BurntSushi/ripgrep"."platforms.macos-arm64"]
+checksum = "sha256:3750b2e93f37e0c692657da574d7019a101c0084da05a790c83fd335bad973e4"
+url = "https://github.com/BurntSushi/ripgrep/releases/download/15.2.0/ripgrep-15.2.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/BurntSushi/ripgrep/releases/assets/478118851"
+
 [[tools."aqua:FiloSottile/mkcert"]]
 version = "1.4.4"
 backend = "aqua:FiloSottile/mkcert"
@@ -34,6 +44,16 @@ url_api = "https://api.github.com/repos/FiloSottile/mkcert/releases/assets/63709
 [tools."aqua:FiloSottile/mkcert"."platforms.windows-x64"]
 url = "https://github.com/FiloSottile/mkcert/releases/download/v1.4.4/mkcert-v1.4.4-windows-amd64.exe"
 url_api = "https://api.github.com/repos/FiloSottile/mkcert/releases/assets/63709958"
+
+[[tools."aqua:JohnnyMorganz/StyLua"]]
+version = "2.6.0"
+backend = "aqua:JohnnyMorganz/StyLua"
+specifiers = ["latest"]
+
+[tools."aqua:JohnnyMorganz/StyLua"."platforms.macos-arm64"]
+checksum = "sha256:dab9b66d340ca5ffc8225211f1dcf89b84783e09b8cbec8c518497eba81f3c42"
+url = "https://github.com/JohnnyMorganz/StyLua/releases/download/v2.6.0/stylua-macos-aarch64.zip"
+url_api = "https://api.github.com/repos/JohnnyMorganz/StyLua/releases/assets/628185466"
 
 [[tools."aqua:LuaLS/lua-language-server"]]
 version = "3.19.1"
@@ -205,6 +225,16 @@ url_api = "https://api.github.com/repos/casey/just/releases/assets/500510084"
 checksum = "sha256:759f16fb7aa17c5c8b9594b6d4a8c1a6630dfd042cf2b3ff84841454d3d188dc"
 url = "https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-pc-windows-msvc.zip"
 url_api = "https://api.github.com/repos/casey/just/releases/assets/500511374"
+
+[[tools."aqua:chmln/sd"]]
+version = "1.1.0"
+backend = "aqua:chmln/sd"
+specifiers = ["latest"]
+
+[tools."aqua:chmln/sd"."platforms.macos-arm64"]
+checksum = "sha256:4bd3c09226376ca0a1d69589c91e86276fae36c5fbaaee669afce583f6682030"
+url = "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/chmln/sd/releases/assets/362325451"
 
 [[tools."aqua:cli/cli"]]
 version = "2.102.0"
@@ -800,6 +830,17 @@ checksum = "sha256:23fb76fb683d76dd413cb470b1a3c32157e585edec7d740e73da1aa9c6406
 url = "https://github.com/tealdeer-rs/tealdeer/releases/download/v1.9.0/tealdeer-windows-x86_64-msvc.exe"
 url_api = "https://api.github.com/repos/tealdeer-rs/tealdeer/releases/assets/527792764"
 
+[[tools."aqua:tree-sitter/tree-sitter"]]
+version = "0.27.1"
+backend = "aqua:tree-sitter/tree-sitter"
+specifiers = ["latest"]
+
+[tools."aqua:tree-sitter/tree-sitter"."platforms.macos-arm64"]
+checksum = "sha256:46cb97d9a2c52c94e22d9a76c2f1116156b8b61f98360e2a9cce05fcb197cd4d"
+url = "https://github.com/tree-sitter/tree-sitter/releases/download/v0.27.1/tree-sitter-macos-arm64.gz"
+url_api = "https://api.github.com/repos/tree-sitter/tree-sitter/releases/assets/622546827"
+provenance = "github-attestations"
+
 [[tools."aqua:wagoodman/dive"]]
 version = "0.13.1"
 backend = "aqua:wagoodman/dive"
@@ -840,9 +881,24 @@ checksum = "sha256:3e764ff28c7b89f4da679deac80483249fbbae3a1d512c103d54609eec090
 url = "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_windows_amd64.zip"
 url_api = "https://api.github.com/repos/wagoodman/dive/releases/assets/241842460"
 
+[[tools."cargo:eza"]]
+version = "0.23.5"
+backend = "cargo:eza"
+specifiers = ["latest"]
+
 [[tools."cargo:kak-tree-sitter"]]
 version = "3.2.2"
 backend = "cargo:kak-tree-sitter"
+specifiers = ["latest"]
+
+[[tools."cargo:ktsctl"]]
+version = "3.1.4"
+backend = "cargo:ktsctl"
+specifiers = ["latest"]
+
+[[tools."cargo:sleek"]]
+version = "0.5.0"
+backend = "cargo:sleek"
 specifiers = ["latest"]
 
 [[tools."github:kakoune-lsp/kakoune-lsp"]]
