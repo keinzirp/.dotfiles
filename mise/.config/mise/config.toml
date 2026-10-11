@@ -1,4 +1,6 @@
 [settings]
+lockfile = true
+lockfile_platforms = ["macos-arm64"]
 idiomatic_version_file_enable_tools = ["node", "pnpm", "yarn"]
 
 [tools]
@@ -10,6 +12,7 @@ java = "27"
 uv = "latest"
 
 "aqua:LuaLS/lua-language-server" = "latest"
+"aqua:atuinsh/atuin" = "latest"
 "aqua:rust-lang/rust-analyzer" = "latest"
 "aqua:tealdeer-rs/tealdeer" = "latest"
 "aqua:sharkdp/bat" = "latest"
@@ -34,7 +37,7 @@ uv = "latest"
 "npm:typescript-language-server" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
 "npm:yaml-language-server" = "latest"
-"npm:svelte-language-server" = "latest"
+"npm:svelte-language-server" = { version = "latest", trust_policy_excludes = ["svelte@4.2.20"] }
 "npm:bash-language-server" = "latest"
 "pipx:python-lsp-server" = "latest"
 
@@ -48,12 +51,14 @@ login_shell = "/opt/homebrew/bin/nu"
 "brew:editorconfig" = "latest"
 "brew:exiftool" = "latest"
 "brew:ffmpeg-full" = "latest"
+"brew:gnupg" = "latest"
 "brew:httpie" = "latest"
 "brew:imagemagick-full" = "latest"
 "brew:jnsahaj/lumen/lumen" = "latest"
 "brew:keinzirp/kakoune/kakoune-patched" = "latest"
 "brew:mdcat" = "latest"
 "brew:nushell" = "latest"
+"brew:openjdk" = "latest"
 "brew:overmind" = "latest"
 "brew:pgcli" = "latest"
 "brew:pinentry-mac" = "latest"

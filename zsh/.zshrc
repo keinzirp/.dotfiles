@@ -3,12 +3,12 @@ export PNPM_HOME=$HOME/.local/pnpm
 export GO_HOME=$HOME/go/bin
 MANUAL=$HOME/.local/bin
 typeset -U path
-export PATH="$MANUAL:$HOME/.cargo/bin:/opt/homebrew/bin:$PATH:$PNPM_HOME:$GO_HOME"
+export PATH="$MANUAL:$HOME/.cargo/bin:/opt/homebrew/bin:$HOME/.local/share/mise/shims:$PATH:$PNPM_HOME:$GO_HOME"
 
 export EDITOR=kak
 PROMPT='%F{green}%n@%m%f:%F{blue}%1~%f %# '
 export DO_NOT_TRACK=1
-HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_AUTO_UPDATE=1
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
@@ -20,8 +20,6 @@ SAVEHIST=100000
 
 setopt share_history
 setopt append_history
-setopt inc_append_history
-setopt hist_ignore_dups
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
 setopt hist_reduce_blanks
@@ -38,11 +36,6 @@ autoload -Uz compinit
 compinit
 source <(fzf --zsh)
 source <(COMPLETE=zsh jj)
-
-
-# . "$HOME/.atuin/bin/env"
-#
-# eval "$(atuin init zsh)"
 
 eval "$(mise activate zsh)"
 source <(zellij setup --generate-auto-start zsh)

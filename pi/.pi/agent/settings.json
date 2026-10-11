@@ -12,10 +12,6 @@
     "npm:@ff-labs/pi-fff",
     "npm:@dietrichgebert/ponytail"
   ],
-  "skills": [
-    "~/.claude/plugins/cache/caveman/caveman/84cc3c14fa1e/skills",
-    "~/.claude/plugins/cache/jj-workflow/jj-workflow/1.0.0/skills"
-  ],
   "theme": "dark",
   "hideThinkingBlock": false,
   "terminal": {

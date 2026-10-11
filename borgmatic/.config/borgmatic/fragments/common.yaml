@@ -19,10 +19,9 @@ source_directories:
   - ~/.local/state/
   - ~/Library/Application Support/Anki2/andreasknapper/
   - ~/Library/Application Support/activitywatch/
-  - ~/Library/Application Support/Firefox/Profiles/
+  - ~/Library/Application Support/Waterfox/Profiles/
 
 patterns:
-  - '- **/.git'
   - '- **/build'
   - '- **/dist'
   - '- **/node_modules'

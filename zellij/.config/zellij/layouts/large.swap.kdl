@@ -48,8 +48,6 @@ swap_tiled_layout name="horizontal" {
 }
 
 swap_tiled_layout name="stacked" {
-    // With compact-bar, max_panes=3 means two terminal panes + the bar.
-    // Stack both terminals so Ctrl-Alt-[ / ] can return a 2-pane stack.
     ui max_panes=3 {
         pane stacked=true { children; }
     }
@@ -58,7 +56,6 @@ swap_tiled_layout name="stacked" {
     }
 }
 
-// Keep the 96% floating layout first so new floating panes default large.
 swap_floating_layout name="enlarged" {
     floating_panes max_panes=10 {
         pane { x "2%"; y 1; width "96%"; height "96%"; }
