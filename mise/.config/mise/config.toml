@@ -17,6 +17,9 @@ python = "3.14"
 java = "27"
 uv = "latest"
 
+"github:kakoune-lsp/kakoune-lsp" = "latest"
+"cargo:kak-tree-sitter" = "latest"
+
 "aqua:LuaLS/lua-language-server" = "latest"
 "aqua:atuinsh/atuin" = "latest"
 "aqua:rust-lang/rust-analyzer" = "latest"

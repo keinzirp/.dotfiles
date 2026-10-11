@@ -187,9 +187,8 @@ plug "andreyorst/smarttab.kak" defer smarttab %{
     hook global BufNewFile .* %{ try %{ editorconfig-load }; autoconfigtab; set-option buffer softtabstop %opt{tabstop} }
 }
 
-plug "kak-lsp/kak-lsp" do %{
-    cargo install --locked --force --path .
-} config %{
+evaluate-commands %{
+    evaluate-commands %sh{ kak-lsp }
     set-option global modelinefmt "%opt{lsp_modeline} %opt{modelinefmt}"
     set-option global lsp_diagnostic_line_error_sign 'E'
     set-option global lsp_diagnostic_line_warning_sign 'W'

@@ -840,6 +840,21 @@ checksum = "sha256:3e764ff28c7b89f4da679deac80483249fbbae3a1d512c103d54609eec090
 url = "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_windows_amd64.zip"
 url_api = "https://api.github.com/repos/wagoodman/dive/releases/assets/241842460"
 
+[[tools."cargo:kak-tree-sitter"]]
+version = "3.2.2"
+backend = "cargo:kak-tree-sitter"
+specifiers = ["latest"]
+
+[[tools."github:kakoune-lsp/kakoune-lsp"]]
+version = "22.0.0"
+backend = "github:kakoune-lsp/kakoune-lsp"
+specifiers = ["latest"]
+
+[tools."github:kakoune-lsp/kakoune-lsp"."platforms.macos-arm64"]
+checksum = "sha256:93b39d655a47658b32c01c10c8fa125c594587dcb29cf22bf8a3138ef41e584b"
+url = "https://github.com/kakoune-lsp/kakoune-lsp/releases/download/v22.0.0/kakoune-lsp-v22.0.0-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/kakoune-lsp/kakoune-lsp/releases/assets/615130380"
+
 [[tools.go]]
 version = "1.27.2"
 backend = "core:go"
