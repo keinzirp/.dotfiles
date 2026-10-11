@@ -13,6 +13,7 @@ hook global KakBegin .* %{
         fi
     }
     colorscheme base16-default-dark-treesitter
+    add-highlighter global/search dynregex '%reg{/}' 0:SearchMatch
 }
 hook global BufCreate .*\.nu %{ set-option buffer filetype nu }
 
@@ -23,6 +24,14 @@ add-highlighter global/ column 80 default,default+F
 add-highlighter global/ wrap -word -indent
 
 map global insert <c-[> <esc> -docstring 'Leave insert mode'
+hook global InsertCompletionShow .* %{
+    map window insert <tab> <c-n>
+    map window insert <s-tab> <c-p>
+}
+hook global InsertCompletionHide .* %{
+    unmap window insert <tab> <c-n>
+    unmap window insert <s-tab> <c-p>
+}
 map global user t ':enter-user-mode tree-sitter<ret>' -docstring 'Enter Tree-sitter mode'
 map global object e '<a-;>tree-sitter-object-text-objects xml-element<ret>' -docstring 'HTML element (tree-sitter)'
 
@@ -174,8 +183,8 @@ plug "lePerdu/kakboard" config %{
 plug "andreyorst/smarttab.kak" defer smarttab %{
     set-option global softtabstop 4
 } config %{
-    hook global BufOpenFile .* %{ try %{ editorconfig-load }; autoconfigtab }
-    hook global BufNewFile .* %{ try %{ editorconfig-load }; autoconfigtab }
+    hook global BufOpenFile .* %{ try %{ editorconfig-load }; autoconfigtab; set-option buffer softtabstop %opt{tabstop} }
+    hook global BufNewFile .* %{ try %{ editorconfig-load }; autoconfigtab; set-option buffer softtabstop %opt{tabstop} }
 }
 
 plug "kak-lsp/kak-lsp" do %{
@@ -226,5 +235,6 @@ plug "kak-lsp/kak-lsp" do %{
         unset-option window lsp_completion_trigger
     }
     map global insert <c-space> '<a-;>:lsp-manual-completion<ret>' -docstring 'Request LSP completion'
+    map global insert <tab> '<a-;>:try lsp-snippets-select-next-placeholders catch %{ execute-keys -with-hooks <lt>tab> }<ret>' -docstring 'Next snippet placeholder or indent'
 
 }
