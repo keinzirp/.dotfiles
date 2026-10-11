@@ -1062,6 +1062,22 @@ checksum = "sha256:5b6fa7ddeabe23ae83d7b54e5043eb4fa1ccb10a73fa4c6b0f541dea8160d
 url = "https://github.com/astral-sh/python-build-standalone/releases/download/20261009/cpython-3.14.8+20261009-x86_64-pc-windows-msvc-install_only_stripped.tar.gz"
 provenance = "github-attestations"
 
+[[tools.skyspell]]
+version = "HEAD"
+backend = "cargo:https://codeberg.org/your-tools/skyspell.git"
+specifiers = ["latest"]
+
+[tools.skyspell.options]
+crate = "skyspell"
+
+[[tools.skyspell-kak]]
+version = "HEAD"
+backend = "cargo:https://codeberg.org/your-tools/skyspell.git"
+specifiers = ["latest"]
+
+[tools.skyspell-kak.options]
+crate = "skyspell_kak"
+
 [[tools.uv]]
 version = "0.13.0"
 backend = "aqua:astral-sh/uv"

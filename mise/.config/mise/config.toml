@@ -3,7 +3,13 @@ lockfile = true
 lockfile_platforms = ["macos-arm64"]
 idiomatic_version_file_enable_tools = ["node", "pnpm", "yarn"]
 
+[tool_alias]
+skyspell = "cargo:https://codeberg.org/your-tools/skyspell.git"
+skyspell-kak = "cargo:https://codeberg.org/your-tools/skyspell.git"
+
 [tools]
+skyspell = { version = "latest", crate = "skyspell" }
+skyspell-kak = { version = "latest", crate = "skyspell_kak" }
 node = "24"
 pnpm = "12"
 go = "1.27"
@@ -49,6 +55,7 @@ login_shell = "/opt/homebrew/bin/nu"
 "brew:borgmatic" = "latest"
 "brew:cloudflare-speed-cli" = "latest"
 "brew:editorconfig" = "latest"
+"brew:enchant" = "latest"
 "brew:exiftool" = "latest"
 "brew:ffmpeg-full" = "latest"
 "brew:gnupg" = "latest"

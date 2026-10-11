@@ -80,6 +80,34 @@ plug "delapouite/kakoune-buffers" config %{
 map global user c ':comment-line<ret>' -docstring 'Toggle comments'
 map global user s ':grep<space>' -docstring 'Search project contents'
 
+evaluate-commands %sh{ skyspell-kak init }
+define-command -params 1 skyspell-start %{
+    try %{ skyspell-disable }
+    set-option local skyspell_project %sh{
+        dir=$(dirname "$kak_buffile")
+        git -C "$dir" rev-parse --show-toplevel 2>/dev/null || printf '%s\n' "$dir"
+    }
+    skyspell-enable %arg{1}
+    set-option global skyspell_project %opt{skyspell_project}
+}
+define-command skyspell-toggle %{
+    try %{ skyspell-disable } catch %{
+        skyspell-start %sh{ printf '%s' "${kak_opt_skyspell_lang:-en}" }
+    }
+}
+declare-user-mode skyspell
+map global user S ':enter-user-mode skyspell<ret>' -docstring 'Enter spelling mode'
+map global skyspell e ':skyspell-start en<ret>' -docstring 'Enable English spell checking'
+map global skyspell E ':skyspell-start de<ret>' -docstring 'Enable German spell checking'
+map global skyspell t ':skyspell-toggle<ret>' -docstring 'Toggle spell checking'
+map global skyspell d ':skyspell-disable<ret>' -docstring 'Disable spell checking'
+map global skyspell l ':skyspell-list<ret>' -docstring 'List spelling errors'
+map global skyspell h ':skyspell-help<ret>' -docstring 'Show spelling help'
+map global skyspell n ':skyspell-next<ret>' -docstring 'Go to next spelling error'
+map global skyspell p ':skyspell-previous<ret>' -docstring 'Go to previous spelling error'
+map global skyspell r ':skyspell-replace<ret>' -docstring 'Suggest replacements'
+map global skyspell f ':skyspell-next; skyspell-replace<ret>' -docstring 'Suggest replacements for the next spelling error'
+
 plug "andreyorst/fzf.kak" config %{
     map global user f ':fzf-mode<ret>' -docstring 'Enter fzf mode'
     hook global ModuleLoaded fzf %{
