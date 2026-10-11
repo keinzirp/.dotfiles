@@ -73,7 +73,11 @@ def --env y [...args] {
 def morning [] {
     print "==> mise and managed tools"
     try { mise self-update -y }
-    try { mise upgrade -y }
+    try { mise upgrade --global -y }
+
+    print ""
+    print "==> bootstrap packages"
+    try { mise -C $env.HOME bootstrap packages upgrade -y }
 
     print ""
     print "==> rustup"

@@ -34,6 +34,7 @@ alias rm="rip --graveyard ~/.local/share/trash"
 
 autoload -Uz compinit
 compinit
+source <(mise completion zsh)
 source <(fzf --zsh)
 source <(COMPLETE=zsh jj)
 

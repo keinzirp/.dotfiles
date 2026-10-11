@@ -205,11 +205,17 @@ evaluate-commands %{
             root_globs = [".jj", ".git"]
         }
     }
-    hook global BufSetOption filetype=typescript %{
-        set-option buffer lsp_servers %{
+    remove-hooks global lsp-filetype-javascript
+    hook global BufSetOption filetype=(?:javascript|typescript) %{
+        set-option buffer lsp_servers %sh{
+            cat <<EOF
             [typescript-language-server]
             root_globs = ["package.json", "tsconfig.json", "jsconfig.json", ".git", ".hg"]
             args = ["--stdio"]
+            settings_section = "_"
+            [typescript-language-server.settings._]
+            # TypeScript 7 has no tsserver.js; keep workspace versions when usable.
+            tsserver.fallbackPath = "$(mise where npm:typescript)/node_modules/typescript/lib/tsserver.js"
 
             [eslint-language-server]
             command = "vscode-eslint-language-server"
@@ -218,6 +224,7 @@ evaluate-commands %{
             workaround_eslint = true
             [eslint-language-server.settings]
             format = { enable = false }
+EOF
         }
     }
     lsp-enable

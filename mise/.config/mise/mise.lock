@@ -453,44 +453,14 @@ url_api = "https://api.github.com/repos/jqlang/jq/releases/assets/453012788"
 provenance = "github-attestations"
 
 [[tools."aqua:junegunn/fzf"]]
-version = "0.74.4"
+version = "0.74.5"
 backend = "aqua:junegunn/fzf"
 specifiers = ["latest"]
 
-[tools."aqua:junegunn/fzf"."platforms.linux-arm64"]
-checksum = "sha256:5d673b849f494f0d64ec471d8640b153ca8849e3846a31da17abdcfce8df6b46"
-url = "https://github.com/junegunn/fzf/releases/download/v0.74.4/fzf-0.74.4-linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/junegunn/fzf/releases/assets/558287789"
-
-[tools."aqua:junegunn/fzf"."platforms.linux-arm64-musl"]
-checksum = "sha256:5d673b849f494f0d64ec471d8640b153ca8849e3846a31da17abdcfce8df6b46"
-url = "https://github.com/junegunn/fzf/releases/download/v0.74.4/fzf-0.74.4-linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/junegunn/fzf/releases/assets/558287789"
-
-[tools."aqua:junegunn/fzf"."platforms.linux-x64"]
-checksum = "sha256:05e6813a337cc722c3ed07e54a764b75cc5d671e2e60459db0ba696ee5fa7504"
-url = "https://github.com/junegunn/fzf/releases/download/v0.74.4/fzf-0.74.4-linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/junegunn/fzf/releases/assets/558287768"
-
-[tools."aqua:junegunn/fzf"."platforms.linux-x64-musl"]
-checksum = "sha256:05e6813a337cc722c3ed07e54a764b75cc5d671e2e60459db0ba696ee5fa7504"
-url = "https://github.com/junegunn/fzf/releases/download/v0.74.4/fzf-0.74.4-linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/junegunn/fzf/releases/assets/558287768"
-
 [tools."aqua:junegunn/fzf"."platforms.macos-arm64"]
-checksum = "sha256:4f6a113bfc0c7959e0005c78d566a51afc4fcefc956f43735c62a9deb19e92ae"
-url = "https://github.com/junegunn/fzf/releases/download/v0.74.4/fzf-0.74.4-darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/junegunn/fzf/releases/assets/558287774"
-
-[tools."aqua:junegunn/fzf"."platforms.macos-x64"]
-checksum = "sha256:2d392b50be66e2ab104ccd52a6072df692b1f9b9c5b449a9c098de885f32c4c5"
-url = "https://github.com/junegunn/fzf/releases/download/v0.74.4/fzf-0.74.4-darwin_amd64.tar.gz"
-url_api = "https://api.github.com/repos/junegunn/fzf/releases/assets/558287717"
-
-[tools."aqua:junegunn/fzf"."platforms.windows-x64"]
-checksum = "sha256:5e63c0e798406fcb9c51a9fed4988398e25fdabf8c670e32c16caf7b4a7ed02d"
-url = "https://github.com/junegunn/fzf/releases/download/v0.74.4/fzf-0.74.4-windows_amd64.zip"
-url_api = "https://api.github.com/repos/junegunn/fzf/releases/assets/558287758"
+checksum = "sha256:ada808c7401b9949ce8842274ac16a6b6193fd32dcada396884a6a9a89e5985a"
+url = "https://github.com/junegunn/fzf/releases/download/v0.74.5/fzf-0.74.5-darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/junegunn/fzf/releases/assets/629581702"
 
 [[tools."aqua:koalaman/shellcheck"]]
 version = "0.11.0"
@@ -1047,50 +1017,14 @@ specifiers = ["latest"]
 uv = { path = "locks/pipx-python-lsp-server/1.15.0", digest = "sha256:55f6979b6855deffeb0a35fc01add7173a436577445deff4f1034966e393d9fb" }
 
 [[tools.pnpm]]
-version = "12.11.2"
+version = "12.12.1"
 backend = "aqua:pnpm/pnpm"
 specifiers = ["12"]
 
-[tools.pnpm."platforms.linux-arm64"]
-checksum = "sha256:ad444fa06d7ff344d74ba1e4933f2ed71cc6357cc2d33707a5c60958b7d83085"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.11.2/pnpm-linux-arm64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/625613171"
-provenance = "github-attestations"
-
-[tools.pnpm."platforms.linux-arm64-musl"]
-checksum = "sha256:abf111d90e1ab8bc1485f853bf83f6e86b028ab5badc393203014e50c4a1cf7d"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.11.2/pnpm-linux-arm64-musl.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/625613170"
-provenance = "github-attestations"
-
-[tools.pnpm."platforms.linux-x64"]
-checksum = "sha256:358f30541b42371360c0d48a8daddc0c0850a90c36fcbea598032a9850e2c9ab"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.11.2/pnpm-linux-x64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/625613177"
-provenance = "github-attestations"
-
-[tools.pnpm."platforms.linux-x64-musl"]
-checksum = "sha256:64e35fe0854494dc56c24311d97f13cfe73fcfd8e3cb65b7c0f5c359da6a0fd8"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.11.2/pnpm-linux-x64-musl.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/625613182"
-provenance = "github-attestations"
-
 [tools.pnpm."platforms.macos-arm64"]
-checksum = "sha256:2f4701dbd4a7b81827789e94225272355fcc17c4eb9f5add08ed26f943003b67"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.11.2/pnpm-darwin-arm64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/625613178"
-provenance = "github-attestations"
-
-[tools.pnpm."platforms.macos-x64"]
-checksum = "sha256:409f9754f68500719db9b17bd750d091790f1d846f61707b4716c73110f5de52"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.11.2/pnpm-darwin-x64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/625613179"
-provenance = "github-attestations"
-
-[tools.pnpm."platforms.windows-x64"]
-checksum = "sha256:66cac6b725bfc75fadac959fc435821048558adb50b89c82d0d2d5e57465a1dd"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.11.2/pnpm-win32-x64.zip"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/625613173"
+checksum = "sha256:00039372346c8bf9d63302e71713824b6376de7038bb2e3b4c75f88cf437d532"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.12.1/pnpm-darwin-arm64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/630553366"
 provenance = "github-attestations"
 
 [[tools.python]]

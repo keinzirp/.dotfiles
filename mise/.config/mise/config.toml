@@ -1,7 +1,13 @@
 [settings]
 lockfile = true
 lockfile_platforms = ["macos-arm64"]
-idiomatic_version_file_enable_tools = ["node", "pnpm", "yarn"]
+idiomatic_version_file_enable_tools = ["node", "pnpm", "yarn", "python", "go", "java"]
+minimum_release_age = "7d"
+cargo.binstall_native = true
+use_versions_host_track = false
+activate_aggressive = true
+status.missing_tools = "always"
+python.uv_venv_auto = "source"
 
 [tool_alias]
 skyspell = "cargo:https://codeberg.org/your-tools/skyspell.git"
