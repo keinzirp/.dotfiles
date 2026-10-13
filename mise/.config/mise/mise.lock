@@ -851,9 +851,19 @@ checksum = "sha256:3e764ff28c7b89f4da679deac80483249fbbae3a1d512c103d54609eec090
 url = "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_windows_amd64.zip"
 url_api = "https://api.github.com/repos/wagoodman/dive/releases/assets/241842460"
 
+[[tools."cargo:cargo-license"]]
+version = "0.7.0"
+backend = "cargo:cargo-license"
+specifiers = ["latest"]
+
 [[tools."cargo:eza"]]
 version = "0.23.5"
 backend = "cargo:eza"
+specifiers = ["latest"]
+
+[[tools."cargo:https://github.com/anthrofract/majjit"]]
+version = "HEAD"
+backend = "cargo:https://github.com/anthrofract/majjit"
 specifiers = ["latest"]
 
 [[tools."cargo:kak-tree-sitter"]]
@@ -861,15 +871,28 @@ version = "3.2.2"
 backend = "cargo:kak-tree-sitter"
 specifiers = ["latest"]
 
-[[tools."cargo:ktsctl"]]
-version = "3.1.4"
-backend = "cargo:ktsctl"
+[[tools."github:2e3s/aw-watcher-media-player"]]
+version = "1.1.4"
+backend = "github:2e3s/aw-watcher-media-player"
 specifiers = ["latest"]
 
-[[tools."cargo:sleek"]]
-version = "0.5.0"
-backend = "cargo:sleek"
+[tools."github:2e3s/aw-watcher-media-player".options]
+asset_pattern = "aw-watcher-media-player-macos-aarch64.zip"
+
+[tools."github:2e3s/aw-watcher-media-player"."platforms.macos-arm64"]
+checksum = "sha256:2b206a58a83653e25e2070ed972b98901d4f546350b1a010d01469504de9f543"
+url = "https://github.com/2e3s/aw-watcher-media-player/releases/download/v1.1.4/aw-watcher-media-player-macos-aarch64.zip"
+url_api = "https://api.github.com/repos/2e3s/aw-watcher-media-player/releases/assets/405045809"
+
+[[tools."github:carapace-sh/carapace-bridge"]]
+version = "1.7.0"
+backend = "github:carapace-sh/carapace-bridge"
 specifiers = ["latest"]
+
+[tools."github:carapace-sh/carapace-bridge"."platforms.macos-arm64"]
+checksum = "sha256:4ec3431899312dd3401f8d8b25cd7106c8b3ddf4bef60581b3ddb34d2fafb94e"
+url = "https://github.com/carapace-sh/carapace-bridge/releases/download/v1.7.0/carapace-bridge_1.7.0_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/carapace-sh/carapace-bridge/releases/assets/590589737"
 
 [[tools."github:kakoune-lsp/kakoune-lsp"]]
 version = "22.0.0"
@@ -880,6 +903,16 @@ specifiers = ["latest"]
 checksum = "sha256:93b39d655a47658b32c01c10c8fa125c594587dcb29cf22bf8a3138ef41e584b"
 url = "https://github.com/kakoune-lsp/kakoune-lsp/releases/download/v22.0.0/kakoune-lsp-v22.0.0-aarch64-apple-darwin.tar.gz"
 url_api = "https://api.github.com/repos/kakoune-lsp/kakoune-lsp/releases/assets/615130380"
+
+[[tools."github:stayradiated/fred"]]
+version = "0.1.0"
+backend = "github:stayradiated/fred"
+specifiers = ["latest"]
+
+[tools."github:stayradiated/fred"."platforms.macos-arm64"]
+checksum = "sha256:36858efd62bc789f1beb83070f6c1f62e91e2598885315ab4bf3131888de5a09"
+url = "https://github.com/stayradiated/fred/releases/download/v0.1.0/fred_0.1.0_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/stayradiated/fred/releases/assets/406909487"
 
 [[tools.go]]
 version = "1.27.2"
@@ -970,6 +1003,12 @@ url = "https://nodejs.org/dist/v24.21.0/node-v24.21.0-darwin-x64.tar.gz"
 [tools.node."platforms.windows-x64"]
 checksum = "sha256:158f7685b44de51f6c0df1d153526cbcd3e1bc739a8dfc607721cef75de9e541"
 url = "https://nodejs.org/dist/v24.21.0/node-v24.21.0-win-x64.zip"
+
+[[tools."npm:@earendil-works/pi-coding-agent"]]
+version = "1.2.0"
+aube = { path = "locks/npm-earendil-works-pi-coding-agent/1.2.0", digest = "sha256:3aa0d147eb20675dbcfc09676abbbc45fbdba2811a364af9a01885f3c58447e8" }
+backend = "npm:@earendil-works/pi-coding-agent"
+specifiers = ["latest"]
 
 [[tools."npm:bash-language-server"]]
 version = "5.8.1"
@@ -1066,6 +1105,15 @@ provenance = "github-attestations"
 checksum = "sha256:5b6fa7ddeabe23ae83d7b54e5043eb4fa1ccb10a73fa4c6b0f541dea8160d505"
 url = "https://github.com/astral-sh/python-build-standalone/releases/download/20261009/cpython-3.14.8+20261009-x86_64-pc-windows-msvc-install_only_stripped.tar.gz"
 provenance = "github-attestations"
+
+[[tools.rust]]
+version = "1.99.0"
+backend = "core:rust"
+specifiers = ["latest"]
+
+[tools.rust.options]
+components = "rust-src"
+targets = "wasm32-wasip1"
 
 [[tools.skyspell]]
 version = "HEAD"

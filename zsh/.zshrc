@@ -12,7 +12,6 @@ export HOMEBREW_NO_AUTO_UPDATE=1
 export XDG_DATA_HOME=$HOME/.local/share
 export XDG_CONFIG_HOME=$HOME/.config
 export GPG_TTY=$(tty)
-export TWS_NOTES="$HOME/Documents/Notes"
 
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=100000

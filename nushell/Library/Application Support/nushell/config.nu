@@ -5,7 +5,6 @@ $env.EDITOR = "kak"
 $env.DO_NOT_TRACK = "1"
 $env.HOMEBREW_NO_AUTO_UPDATE = "1"
 $env.XDG_DATA_HOME = ($env.HOME + "/.local/share")
-$env.TWS_NOTES = ($env.HOME + "/Documents/Notes")
 $env.CARAPACE_MATCH = 1
 $env.CARAPACE_HIDDEN = 1
 $env.CARAPACE_BRIDGES = 'zsh,bash'
@@ -80,12 +79,8 @@ def morning [] {
     try { mise -C $env.HOME bootstrap packages upgrade -y }
 
     print ""
-    print "==> rustup"
-    try { rustup update }
-
-    print ""
-    print "==> pi (all)"
-    try { pi update --all }
+    print "==> pi extensions"
+    try { pi update --extensions }
 
     print ""
     print "==> kak (plug.kak)"

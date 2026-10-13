@@ -1,7 +1,7 @@
 [settings]
 lockfile = true
 lockfile_platforms = ["macos-arm64"]
-idiomatic_version_file_enable_tools = ["node", "pnpm", "yarn", "python", "go", "java"]
+idiomatic_version_file_enable_tools = ["node", "pnpm", "yarn", "python", "go", "java", "rust"]
 minimum_release_age = "7d"
 cargo.binstall_native = true
 use_versions_host_track = false
@@ -22,12 +22,20 @@ go = "1.27"
 python = "3.14"
 java = "27"
 uv = "latest"
+rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip1"] }
 
+"github:2e3s/aw-watcher-media-player" = { version = "latest", asset_pattern = "aw-watcher-media-player-macos-aarch64.zip" }
 "github:kakoune-lsp/kakoune-lsp" = "latest"
+"github:carapace-sh/carapace-bridge" = "latest"
+"github:stayradiated/fred" = "latest"
+"cargo:cargo-license" = "latest"
+"cargo:https://github.com/anthrofract/majjit" = "latest"
+# "cargo:rustlings" = "latest"
+# "cargo:ttyper" = "latest"
 "cargo:eza" = "latest"
 "cargo:kak-tree-sitter" = "latest"
-"cargo:ktsctl" = "latest"
-"cargo:sleek" = "latest"
+# "cargo:ktsctl" = "latest"
+# "cargo:sleek" = "latest"
 
 "aqua:BurntSushi/ripgrep" = "latest"
 "aqua:chmln/sd" = "latest"
@@ -55,6 +63,7 @@ uv = "latest"
 "aqua:sxyazi/yazi" = "latest"
 "aqua:getzola/zola" = "latest"
 "aqua:ajeetdsouza/zoxide" = "latest"
+"npm:@earendil-works/pi-coding-agent" = "latest"
 "npm:typescript" = "6"
 "npm:typescript-language-server" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
@@ -87,13 +96,17 @@ login_shell = "/opt/homebrew/bin/nu"
 "brew:postgresql@18" = "latest"
 "brew:ranger" = "latest"
 "brew:rm-improved" = "latest"
-"brew:rust" = "latest"
 "brew:scc" = "latest"
 "brew:stow" = "latest"
 "brew:timewarrior" = "latest"
 "brew:watchman" = "latest"
 "brew:zellij" = "latest"
 
+"brew-cask:nikitabobko/tap/aerospace" = { version = "latest", adopt = true }
+"brew-cask:activitywatch" = { version = "latest", adopt = true }
+"brew-cask:pearcleaner" = { version = "latest", adopt = true }
+"brew-cask:syncthing-app" = { version = "latest", adopt = true }
+"brew-cask:tableplus" = { version = "latest", adopt = true }
 "brew-cask:alt-tab" = "latest"
 "brew-cask:android-platform-tools" = "latest"
 "brew-cask:anki" = "latest"
@@ -116,3 +129,44 @@ login_shell = "/opt/homebrew/bin/nu"
 "brew-cask:vlc" = "latest"
 "brew-cask:waterfox" = "latest"
 "brew-cask:whatcable" = "latest"
+
+[bootstrap.packages."macos-app:caffeine"]
+version = "1.6.4"
+url = "https://github.com/domzilla/Caffeine/releases/download/v{{version}}/Caffeine_{{version}}.zip"
+sha256 = "792cf299c193b6e82d12877129844b05df8f21d4165655d4567e60291c6bd5e7"
+artifact = "Caffeine.app"
+adopt = true
+
+[bootstrap.packages."macos-app:alacritty"]
+version = "0.17.0"
+url = "https://github.com/alacritty/alacritty/releases/download/v{{version}}/Alacritty-v{{version}}.dmg"
+sha256 = "ad8d7de35fb38e43184776cac6dfee05ca325caa0b6639a06a55e54e4b026620"
+artifact = "Alacritty.app"
+adopt = true
+
+[bootstrap.packages."macos-app:qbittorrent"]
+version = "5.2.3"
+url = "https://downloads.sourceforge.net/qbittorrent/qbittorrent-mac/qbittorrent-{{version}}/qbittorrent-{{version}}.dmg"
+sha256 = "9e37f6c7ff848c7bdd3c10167614c0cb78c00e2ddcc323f1ad3ac6c008a0481f"
+artifact = "qbittorrent.app"
+adopt = true
+
+[bootstrap.directories."~/Library/Logs/activitywatch-watchers"]
+os = "macos"
+
+[bootstrap.macos.launchd.agents.activitywatch]
+program = "/Applications/ActivityWatch.app/Contents/MacOS/aw-qt"
+run_at_load = true
+keep_alive_on_failure = true
+process_type = "Interactive"
+stdout_path = "~/Library/Logs/activitywatch-watchers/aw-qt.out.log"
+stderr_path = "~/Library/Logs/activitywatch-watchers/aw-qt.err.log"
+
+[bootstrap.macos.launchd.agents.activitywatch-media-player]
+program = "~/.local/bin/mise"
+args = ["exec", "--", "aw-watcher-media-player"]
+working_directory = "~"
+run_at_load = true
+keep_alive = true
+stdout_path = "~/Library/Logs/activitywatch-watchers/aw-watcher-media-player.out.log"
+stderr_path = "~/Library/Logs/activitywatch-watchers/aw-watcher-media-player.err.log"
