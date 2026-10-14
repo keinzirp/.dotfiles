@@ -1,4 +1,4 @@
-schema_version = 4
+schema_version = 7
 
 [app_settings]
 launch_at_login = false
@@ -11,34 +11,47 @@ auto_download_assets = true
 asset_source = "automatic"
 thumbwheel_sensitivity = 14
 appearance = "system"
+theme_light = "Ayu Light"
+theme_dark = "Ayu Dark"
+smooth_scroll = false
+vertical_scroll_sensitivity = 14
+app_icon = "openlogi"
+ui_scale = "normal"
+device_view_mode = "grid"
+mouse_profile_target = "pointer"
 
 [devices]
 
-[devices."direct:046d:b037:serial:2536zaf0t928".identity]
+[devices."serial:2536zaf0t928"]
+thumbwheel_sensitivity = 20
+
+[devices."serial:2536zaf0t928".identity]
 display_name = "MX Anywhere 3S"
 codename = "MX Anywhere 3S"
 kind = "mouse"
 
-[devices."direct:046d:b037:serial:2536zaf0t928".identity.model_info]
+[devices."serial:2536zaf0t928".identity.model_info]
 entity_count = 3
-unit_id = [0, 0, 0, 0]
-model_ids = [45111, 0, 0]
+unit_id = [
+    0,
+    0,
+    0,
+    0,
+]
+model_ids = [
+    45111,
+    0,
+    0,
+]
 extended_model_id = 0
 
-[keyboard]
-
-[devices."direct:046d:b037:serial:2536zaf0t928".identity.model_info.transports]
+[devices."serial:2536zaf0t928".identity.model_info.transports]
 usb = false
 equad = false
 btle = true
 bluetooth = false
 
-[devices."direct:046d:b037:serial:2536zaf0t928".smartshift]
-mode = "ratchet"
-auto_disengage = 10
-tunable_torque = 60
-
-[devices."direct:046d:b037:serial:2536zaf0t928".identity.capabilities]
+[devices."serial:2536zaf0t928".identity.capabilities]
 buttons = true
 pointer = true
 lighting = false
@@ -47,3 +60,50 @@ hires_wheel = true
 thumbwheel = false
 haptic_feedback = false
 haptic_panel = false
+dpi_gestures = true
+
+[keyboard]
+
+[devices."serial:2536zaf0t928".links."direct:046d:b037".capabilities]
+buttons = true
+pointer = true
+lighting = false
+scroll_inversion = true
+hires_wheel = true
+thumbwheel = false
+haptic_feedback = false
+haptic_panel = false
+dpi_gestures = true
+
+[devices."serial:2536zaf0t928".bindings]
+DpiToggle = "ToggleSmartShift"
+
+[devices."serial:2536zaf0t928".action_ring]
+enabled = true
+haptics = true
+
+[devices."serial:2536zaf0t928".action_ring.default.slots.TopRight]
+action = "Copy"
+
+[devices."serial:2536zaf0t928".action_ring.default.slots.Right]
+action = "Paste"
+
+[devices."serial:2536zaf0t928".action_ring.default.slots.BottomRight]
+action = "BrowserForward"
+
+[devices."serial:2536zaf0t928".action_ring.default.slots.Bottom]
+action = "PlayPause"
+
+[devices."serial:2536zaf0t928".action_ring.default.slots.BottomLeft]
+action = "BrowserBack"
+
+[devices."serial:2536zaf0t928".action_ring.default.slots.Left]
+action = "Undo"
+
+[devices."serial:2536zaf0t928".action_ring.default.slots.TopLeft]
+action = "Redo"
+
+[devices."serial:2536zaf0t928".smartshift]
+mode = "ratchet"
+auto_disengage = 16
+tunable_torque = 60

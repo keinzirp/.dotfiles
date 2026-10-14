@@ -34,7 +34,7 @@ rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip
 # "cargo:ttyper" = "latest"
 "cargo:eza" = "latest"
 "cargo:kak-tree-sitter" = "latest"
-# "cargo:ktsctl" = "latest"
+"cargo:ktsctl" = "latest"
 # "cargo:sleek" = "latest"
 
 "aqua:BurntSushi/ripgrep" = "latest"
@@ -74,6 +74,10 @@ rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip
 
 [bootstrap.user]
 login_shell = "/opt/homebrew/bin/nu"
+
+[bootstrap.hooks]
+post-packages = 'if [ "$(uname -s)" = Darwin ]; then /usr/bin/swift "$HOME/.config/mise/scripts/colemak-dh.swift"; fi'
+post-tools = 'nu "{{ xdg_config_home }}/mise/scripts/tree-sitter.nu"'
 
 [bootstrap.packages]
 "brew:borgbackup" = "latest"
