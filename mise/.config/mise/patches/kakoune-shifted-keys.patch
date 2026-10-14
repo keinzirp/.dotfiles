@@ -1,0 +1,94 @@
+--- a/src/terminal_ui.cc
++++ b/src/terminal_ui.cc
+@@ -9,6 +9,7 @@
+ #include "format.hh"
+ #include "diff.hh"
+ #include "string_utils.hh"
++#include "unit_tests.hh"
+ 
+ #include <algorithm>
+ 
+@@ -688,6 +689,68 @@
+ 
+     set_resize_pending();
+ }
++
++static Key normalize_shifted_key(Key key, Codepoint shifted_key = 0)
++{
++    if (not (key.modifiers & Key::Modifiers::Shift))
++        return key;
++
++    if (shifted_key == 0)
++    {
++        if (is_basic_alpha(key.key))
++            shifted_key = to_upper(key.key);
++        else
++        {
++            constexpr StringView plain = "`1234567890-=[]\\;',./";
++            constexpr StringView shifted = "~!@#$%^&*()_+{}|:\"<>?";
++            const auto pos = find(plain, key.key);
++            if (pos != plain.end())
++                shifted_key = shifted[ByteCount{(int)(pos - plain.begin())}];
++            else if (find(shifted, key.key) != shifted.end())
++                shifted_key = key.key;
++        }
++    }
++    if (shifted_key != 0)
++    {
++        key.modifiers &= ~Key::Modifiers::Shift;
++        key.key = shifted_key;
++    }
++    return key;
++}
++
++UnitTest test_terminal_shifted_key_fallback{[]()
++{
++    constexpr StringView plain =
++        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
++        "`1234567890-=[]\\;',./";
++    constexpr StringView shifted =
++        "ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJKLMNOPQRSTUVWXYZ"
++        "~!@#$%^&*()_+{}|:\"<>?";
++    kak_assert(plain.length() == shifted.length());
++    for (const auto mod :
++         {Key::Modifiers::None, Key::Modifiers::Alt, Key::Modifiers::Control,
++          Key::Modifiers::Alt | Key::Modifiers::Control})
++    {
++        for (ByteCount i = 0; i < plain.length(); ++i)
++        {
++            const Codepoint base = plain[i], upper = shifted[i];
++            const auto modifiers = mod | Key::Modifiers::Shift;
++            const Key expected{mod, upper};
++            kak_assert(normalize_shifted_key({modifiers, base}) == expected);
++            kak_assert(normalize_shifted_key({modifiers, upper}) == expected);
++            kak_assert(normalize_shifted_key({modifiers, base}, upper) ==
++                       expected);
++            kak_assert(normalize_shifted_key({mod, base}) == Key{mod, base});
++        }
++    }
++    kak_assert(normalize_shifted_key(alt(shift('2')), '"') == alt('"'));
++    kak_assert(normalize_shifted_key(alt(shift(U'é')), U'É') == alt(U'É'));
++    kak_assert(normalize_shifted_key(alt(shift(U'é'))) == alt(shift(U'é')));
++    for (const auto named :
++         {Key::Left, Key::Return, Key::Tab, Key::Space, Key::F1})
++        kak_assert(normalize_shifted_key(alt(shift(named))) ==
++                   alt(shift(named)));
++}};
+ 
+ Optional<Key> TerminalUI::get_next_key()
+ {
+@@ -828,13 +891,7 @@
+ 
+         auto masked_key = [&](Codepoint key, Codepoint shifted_key = 0) {
+             int mask = std::max(params[1][0] - 1, 0);
+-            Key::Modifiers modifiers = parse_mask(mask);
+-            if (shifted_key != 0 and (modifiers & Key::Modifiers::Shift))
+-            {
+-                modifiers &= ~Key::Modifiers::Shift;
+-                key = shifted_key;
+-            }
+-            return Key{modifiers, key};
++            return normalize_shifted_key({parse_mask(mask), key}, shifted_key);
+         };
+ 
+         switch (c)

@@ -72,6 +72,14 @@ rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip
 "npm:bash-language-server" = "latest"
 "pipx:python-lsp-server" = "latest"
 
+[tools."http:kakoune"]
+version = "2026.05.21"
+url = "https://github.com/mawww/kakoune/releases/download/v{{ version }}/kakoune-{{ version }}.tar.bz2"
+checksum = "sha256:be1deb3fe9808a0733ab1057309da380bb757307e8fdbb22dc478b674b6bad34"
+strip_components = 0
+bin_path = "bin"
+postinstall = 'nu "{{ xdg_config_home }}/mise/scripts/kakoune-patched.nu"'
+
 [bootstrap.user]
 login_shell = "/opt/homebrew/bin/nu"
 

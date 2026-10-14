@@ -952,6 +952,18 @@ url = "https://dl.google.com/go/go1.27.2.darwin-amd64.tar.gz"
 checksum = "sha256:1314008898bd40df77af4b014f777f08873dbdfbcd3d92308728ee03304fe04f"
 url = "https://dl.google.com/go/go1.27.2.windows-amd64.zip"
 
+[[tools."http:kakoune"]]
+version = "2026.05.21"
+backend = "http:kakoune"
+specifiers = ["2026.05.21"]
+
+[tools."http:kakoune".options]
+strip_components = "0"
+
+[tools."http:kakoune"."platforms.macos-arm64"]
+checksum = "blake3:5c1341d2e2fca4e20ce936ec1d9a6448f1de342311cbb727c917a1e815e03c58"
+url = "https://github.com/mawww/kakoune/releases/download/v2026.05.21/kakoune-2026.05.21.tar.bz2"
+
 [[tools.java]]
 version = "27.0.0"
 backend = "core:java"
