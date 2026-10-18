@@ -1,23 +1,13 @@
-$env.ZELLIJ_AUTO_EXIT = "true"
-$env.ZELLIJ_AUTO_ATTACH = false
-$env.PNPM_HOME = ($env.HOME + "/.local/pnpm")
-$env.EDITOR = "kak"
-$env.DO_NOT_TRACK = "1"
-$env.HOMEBREW_NO_AUTO_UPDATE = "1"
-$env.XDG_DATA_HOME = ($env.HOME + "/.local/share")
-$env.CARAPACE_MATCH = 1
-$env.CARAPACE_HIDDEN = 1
-$env.CARAPACE_BRIDGES = 'zsh,bash'
-
 $env.PATH = ($env.PATH | prepend [
     ($env.HOME + "/.cargo/bin"),
     ($env.HOME + "/.local/bin"),
     "/opt/homebrew/bin",
     ($env.HOME + "/.local/share/mise/shims"),
-    $env.PNPM_HOME,
+    ($env.HOME + "/.local/pnpm"),
     ($env.HOME + "/go/bin"),
     ($env.HOME + "/.orbstack/bin"),
 ] | uniq)
+^mise -C $env.HOME env --json | from json | update PATH { split row (char esep) } | load-env
 
 $env.config.show_banner = false
 $env.config.bracketed_paste = true
@@ -25,39 +15,13 @@ $env.config.shell_integration.osc133 = true
 $env.config.completions.algorithm = "fuzzy"
 $env.config.completions.case_sensitive = false
 $env.config.table.mode = "ascii_rounded"
-$env.config.buffer_editor = "kak"
+$env.config.buffer_editor = $env.EDITOR
 $env.config.rm.always_trash = true
 
-const integrations = {
-    atuin: [init nu]
-    zoxide: [init nushell]
-    carapace: [_carapace nushell]
-}
+use ~/.config/mise/scripts/integrations.nu [integrations refresh-integrations]
 let integration_loader = ($nu.user-autoload-dirs | first | path join "dotfiles-integrations.nu")
 
-def refresh-integrations [] {
-    mkdir $nu.cache-dir ($integration_loader | path dirname)
-    for integration in ($integrations | transpose tool args) {
-        let result = (^($integration.tool) ...$integration.args | complete)
-        if $result.exit_code != 0 {
-            error make {msg: $"($integration.tool): ($result.stderr | str trim)"}
-        }
-        let script = ($result.stdout | str replace --all '{|spans|' '{|place| let spans = $place.command;')
-        if not ($script | nu-check) {
-            error make {msg: $"Invalid initialization script from ($integration.tool)"}
-        }
-        $script | save --force ($nu.cache-dir | path join $"($integration.tool).nu")
-    }
-    $integrations | columns
-    | each { |tool| 'source ($nu.cache-dir | path join "' + $tool + '.nu")' }
-    | append 'use ($nu.cache-dir | path join "mise.nu")'
-    | str join (char nl)
-    | save --force $integration_loader
-}
-
-alias backup = borgmatic --stats --progress --config ~/.config/borgmatic.d/removable.yaml
-alias backup-t7 = borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --progress --stats
-alias backup-t7-list = borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --stats --list
+alias backup = mise -C $env.HOME -E full run backup
 
 def --env y [...args] {
     let tmp = (mktemp -t "yazi-cwd.XXXXXX")
@@ -69,25 +33,7 @@ def --env y [...args] {
     rm -fp $tmp
 }
 
-def morning [] {
-    print "==> mise and managed tools"
-    try { mise self-update -y }
-    try { mise upgrade --global -y }
-
-    print ""
-    print "==> bootstrap packages"
-    try { mise -C $env.HOME bootstrap packages upgrade -y }
-
-    print ""
-    print "==> pi extensions"
-    try { pi update --extensions }
-
-    print ""
-    print "==> kak (plug.kak)"
-    try { kak -ui dummy -e 'set-option global plug_block_ui true; plug-update; quit!' }
-
-    refresh-integrations
-}
+alias morning = mise run morning
 
 def fg [] {
     let jobs = job list

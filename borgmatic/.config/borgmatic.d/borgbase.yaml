@@ -1,6 +1,0 @@
-<<: !include ~/.config/borgmatic/fragments/common.yaml
-
-repositories:
-  - path: ssh://f6cfqze5@f6cfqze5.repo.borgbase.com/./repo
-    label: borgbase
-    encryption: repokey-blake2

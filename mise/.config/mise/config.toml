@@ -8,6 +8,7 @@ use_versions_host_track = false
 activate_aggressive = true
 status.missing_tools = "always"
 python.uv_venv_auto = "source"
+dotfiles.relative_symlinks = true
 
 [tool_alias]
 skyspell = "cargo:https://codeberg.org/your-tools/skyspell.git"
@@ -61,7 +62,6 @@ rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip
 "aqua:linebender/resvg" = "latest"
 "aqua:koalaman/shellcheck" = "latest"
 "aqua:sxyazi/yazi" = "latest"
-"aqua:getzola/zola" = "latest"
 "aqua:ajeetdsouza/zoxide" = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
 "npm:typescript" = "7"
@@ -81,6 +81,62 @@ strip_components = 0
 bin_path = "bin"
 postinstall = 'nu "{{ xdg_config_home }}/mise/scripts/kakoune-patched.nu"'
 
+[dotfile_groups.aerospace]
+root = "aerospace"
+entries."~/.config/aerospace" = { mode = "symlink" }
+
+[dotfile_groups.alacritty]
+root = "alacritty"
+entries."~/.config/alacritty" = { mode = "symlink" }
+
+[dotfile_groups.atuin]
+root = "atuin"
+
+[dotfile_groups.git]
+root = "git"
+entries."~/.config/git" = { mode = "symlink" }
+
+[dotfile_groups.jj]
+root = "jj"
+
+[dotfile_groups.kak]
+root = "kak"
+entries."~/.config/kak" = { mode = "symlink" }
+
+[dotfile_groups.mise]
+root = "mise"
+
+[dotfile_groups.nushell]
+root = "nushell"
+exclude = ["history.txt"]
+
+[dotfile_groups.openlogi]
+root = "openlogi"
+
+[dotfile_groups.pgcli]
+root = "pgcli"
+exclude = [".pgpass"]
+entries."~/.config/pgcli" = { mode = "symlink" }
+
+[dotfile_groups.pi]
+root = "pi"
+entries."~/.pi/agent/skills/leetcode" = { mode = "symlink" }
+
+[dotfile_groups.timewarrior]
+root = "timewarrior"
+entries."~/.config/timewarrior" = { mode = "symlink" }
+
+[dotfile_groups.yazi]
+root = "yazi"
+entries."~/.config/yazi" = { mode = "symlink" }
+
+[dotfile_groups.zellij]
+root = "zellij"
+exclude = [".config/zellij/plugins"]
+
+[dotfile_groups.zsh]
+root = "zsh"
+
 [bootstrap.user]
 login_shell = "/opt/homebrew/bin/nu"
 
@@ -89,8 +145,6 @@ post-packages = 'if [ "$(uname -s)" = Darwin ]; then /usr/bin/swift "$HOME/.conf
 post-tools = 'nu "{{ xdg_config_home }}/mise/scripts/tree-sitter.nu"'
 
 [bootstrap.packages]
-"brew:borgbackup" = "latest"
-"brew:borgmatic" = "latest"
 "brew:cloudflare-speed-cli" = "latest"
 "brew:editorconfig" = "latest"
 "brew:enchant" = "latest"
@@ -102,16 +156,13 @@ post-tools = 'nu "{{ xdg_config_home }}/mise/scripts/tree-sitter.nu"'
 "brew:jnsahaj/lumen/lumen" = "latest"
 "brew:kakoune" = "latest"
 "brew:mdcat" = "latest"
-"brew:newsboat" = "latest"
 "brew:nushell" = "latest"
 "brew:overmind" = "latest"
 "brew:pgcli" = "latest"
 "brew:pinentry-mac" = "latest"
 "brew:postgresql@18" = "latest"
-"brew:ranger" = "latest"
 "brew:rm-improved" = "latest"
 "brew:scc" = "latest"
-"brew:stow" = "latest"
 "brew:timewarrior" = "latest"
 "brew:watchman" = "latest"
 "brew:zellij" = "latest"
@@ -119,11 +170,8 @@ post-tools = 'nu "{{ xdg_config_home }}/mise/scripts/tree-sitter.nu"'
 "brew-cask:nikitabobko/tap/aerospace" = { version = "latest", adopt = true }
 "brew-cask:activitywatch" = { version = "latest", adopt = true }
 "brew-cask:pearcleaner" = { version = "latest", adopt = true }
-"brew-cask:syncthing-app" = { version = "latest", adopt = true }
 "brew-cask:tableplus" = { version = "latest", adopt = true }
 "brew-cask:alt-tab" = "latest"
-"brew-cask:android-platform-tools" = "latest"
-"brew-cask:anki" = "latest"
 "brew-cask:colemak-dh" = "latest"
 "brew-cask:font-fira-code" = "latest"
 "brew-cask:font-iosevka" = "latest"
@@ -131,7 +179,6 @@ post-tools = 'nu "{{ xdg_config_home }}/mise/scripts/tree-sitter.nu"'
 "brew-cask:font-symbols-only-nerd-font" = "latest"
 "brew-cask:font-terminess-ttf-nerd-font" = "latest"
 "brew-cask:gimp" = "latest"
-"brew-cask:ghostty" = "latest"
 "brew-cask:hiddenbar" = "latest"
 "brew-cask:keepassxc" = "latest"
 "brew-cask:meld" = "latest"
@@ -141,7 +188,6 @@ post-tools = 'nu "{{ xdg_config_home }}/mise/scripts/tree-sitter.nu"'
 "brew-cask:sol" = "latest"
 "brew-cask:stats" = "latest"
 "brew-cask:switch" = "latest"
-"brew-cask:vlc" = "latest"
 "brew-cask:waterfox" = "latest"
 "brew-cask:whatcable" = "latest"
 
@@ -157,13 +203,6 @@ version = "0.17.0"
 url = "https://github.com/alacritty/alacritty/releases/download/v{{version}}/Alacritty-v{{version}}.dmg"
 sha256 = "ad8d7de35fb38e43184776cac6dfee05ca325caa0b6639a06a55e54e4b026620"
 artifact = "Alacritty.app"
-adopt = true
-
-[bootstrap.packages."macos-app:qbittorrent"]
-version = "5.2.3"
-url = "https://downloads.sourceforge.net/qbittorrent/qbittorrent-mac/qbittorrent-{{version}}/qbittorrent-{{version}}.dmg"
-sha256 = "9e37f6c7ff848c7bdd3c10167614c0cb78c00e2ddcc323f1ad3ac6c008a0481f"
-artifact = "qbittorrent.app"
 adopt = true
 
 [bootstrap.directories."~/Library/Logs/activitywatch-watchers"]

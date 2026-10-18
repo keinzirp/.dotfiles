@@ -8,4 +8,4 @@ repositories:
 commands:
   - before: repository
     run:
-      - mount | grep "on /Volumes/T7" > /dev/null || exit 75
+      - /sbin/mount | grep -F ' on /Volumes/T7 (' > /dev/null || exit 75

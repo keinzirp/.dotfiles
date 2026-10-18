@@ -1,16 +1,9 @@
-export ZELLIJ_AUTO_EXIT=true
-export PNPM_HOME=$HOME/.local/pnpm
-export GO_HOME=$HOME/go/bin
-MANUAL=$HOME/.local/bin
 typeset -U path
-export PATH="$MANUAL:$HOME/.cargo/bin:/opt/homebrew/bin:$HOME/.local/share/mise/shims:$PATH:$PNPM_HOME:$GO_HOME"
-
-export EDITOR=kak
-PROMPT='%F{green}%n@%m%f:%F{blue}%1~%f %# '
-export DO_NOT_TRACK=1
-export HOMEBREW_NO_AUTO_UPDATE=1
-export XDG_DATA_HOME=$HOME/.local/share
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:/opt/homebrew/bin:$HOME/.local/share/mise/shims:$PATH:$HOME/.local/pnpm:$HOME/go/bin"
 export XDG_CONFIG_HOME=$HOME/.config
+eval "$(mise -C "$HOME" env -s zsh)"
+
+PROMPT='%F{green}%n@%m%f:%F{blue}%1~%f %# '
 export GPG_TTY=$(tty)
 
 HISTFILE=$HOME/.zsh_history

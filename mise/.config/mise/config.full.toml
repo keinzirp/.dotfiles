@@ -1,0 +1,32 @@
+[tasks.backup]
+run = "borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --progress --stats"
+raw = true
+
+[tools]
+"aqua:getzola/zola" = "latest"
+
+[dotfile_groups.borgmatic]
+root = "borgmatic"
+entries."~/.config/borgmatic" = { mode = "symlink" }
+entries."~/.config/borgmatic.d" = { mode = "symlink" }
+
+[dotfile_groups.newsboat]
+root = "newsboat"
+entries."~/.config/newsboat" = { mode = "symlink" }
+
+[bootstrap.packages]
+"brew:borgbackup" = "latest"
+"brew:borgmatic" = "latest"
+"brew:newsboat" = "latest"
+
+"brew-cask:syncthing-app" = { version = "latest", adopt = true }
+"brew-cask:android-platform-tools" = "latest"
+"brew-cask:anki" = "latest"
+"brew-cask:vlc" = "latest"
+
+[bootstrap.packages."macos-app:qbittorrent"]
+version = "5.2.3"
+url = "https://downloads.sourceforge.net/qbittorrent/qbittorrent-mac/qbittorrent-{{version}}/qbittorrent-{{version}}.dmg"
+sha256 = "9e37f6c7ff848c7bdd3c10167614c0cb78c00e2ddcc323f1ad3ac6c008a0481f"
+artifact = "qbittorrent.app"
+adopt = true

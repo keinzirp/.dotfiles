@@ -1,0 +1,24 @@
+#!/usr/bin/env -S nu --no-config-file
+#MISE description="Update global tools, packages, extensions, and shell integrations"
+#MISE dir="~"
+
+use ../scripts/integrations.nu refresh-integrations
+
+print "==> mise and managed tools"
+try { ^mise self-update -y }
+try { ^mise upgrade --global -y }
+
+print ""
+print "==> bootstrap packages"
+try { ^mise -C $env.HOME bootstrap packages upgrade -y }
+
+print ""
+print "==> pi extensions"
+try { ^pi update --extensions }
+
+print ""
+print "==> kak (plug.kak)"
+try { ^kak -ui dummy -e 'set-option global plug_block_ui true; plug-update; quit!' }
+
+refresh-integrations
+^mise activate nu | save --force ($nu.cache-dir | path join "mise.nu")
