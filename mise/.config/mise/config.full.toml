@@ -1,5 +1,5 @@
 [tasks.backup]
-run = "borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --progress --stats"
+run = "borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --progress --stats prune compact check"
 raw = true
 
 [tools]
@@ -22,6 +22,7 @@ entries."~/.config/newsboat" = { mode = "symlink" }
 "brew-cask:syncthing-app" = { version = "latest", adopt = true }
 "brew-cask:android-platform-tools" = "latest"
 "brew-cask:anki" = "latest"
+"brew-cask:tunnelblick" = { version = "latest", adopt = true }
 "brew-cask:vlc" = "latest"
 
 [bootstrap.packages."macos-app:qbittorrent"]

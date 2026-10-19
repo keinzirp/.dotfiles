@@ -4,21 +4,30 @@
 
 use ../scripts/integrations.nu refresh-integrations
 
-print "==> mise and managed tools"
-try { ^mise self-update -y }
-try { ^mise upgrade --global -y }
+do --capture-errors {
+    print "==> mise and managed tools"
+    ^mise self-update -y
+    ^mise upgrade --global -y
 
-print ""
-print "==> bootstrap packages"
-try { ^mise -C $env.HOME bootstrap packages upgrade -y }
+    print ""
+    print "==> bootstrap packages"
+    ^mise -C $env.HOME bootstrap packages upgrade -y
 
-print ""
-print "==> pi extensions"
-try { ^pi update --extensions }
+    if (which brew | is-not-empty) {
+        print ""
+        print "==> Homebrew-owned apps"
+        ^brew update
+        ^brew upgrade --cask
+    }
 
-print ""
-print "==> kak (plug.kak)"
-try { ^kak -ui dummy -e 'set-option global plug_block_ui true; plug-update; quit!' }
+    print ""
+    print "==> pi extensions"
+    ^pi update --extensions
 
-refresh-integrations
-^mise activate nu | save --force ($nu.cache-dir | path join "mise.nu")
+    print ""
+    print "==> kak (plug.kak)"
+    ^kak -ui dummy -e 'set-option global plug_block_ui true; plug-update; quit!'
+
+    refresh-integrations
+    ^mise activate nu | save --force ($nu.cache-dir | path join "mise.nu")
+}

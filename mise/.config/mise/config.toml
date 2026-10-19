@@ -92,6 +92,15 @@ entries."~/.config/alacritty" = { mode = "symlink" }
 [dotfile_groups.atuin]
 root = "atuin"
 
+[dotfile_groups.gh]
+root = "gh"
+exclude = ["hosts.yml"]
+
+[dotfile_groups.gnupg]
+root = "gnupg"
+entries."~/.gnupg/common.conf" = { mode = "copy", permissions = "0600" }
+entries."~/.gnupg/gpg-agent.conf" = { mode = "copy", permissions = "0600" }
+
 [dotfile_groups.git]
 root = "git"
 entries."~/.config/git" = { mode = "symlink" }
@@ -121,6 +130,15 @@ entries."~/.config/pgcli" = { mode = "symlink" }
 [dotfile_groups.pi]
 root = "pi"
 entries."~/.pi/agent/skills/leetcode" = { mode = "symlink" }
+entries."~/.pi/agent/skills/grill-me" = { mode = "symlink" }
+
+[dotfile_groups.sol]
+root = "sol"
+mode = "copy"
+
+[dotfile_groups.ssh]
+root = "ssh"
+entries."~/.ssh/config" = { mode = "copy", permissions = "0600" }
 
 [dotfile_groups.timewarrior]
 root = "timewarrior"
@@ -137,12 +155,15 @@ exclude = [".config/zellij/plugins"]
 [dotfile_groups.zsh]
 root = "zsh"
 
+[dotfiles]
+"~/.config/lumen/lumen.config.json/preferences" = { source = "~/.dotfiles/lumen/preferences.json", merge = true }
+
 [bootstrap.user]
 login_shell = "/opt/homebrew/bin/nu"
 
 [bootstrap.hooks]
 post-packages = 'if [ "$(uname -s)" = Darwin ]; then /usr/bin/swift "$HOME/.config/mise/scripts/colemak-dh.swift"; fi'
-post-tools = 'nu "{{ xdg_config_home }}/mise/scripts/tree-sitter.nu"'
+post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc jsx lua markdown markdown.inline nu python ruby rust typescript'
 
 [bootstrap.packages]
 "brew:cloudflare-speed-cli" = "latest"
@@ -154,7 +175,6 @@ post-tools = 'nu "{{ xdg_config_home }}/mise/scripts/tree-sitter.nu"'
 "brew:httpie" = "latest"
 "brew:imagemagick-full" = "latest"
 "brew:jnsahaj/lumen/lumen" = "latest"
-"brew:kakoune" = "latest"
 "brew:mdcat" = "latest"
 "brew:nushell" = "latest"
 "brew:overmind" = "latest"
@@ -204,6 +224,12 @@ url = "https://github.com/alacritty/alacritty/releases/download/v{{version}}/Ala
 sha256 = "ad8d7de35fb38e43184776cac6dfee05ca325caa0b6639a06a55e54e4b026620"
 artifact = "Alacritty.app"
 adopt = true
+
+[bootstrap.directories."~/.ssh"]
+mode = "0700"
+
+[bootstrap.directories."~/.gnupg"]
+mode = "0700"
 
 [bootstrap.directories."~/Library/Logs/activitywatch-watchers"]
 os = "macos"
