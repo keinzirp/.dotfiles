@@ -77,14 +77,3 @@ if not ($integration_loader | path exists) or ($integrations | columns | any { |
     refresh-integrations
 }
 ^mise activate nu | save --force ($nu.cache-dir | path join "mise.nu")
-
-if $nu.is-interactive and not ("ZELLIJ" in $env) {
-    if (($env | get -o ZELLIJ_AUTO_ATTACH | default "false") == "true") {
-        ^zellij attach -c
-    } else {
-        ^zellij
-    }
-    if $env.ZELLIJ_AUTO_EXIT == "true" {
-        exit
-    }
-}

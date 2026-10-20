@@ -31,4 +31,3 @@ source <(fzf --zsh)
 source <(COMPLETE=zsh jj)
 
 eval "$(mise activate zsh)"
-source <(zellij setup --generate-auto-start zsh)

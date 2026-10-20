@@ -1,3 +1,7 @@
+[terminal.shell]
+program = "/usr/bin/env"
+args = ["-u", "ZELLIJ", "/Users/keinzirp/.local/bin/mise", "exec", "--", "/opt/homebrew/bin/zellij"]
+
 [font]
 size = 18.0
 normal = {family = "LiterationMono Nerd Font", style = "Regular"}

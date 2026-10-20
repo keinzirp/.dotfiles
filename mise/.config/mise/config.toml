@@ -89,6 +89,10 @@ entries."~/.config/aerospace" = { mode = "symlink" }
 root = "alacritty"
 entries."~/.config/alacritty" = { mode = "symlink" }
 
+[dotfile_groups.bettercmdtab]
+root = "bettercmdtab"
+entries."~/.config/bettercmdtab" = { mode = "symlink" }
+
 [dotfile_groups.atuin]
 root = "atuin"
 
@@ -191,7 +195,7 @@ post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc
 "brew-cask:activitywatch" = { version = "latest", adopt = true }
 "brew-cask:pearcleaner" = { version = "latest", adopt = true }
 "brew-cask:tableplus" = { version = "latest", adopt = true }
-"brew-cask:alt-tab" = "latest"
+"brew-cask:bettercmdtab" = "latest"
 "brew-cask:colemak-dh" = "latest"
 "brew-cask:font-fira-code" = "latest"
 "brew-cask:font-iosevka" = "latest"
@@ -207,7 +211,6 @@ post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc
 "brew-cask:orbstack" = "latest"
 "brew-cask:sol" = "latest"
 "brew-cask:stats" = "latest"
-"brew-cask:switch" = "latest"
 "brew-cask:waterfox" = "latest"
 "brew-cask:whatcable" = "latest"
 
