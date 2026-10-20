@@ -72,7 +72,6 @@ apps = [
   "/Applications/Music Decoy.app",
   "/Applications/Sol.app",
   "/Applications/Stats.app",
-  "/Applications/Switch.app",
 ]
 
 [bootstrap.macos.defaults."bobko.aerospace"]
@@ -94,20 +93,6 @@ global_showMenubarExtra = true
 [bootstrap.macos.defaults."com.tinyapp.TablePlus"]
 ThemeKitTheme = "com.luckymarmot.ThemeKit.DarkTheme"
 NSUseAnimatedFocusRing = false
-
-[bootstrap.macos.defaults."com.sanyamgarg.switch"]
-"switch.accent" = "system"
-"switch.appIconSize" = 32.0
-"switch.backgroundBlur" = "heavy"
-"switch.disableAnimations" = true
-"switch.gridColumns" = 4
-"switch.pickerActivationDelay" = 0.0
-"switch.shiftTapReverses" = true
-"switch.showStoplights" = true
-"switch.showThumbnails" = false
-"switch.showTitleFirst" = true
-"switch.thumbnailHeight" = 130.0
-"switch.verticalShowPreview" = true
 
 [bootstrap.macos.defaults."eu.exelban.Stats"]
 Battery_battery_additional = "percentageAndTime"
