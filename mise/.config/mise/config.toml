@@ -36,6 +36,7 @@ rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip
 "cargo:eza" = "latest"
 "cargo:kak-tree-sitter" = "latest"
 "cargo:ktsctl" = "latest"
+"cargo:taplo-cli" = { version = "latest", features = ["lsp"] }
 # "cargo:sleek" = "latest"
 
 "aqua:BurntSushi/ripgrep" = "latest"

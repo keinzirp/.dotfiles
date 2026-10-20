@@ -51,6 +51,17 @@ define-command add-next-occurrence -docstring 'Select the word or add its next o
 }
 map global normal <c-n> ':add-next-occurrence<ret>' -docstring 'Select the word or add its next occurrence'
 
+declare-user-mode umlauts
+map global user k ':enter-user-mode umlauts<ret>' -docstring 'Insert a German character'
+map global umlauts a 'iä<esc>' -docstring 'ä'
+map global umlauts o 'iö<esc>' -docstring 'ö'
+map global umlauts u 'iü<esc>' -docstring 'ü'
+map global umlauts A 'iÄ<esc>' -docstring 'Ä'
+map global umlauts O 'iÖ<esc>' -docstring 'Ö'
+map global umlauts U 'iÜ<esc>' -docstring 'Ü'
+map global umlauts s 'iß<esc>' -docstring 'ß'
+map global umlauts S 'iẞ<esc>' -docstring 'ẞ'
+
 declare-user-mode user-nu
 map global user n ':enter-user-mode user-nu<ret>' -docstring 'Enter Nushell mode'
 map global user-nu p "|nu --stdin -c '$in | '<left>" -docstring 'Pipe selections and replace with output'
@@ -203,6 +214,13 @@ evaluate-commands %{
             [nu]
             args = ["--lsp"]
             root_globs = [".jj", ".git"]
+        }
+    }
+    hook global BufSetOption filetype=toml %{
+        set-option buffer lsp_servers %{
+            [taplo]
+            args = ["lsp", "stdio"]
+            root_globs = [".jj", ".git", ".hg"]
         }
     }
     remove-hooks global lsp-filetype-javascript
