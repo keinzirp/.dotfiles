@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kagi Proofread: copy full report
 // @namespace    https://github.com/keinzirp/dotfiles
-// @version      1.0.0
+// @version      1.3.0
 // @description  Copy complete Kagi Proofread results as Markdown.
 // @match        https://translate.kagi.com/proofread*
 // @grant        GM_getValue
@@ -24,135 +24,88 @@
     ['repetition', 'Repetition'],
     ['statistics', 'Statistics'],
   ];
-  const DETAIL_SECTIONS = SECTIONS.slice(2);
   const defaults = Object.fromEntries(SECTIONS.map(([key]) => [key, true]));
   let settings = { ...defaults, ...GM_getValue(STORAGE_KEY, {}) };
   let scheduled = false;
 
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  const visible = (element) => Boolean(element && element.getClientRects().length);
   const text = (element) => element?.innerText?.replace(/\u00a0/g, ' ').trim() || '';
-  const compact = (value) => value.replace(/\s+/g, ' ').trim();
-  const escaped = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const labelPattern = (label) => new RegExp(`^${escaped(label)}(?:\\s+\\d+)?$`, 'i');
 
-  function controlLabels(element) {
-    return [
-      element.getAttribute('aria-label'),
-      element.getAttribute('title'),
-      element.getAttribute('data-tooltip-content'),
-      text(element),
-    ].filter(Boolean).map(compact);
-  }
-
-  function controls() {
-    return [...document.querySelectorAll('button, [role="button"]')].filter(visible);
-  }
-
-  function findControl(label) {
-    const pattern = labelPattern(label);
-    return controls().find((element) => controlLabels(element).some((value) => pattern.test(value)));
-  }
-
-  function findSectionControl(label) {
-    const pattern = labelPattern(label);
-    return controls().find((element) => pattern.test(compact(text(element))));
-  }
-
-  function cleanText(element) {
-    const copy = element.cloneNode(true);
-    copy.querySelectorAll(`[data-${ID}], script, style`).forEach((node) => node.remove());
-    return text(copy);
-  }
-
-  function sectionContent(control, label) {
-    if (!control) return '';
-
-    const panelId = control.getAttribute('aria-controls');
-    const panel = panelId && document.getElementById(panelId);
-    if (panel) return cleanText(panel);
-
-    const sibling = control.nextElementSibling;
-    if (sibling && visible(sibling)) return cleanText(sibling);
-
-    const parent = control.parentElement;
-    const value = parent && cleanText(parent);
-    if (!value) return '';
-    return value.replace(labelPattern(label), '').trim();
-  }
-
-  async function readSection(label) {
-    const control = findSectionControl(label);
-    if (!control) return '';
-
-    const wasCollapsed = control.getAttribute('aria-expanded') === 'false'
-      || control.getAttribute('data-state') === 'closed'
-      || (control.closest('details') && !control.closest('details').open);
-    if (wasCollapsed) {
-      control.click();
-      await sleep(150);
-    }
-
-    const value = sectionContent(control, label);
-    if (wasCollapsed) control.click();
-    return value;
-  }
-
-  function inputText() {
-    const inputs = [
-      ...document.querySelectorAll('textarea, input[type="text"], [contenteditable="true"], [role="textbox"]'),
-    ].filter(visible);
-    const input = inputs.sort((a, b) => {
-      const aText = 'value' in a ? a.value : text(a);
-      const bText = 'value' in b ? b.value : text(b);
-      return bText.length - aText.length;
-    })[0];
-    return input ? ('value' in input ? input.value : text(input)).trim() : '';
-  }
-
-  function outputContainer() {
-    const copy = findControl('Copy');
-    if (!copy) return null;
-    const labels = DETAIL_SECTIONS.map(([, label]) => label);
-
-    for (let element = copy.parentElement; element && element !== document.body; element = element.parentElement) {
-      const value = text(element);
-      if (labels.some((label) => new RegExp(`(^|\\n)${escaped(label)}(?:\\s+\\d+)?(?:\\n|$)`, 'i').test(value))) {
-        return element;
-      }
-    }
-    return null;
+  function sourceText() {
+    return text(document.querySelector('.cm-content[aria-label="Text to translate"]'));
   }
 
   function correctedText() {
-    const container = outputContainer();
-    if (!container) return '';
-    const value = cleanText(container);
-    const firstDetail = DETAIL_SECTIONS
-      .map(([, label]) => value.search(new RegExp(`(^|\\n)${escaped(label)}(?:\\s+\\d+)?(?:\\n|$)`, 'im')))
-      .filter((index) => index >= 0)
-      .sort((a, b) => a - b)[0];
-    return (firstDetail === undefined ? value : value.slice(0, firstDetail)).trim();
+    const diff = document.querySelector('[aria-label="Text diff with corrections"]');
+    if (!diff) return '';
+    const copy = diff.cloneNode(true);
+    copy.querySelectorAll('del, .sr-only').forEach((element) => element.remove());
+    return text(copy);
   }
 
-  function markdownSection(title, value) {
+  function correctionsReport() {
+    const explanations = [...document.querySelectorAll('[aria-label^="Addition:"]')]
+      .map((element) => element.getAttribute('aria-label').match(/^Addition:\s*(.*?)\.\s*Correction:\s*(.+)$/))
+      .filter(Boolean)
+      .map(([, addition, explanation]) => ({ addition: addition.trim(), explanation }));
+
+    return [...document.querySelectorAll('#corrections-panel [data-correction-id]')].map((button) => {
+      const change = button.getAttribute('aria-label').replace(/^Correction:\s*/, '');
+      const [from, to] = change.split(/\s+to\s+/, 2);
+      const card = button.closest('[role="group"]');
+      const categories = card ? [...card.querySelectorAll('[aria-label^="Toggle all "]')]
+        .map((tag) => tag.getAttribute('aria-label').match(/^Toggle all (.+) corrections$/)?.[1])
+        .filter(Boolean) : [];
+      const severity = card && [...card.querySelectorAll('span')]
+        .map(text).find((value) => /^(High|Medium|Low)$/.test(value));
+      const explanation = explanations.find(({ addition }) => addition && to.includes(addition))?.explanation;
+      return [
+        `- ${from} -> ${to}`,
+        categories.length && `  - Categories: ${categories.join(', ')}`,
+        severity && `  - Severity: ${severity}`,
+        explanation && `  - Explanation: ${explanation}`,
+      ].filter(Boolean).join('\n');
+    }).join('\n');
+  }
+
+  async function tabContent(name) {
+    const tab = document.getElementById(`${name}-tab`);
+    const panel = document.getElementById(`${name}-panel`);
+    if (!tab || !panel) return '';
+    tab.click();
+    await sleep(100);
+    return text(panel);
+  }
+
+  function section(title, value) {
     return `## ${title}\n\n${value || '_Not available on the page._'}`;
   }
 
   async function report() {
+    const details = SECTIONS.slice(2);
+    const activeTab = details.map(([key]) => document.getElementById(`${key}-tab`))
+      .find((tab) => tab?.getAttribute('aria-selected') === 'true');
     const parts = ['# Kagi proofread report'];
-    if (settings.original) parts.push(markdownSection('Original text', inputText()));
-    if (settings.corrected) parts.push(markdownSection('Corrected text', correctedText()));
 
-    for (const [key, label] of DETAIL_SECTIONS) {
-      if (settings[key]) parts.push(markdownSection(label, await readSection(label)));
+    try {
+      if (settings.original) parts.push(section('Original text', sourceText()));
+      if (settings.corrected) parts.push(section('Corrected text', correctedText()));
+      if (settings.corrections) {
+        await tabContent('corrections');
+        parts.push(section('Corrections', correctionsReport()));
+      }
+      for (const [key, label] of details.slice(1)) {
+        if (settings[key]) parts.push(section(label, await tabContent(key)));
+      }
+      return `${parts.join('\n\n')}\n`;
+    } finally {
+      activeTab?.click();
     }
-    return `${parts.join('\n\n')}\n`;
   }
 
   async function copyReport(button) {
     button.disabled = true;
-    const oldLabel = button.textContent;
+    const label = button.textContent;
     try {
       GM_setClipboard(await report(), 'text');
       button.textContent = 'Copied';
@@ -162,43 +115,41 @@
     }
     setTimeout(() => {
       button.disabled = false;
-      button.textContent = oldLabel;
+      button.textContent = label;
     }, 1200);
   }
 
-  function ensureCopyButton() {
-    if (document.getElementById(ID)) return;
-    const copy = findControl('Copy');
-    if (!copy) return;
-
-    const button = document.createElement('button');
-    button.id = ID;
-    button.type = 'button';
-    button.setAttribute(`data-${ID}`, '');
-    button.className = copy.className;
-    button.textContent = 'Copy report';
-    button.title = 'Copy full proofread report';
-    button.addEventListener('click', () => copyReport(button));
-    copy.insertAdjacentElement('afterend', button);
+  function ensureCopyButtons() {
+    document.querySelectorAll('button[aria-label="Copy corrected text to clipboard"]').forEach((copy) => {
+      if (copy.parentElement.nextElementSibling?.hasAttribute(`data-${ID}`)) return;
+      const holder = copy.parentElement.cloneNode(false);
+      holder.setAttribute(`data-${ID}`, '');
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'focus-visible:ring-focus-ring relative flex h-[34px] items-center justify-center rounded-md px-2 text-sm focus:outline-none focus-visible:ring-2 cursor-pointer hover:bg-general-hover-states';
+      button.textContent = 'Copy report';
+      button.setAttribute('aria-label', 'Copy full proofread report');
+      button.addEventListener('click', () => copyReport(button));
+      holder.append(button);
+      copy.parentElement.insertAdjacentElement('afterend', holder);
+    });
   }
 
   function saveSettings() {
     GM_setValue(STORAGE_KEY, settings);
   }
 
-  function settingsPanel() {
-    const panel = document.createElement('section');
-    panel.id = SETTINGS_ID;
-    panel.setAttribute(`data-${ID}`, '');
-    panel.hidden = true;
-    panel.innerHTML = `
-      <h2>Export report</h2>
-      <p>Choose the sections copied by “Copy report”. Each section includes all visible details.</p>
-      <div class="${SETTINGS_ID}-choices"></div>`;
-
-    const choices = panel.querySelector(`.${SETTINGS_ID}-choices`);
+  function settingsSection() {
+    const section = document.createElement('section');
+    section.id = SETTINGS_ID;
+    section.className = 'border-primary-100 mt-8 border-t pt-6';
+    section.setAttribute(`data-${ID}`, '');
+    section.innerHTML = `
+      <h3 class="text-primary text-base font-bold">Export report</h3>
+      <p class="text-primary-600 mt-1 text-xs leading-[1.6]">Choose the sections copied by “Copy report”. Each exports all visible details.</p>`;
     for (const [key, label] of SECTIONS) {
-      const row = document.createElement('label');
+      const labelElement = document.createElement('label');
+      labelElement.className = 'text-primary mt-4 block text-sm font-bold';
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.checked = settings[key];
@@ -206,63 +157,20 @@
         settings[key] = checkbox.checked;
         saveSettings();
       });
-      row.append(checkbox, document.createTextNode(` ${label}`));
-      choices.append(row);
+      labelElement.append(checkbox, document.createTextNode(` ${label}`));
+      section.append(labelElement);
     }
-    return panel;
+    return section;
   }
 
   function ensureSettings() {
-    const dialog = [...document.querySelectorAll('[role="dialog"]')]
-      .find((element) => /^Settings\b/i.test(text(element)));
-    if (!dialog || dialog.querySelector(`[data-${ID}]`)) return;
-
-    const general = findControl('General');
-    if (!general || !dialog.contains(general)) return;
-
-    const entry = document.createElement('button');
-    entry.type = 'button';
-    entry.className = general.className;
-    entry.textContent = 'Export report';
-    entry.setAttribute(`data-${ID}`, '');
-    general.parentElement.append(entry);
-
-    const panel = settingsPanel();
-    dialog.append(panel);
-    entry.addEventListener('click', () => {
-      panel.hidden = false;
-      entry.setAttribute('aria-current', 'page');
-    });
-
-    dialog.addEventListener('click', (event) => {
-      if (event.target !== entry && general.parentElement.contains(event.target)) {
-        panel.hidden = true;
-        entry.removeAttribute('aria-current');
-      }
-    });
-  }
-
-  function addStyles() {
-    const style = document.createElement('style');
-    style.setAttribute(`data-${ID}`, '');
-    style.textContent = `
-      #${ID} { white-space: nowrap; }
-      #${SETTINGS_ID} {
-        position: absolute; inset: 120px 70px 70px 530px; overflow: auto;
-        padding: 28px; border-radius: 12px; background: var(--background, #242426);
-        color: var(--foreground, #f4f4f5); z-index: 2;
-      }
-      #${SETTINGS_ID} h2 { margin-top: 0; }
-      #${SETTINGS_ID} p { max-width: 48rem; color: #b5b5bd; }
-      .${SETTINGS_ID}-choices { display: grid; gap: 14px; margin-top: 24px; }
-      .${SETTINGS_ID}-choices label { font-size: 1rem; cursor: pointer; }
-    `;
-    document.head.append(style);
+    const general = document.querySelector('#general-panel');
+    if (general && !general.querySelector(`#${SETTINGS_ID}`)) general.append(settingsSection());
   }
 
   function refresh() {
     scheduled = false;
-    ensureCopyButton();
+    ensureCopyButtons();
     ensureSettings();
   }
 
@@ -273,7 +181,6 @@
     }
   }
 
-  addStyles();
   new MutationObserver(schedule).observe(document.documentElement, { childList: true, subtree: true });
   schedule();
 })();
