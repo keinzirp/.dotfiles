@@ -106,55 +106,25 @@ url = "https://github.com/ajeetdsouza/zoxide/releases/download/v0.10.0/zoxide-0.
 url_api = "https://api.github.com/repos/ajeetdsouza/zoxide/releases/assets/466316769"
 
 [[tools."aqua:atuinsh/atuin"]]
-version = "18.24.0"
+version = "18.24.2"
 backend = "aqua:atuinsh/atuin"
 specifiers = ["latest"]
 
 [tools."aqua:atuinsh/atuin"."platforms.macos-arm64"]
-checksum = "sha256:4705a4eb10991e0a143e70cac134a658ce8dbb1ec7c91a9a938175a2095e93b1"
-url = "https://github.com/atuinsh/atuin/releases/download/v18.24.0/atuin-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/atuinsh/atuin/releases/assets/645524638"
+checksum = "sha256:ba155cb61385e424c972ba5cadab68add2c6ad0d4f842365fc958d7a5f5917d5"
+url = "https://github.com/atuinsh/atuin/releases/download/v18.24.2/atuin-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/atuinsh/atuin/releases/assets/665441742"
 provenance = "github-attestations"
 
 [[tools."aqua:carapace-sh/carapace-bin"]]
-version = "1.8.0"
+version = "1.8.1"
 backend = "aqua:carapace-sh/carapace-bin"
 specifiers = ["latest"]
 
-[tools."aqua:carapace-sh/carapace-bin"."platforms.linux-arm64"]
-checksum = "sha256:d501dfb17f3d1fe32d71e2a3704ef92572fc407f90fa9684d07c64f50d9d2fe4"
-url = "https://github.com/carapace-sh/carapace-bin/releases/download/v1.8.0/carapace-bin_1.8.0_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/carapace-sh/carapace-bin/releases/assets/589311159"
-
-[tools."aqua:carapace-sh/carapace-bin"."platforms.linux-arm64-musl"]
-checksum = "sha256:d501dfb17f3d1fe32d71e2a3704ef92572fc407f90fa9684d07c64f50d9d2fe4"
-url = "https://github.com/carapace-sh/carapace-bin/releases/download/v1.8.0/carapace-bin_1.8.0_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/carapace-sh/carapace-bin/releases/assets/589311159"
-
-[tools."aqua:carapace-sh/carapace-bin"."platforms.linux-x64"]
-checksum = "sha256:6883bb61fe88a8f56c7b74bc9ff68445791ee22697f705b59a063443d8ffc8ad"
-url = "https://github.com/carapace-sh/carapace-bin/releases/download/v1.8.0/carapace-bin_1.8.0_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/carapace-sh/carapace-bin/releases/assets/589311080"
-
-[tools."aqua:carapace-sh/carapace-bin"."platforms.linux-x64-musl"]
-checksum = "sha256:6883bb61fe88a8f56c7b74bc9ff68445791ee22697f705b59a063443d8ffc8ad"
-url = "https://github.com/carapace-sh/carapace-bin/releases/download/v1.8.0/carapace-bin_1.8.0_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/carapace-sh/carapace-bin/releases/assets/589311080"
-
 [tools."aqua:carapace-sh/carapace-bin"."platforms.macos-arm64"]
-checksum = "sha256:91b4dbce26c4a53dd9a4e5a78259d0c6cd25744d8efa84a2419724f64f33597a"
-url = "https://github.com/carapace-sh/carapace-bin/releases/download/v1.8.0/carapace-bin_1.8.0_darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/carapace-sh/carapace-bin/releases/assets/589311082"
-
-[tools."aqua:carapace-sh/carapace-bin"."platforms.macos-x64"]
-checksum = "sha256:edb9b0d5b472bd13ca8b3460c3bf0a5bdaa19759c5172b3d9894b73c96a6dd4c"
-url = "https://github.com/carapace-sh/carapace-bin/releases/download/v1.8.0/carapace-bin_1.8.0_darwin_amd64.tar.gz"
-url_api = "https://api.github.com/repos/carapace-sh/carapace-bin/releases/assets/589311075"
-
-[tools."aqua:carapace-sh/carapace-bin"."platforms.windows-x64"]
-checksum = "sha256:ee5ba25180a8929e34c5b7f4aa20f898369c31c5e5939f68819cda0da1959762"
-url = "https://github.com/carapace-sh/carapace-bin/releases/download/v1.8.0/carapace-bin_1.8.0_windows_amd64.zip"
-url_api = "https://api.github.com/repos/carapace-sh/carapace-bin/releases/assets/589311077"
+checksum = "sha256:4a60df0c9eb85931b2e92bcac1ae8922b87b778c07664906e76ed08089084e9b"
+url = "https://github.com/carapace-sh/carapace-bin/releases/download/v1.8.1/carapace-bin_1.8.1_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/carapace-sh/carapace-bin/releases/assets/650758415"
 
 [[tools."aqua:casey/just"]]
 version = "1.59.0"
@@ -177,50 +147,14 @@ url = "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-aarch64-ap
 url_api = "https://api.github.com/repos/chmln/sd/releases/assets/362325451"
 
 [[tools."aqua:cli/cli"]]
-version = "2.102.0"
+version = "2.103.1"
 backend = "aqua:cli/cli"
 specifiers = ["latest"]
 
-[tools."aqua:cli/cli"."platforms.linux-arm64"]
-checksum = "sha256:7862c86c72f43df3a2d93ddde6f473285b4e2af61b494849846827e513ef6484"
-url = "https://github.com/cli/cli/releases/download/v2.102.0/gh_2.102.0_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/cli/cli/releases/assets/599854680"
-provenance = "github-attestations"
-
-[tools."aqua:cli/cli"."platforms.linux-arm64-musl"]
-checksum = "sha256:7862c86c72f43df3a2d93ddde6f473285b4e2af61b494849846827e513ef6484"
-url = "https://github.com/cli/cli/releases/download/v2.102.0/gh_2.102.0_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/cli/cli/releases/assets/599854680"
-provenance = "github-attestations"
-
-[tools."aqua:cli/cli"."platforms.linux-x64"]
-checksum = "sha256:bb766f710eef8ede859c18578c72c327597cd4c8a85b06001b1f3843c6019386"
-url = "https://github.com/cli/cli/releases/download/v2.102.0/gh_2.102.0_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/cli/cli/releases/assets/599854672"
-provenance = "github-attestations"
-
-[tools."aqua:cli/cli"."platforms.linux-x64-musl"]
-checksum = "sha256:bb766f710eef8ede859c18578c72c327597cd4c8a85b06001b1f3843c6019386"
-url = "https://github.com/cli/cli/releases/download/v2.102.0/gh_2.102.0_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/cli/cli/releases/assets/599854672"
-provenance = "github-attestations"
-
 [tools."aqua:cli/cli"."platforms.macos-arm64"]
-checksum = "sha256:da922c20d1792e5b2cbf375593d7a658acf034c12c84e007e71c76ef959c337e"
-url = "https://github.com/cli/cli/releases/download/v2.102.0/gh_2.102.0_macOS_arm64.zip"
-url_api = "https://api.github.com/repos/cli/cli/releases/assets/599854720"
-provenance = "github-attestations"
-
-[tools."aqua:cli/cli"."platforms.macos-x64"]
-checksum = "sha256:b245f24eb2bf5f75b426b4c26da3651a107f8d5b6f4fddfbfccc5679041378b3"
-url = "https://github.com/cli/cli/releases/download/v2.102.0/gh_2.102.0_macOS_amd64.zip"
-url_api = "https://api.github.com/repos/cli/cli/releases/assets/599854716"
-provenance = "github-attestations"
-
-[tools."aqua:cli/cli"."platforms.windows-x64"]
-checksum = "sha256:ae64e556ecc240b200f7eba60d550e4bb60d78e860e69dd88c449405b86067f4"
-url = "https://github.com/cli/cli/releases/download/v2.102.0/gh_2.102.0_windows_amd64.zip"
-url_api = "https://api.github.com/repos/cli/cli/releases/assets/599854760"
+checksum = "sha256:71b5ffc74bb69cdb72ca397d9b486d78755019be33ca927288299197ad7f6807"
+url = "https://github.com/cli/cli/releases/download/v2.103.1/gh_2.103.1_macOS_arm64.zip"
+url_api = "https://api.github.com/repos/cli/cli/releases/assets/669692717"
 provenance = "github-attestations"
 
 [[tools."aqua:dandavison/delta"]]
@@ -494,14 +428,14 @@ url = "https://github.com/rclone/rclone/releases/download/v1.75.2/rclone-v1.75.2
 url_api = "https://api.github.com/repos/rclone/rclone/releases/assets/624717601"
 
 [[tools."aqua:rust-lang/rust-analyzer"]]
-version = "2026-10-12"
+version = "2026-10-19"
 backend = "aqua:rust-lang/rust-analyzer"
 specifiers = ["latest"]
 
 [tools."aqua:rust-lang/rust-analyzer"."platforms.macos-arm64"]
-checksum = "sha256:a2e45e828b37bfc4b507c2ca456e8b61096e0bdfbae225f3d33295546d1eeacf"
-url = "https://github.com/rust-lang/rust-analyzer/releases/download/2026-10-12/rust-analyzer-aarch64-apple-darwin.gz"
-url_api = "https://api.github.com/repos/rust-lang/rust-analyzer/releases/assets/632692652"
+checksum = "sha256:eedad08a96f7bf92afd0890463787337d17591ea2e3df216033c6bc3ccc9d802"
+url = "https://github.com/rust-lang/rust-analyzer/releases/download/2026-10-19/rust-analyzer-aarch64-apple-darwin.gz"
+url_api = "https://api.github.com/repos/rust-lang/rust-analyzer/releases/assets/655299206"
 
 [[tools."aqua:sharkdp/bat"]]
 version = "0.26.1"
@@ -796,37 +730,13 @@ url = "https://github.com/stayradiated/fred/releases/download/v0.1.0/fred_0.1.0_
 url_api = "https://api.github.com/repos/stayradiated/fred/releases/assets/406909487"
 
 [[tools.go]]
-version = "1.27.2"
+version = "1.27.3"
 backend = "core:go"
 specifiers = ["1.27"]
 
-[tools.go."platforms.linux-arm64"]
-checksum = "sha256:94f3e30b8e374bc285e7dadc11e0865726b9bc6e85b841ccceaabc0214c6b7c8"
-url = "https://dl.google.com/go/go1.27.2.linux-arm64.tar.gz"
-
-[tools.go."platforms.linux-arm64-musl"]
-checksum = "sha256:94f3e30b8e374bc285e7dadc11e0865726b9bc6e85b841ccceaabc0214c6b7c8"
-url = "https://dl.google.com/go/go1.27.2.linux-arm64.tar.gz"
-
-[tools.go."platforms.linux-x64"]
-checksum = "sha256:ecbadb99091a3f46e31f5f934b068b1864eafa7995211b39eaddf76996045fe5"
-url = "https://dl.google.com/go/go1.27.2.linux-amd64.tar.gz"
-
-[tools.go."platforms.linux-x64-musl"]
-checksum = "sha256:ecbadb99091a3f46e31f5f934b068b1864eafa7995211b39eaddf76996045fe5"
-url = "https://dl.google.com/go/go1.27.2.linux-amd64.tar.gz"
-
 [tools.go."platforms.macos-arm64"]
-checksum = "sha256:76812b213b1b2302c978d28fa52fa92d541704b9e7d9d5db8002c50e4018c4c5"
-url = "https://dl.google.com/go/go1.27.2.darwin-arm64.tar.gz"
-
-[tools.go."platforms.macos-x64"]
-checksum = "sha256:587b59182488b23aa6e5fc25110405a3e0e5b38ed2f5b2f46ed13c32aee356fe"
-url = "https://dl.google.com/go/go1.27.2.darwin-amd64.tar.gz"
-
-[tools.go."platforms.windows-x64"]
-checksum = "sha256:1314008898bd40df77af4b014f777f08873dbdfbcd3d92308728ee03304fe04f"
-url = "https://dl.google.com/go/go1.27.2.windows-amd64.zip"
+checksum = "sha256:dd3908cf20959d798c1e06ebe5b72213f0505ce01373b40ce3110975a6cd99c2"
+url = "https://dl.google.com/go/go1.27.3.darwin-arm64.tar.gz"
 
 [[tools."http:kakoune"]]
 version = "2026.05.21"
@@ -865,17 +775,17 @@ checksum = "sha256:41172837168dd25a8d9fe5eb253ac1efc568c5f9ff608144bcacadfdf50f8
 url = "https://download.java.net/java/GA/jdk27/55ce5470a6294008af0057ff4626d0e5/35/GPL/openjdk-27_windows-x64_bin.zip"
 
 [[tools.node]]
-version = "26.12.0"
+version = "26.12.1"
 backend = "core:node"
 specifiers = ["26"]
 
 [tools.node."platforms.macos-arm64"]
-checksum = "sha256:2a154d4a5458930e0a2d6a1ecf64eddf5a2b3e1c13636b609c2ecb042e8c4553"
-url = "https://nodejs.org/dist/v26.12.0/node-v26.12.0-darwin-arm64.tar.gz"
+checksum = "sha256:1901d539912c02afa10d1cc126943a8855a7eedebe830119463470db5e6c59e8"
+url = "https://nodejs.org/dist/v26.12.1/node-v26.12.1-darwin-arm64.tar.gz"
 
 [[tools."npm:@earendil-works/pi-coding-agent"]]
-version = "1.3.0"
-aube = { path = "locks/npm-earendil-works-pi-coding-agent/1.3.0", digest = "sha256:dc90f10d0bbe046249db98c8b60b292f0d96ff2752caa34413c7a81f3368a02b" }
+version = "1.4.0"
+aube = { path = "locks/npm-earendil-works-pi-coding-agent/1.4.0", digest = "sha256:51a5cac9a2850b55527651e124863f57cea76af84ce02e78f1a85fb3feefcba9" }
 backend = "npm:@earendil-works/pi-coding-agent"
 specifiers = ["latest"]
 
@@ -925,24 +835,24 @@ specifiers = ["latest"]
 uv = { path = "locks/pipx-python-lsp-server/1.15.0", digest = "sha256:55f6979b6855deffeb0a35fc01add7173a436577445deff4f1034966e393d9fb" }
 
 [[tools.pnpm]]
-version = "12.14.0"
+version = "12.15.0"
 backend = "aqua:pnpm/pnpm"
 specifiers = ["12"]
 
 [tools.pnpm."platforms.macos-arm64"]
-checksum = "sha256:50f48e0e17508952790a3fbf58fcf14f3b82efa5f594ca04ad904e29aaf854b0"
-url = "https://github.com/pnpm/pnpm/releases/download/v12.14.0/pnpm-darwin-arm64.tar.gz"
-url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/643957413"
+checksum = "sha256:6a41a2877773e97f19832067187cc6fc82e186d8a2cf91fec4b4c1a5fbd6ef27"
+url = "https://github.com/pnpm/pnpm/releases/download/v12.15.0/pnpm-darwin-arm64.tar.gz"
+url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/662173343"
 provenance = "github-attestations"
 
 [[tools.python]]
-version = "3.15.0"
+version = "3.15.1"
 backend = "core:python"
 specifiers = ["3.15"]
 
 [tools.python."platforms.macos-arm64"]
-checksum = "blake3:e122dfbaf981680665e77a7b5c2aef6dc4c57393abe69c0f0fbcc02a294440aa"
-url = "https://github.com/astral-sh/python-build-standalone/releases/download/20261013/cpython-3.15.0+20261013-aarch64-apple-darwin-install_only_stripped.tar.gz"
+checksum = "blake3:091b3bc1da195d3a72c2e65464f4679473516b90095693d325443bac43706622"
+url = "https://github.com/astral-sh/python-build-standalone/releases/download/20261021/cpython-3.15.1+20261021-aarch64-apple-darwin-install_only_stripped.tar.gz"
 provenance = "github-attestations"
 
 [[tools.rust]]
@@ -971,12 +881,12 @@ specifiers = ["latest"]
 crate = "skyspell_kak"
 
 [[tools.uv]]
-version = "0.13.1"
+version = "0.13.5"
 backend = "aqua:astral-sh/uv"
 specifiers = ["latest"]
 
 [tools.uv."platforms.macos-arm64"]
-checksum = "sha256:cfe454573412ff7380d15fc7dae5997ab53ffce72fce0a78e91ddbc84001acd2"
-url = "https://github.com/astral-sh/uv/releases/download/0.13.1/uv-aarch64-apple-darwin.tar.gz"
-url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/639312976"
+checksum = "sha256:743f85035a1996ecb350659e01cd9faea9709829be09b1b4b03c73eaf3c9cd73"
+url = "https://github.com/astral-sh/uv/releases/download/0.13.5/uv-aarch64-apple-darwin.tar.gz"
+url_api = "https://api.github.com/repos/astral-sh/uv/releases/assets/664335803"
 provenance = "github-attestations"

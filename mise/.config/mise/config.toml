@@ -2,7 +2,7 @@
 lockfile = true
 lockfile_platforms = ["macos-arm64"]
 idiomatic_version_file_enable_tools = ["node", "pnpm", "yarn", "python", "go", "java", "rust"]
-minimum_release_age = "7d"
+minimum_release_age = "24h"
 cargo.binstall_native = true
 use_versions_host_track = false
 activate_aggressive = true
