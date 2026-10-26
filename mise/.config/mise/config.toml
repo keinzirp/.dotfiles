@@ -196,6 +196,7 @@ post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc
 "brew-cask:activitywatch" = { version = "latest", adopt = true }
 "brew-cask:pearcleaner" = { version = "latest", adopt = true }
 "brew-cask:tableplus" = { version = "latest", adopt = true }
+"brew-cask:1password" = "latest"
 "brew-cask:bettercmdtab" = "latest"
 "brew-cask:colemak-dh" = "latest"
 "brew-cask:font-fira-code" = "latest"
@@ -211,6 +212,7 @@ post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc
 "brew-cask:openlogi" = "latest"
 "brew-cask:orbstack" = "latest"
 "brew-cask:sol" = "latest"
+"brew-cask:slack" = "latest"
 "brew-cask:stats" = "latest"
 "brew-cask:waterfox" = "latest"
 "brew-cask:whatcable" = "latest"
