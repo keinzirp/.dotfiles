@@ -206,7 +206,6 @@ post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc
 "brew-cask:font-terminess-ttf-nerd-font" = "latest"
 "brew-cask:gimp" = "latest"
 "brew-cask:hiddenbar" = "latest"
-"brew-cask:keepassxc" = "latest"
 "brew-cask:meld" = "latest"
 "brew-cask:music-decoy" = "latest"
 "brew-cask:openlogi" = "latest"
@@ -230,6 +229,15 @@ url = "https://github.com/alacritty/alacritty/releases/download/v{{version}}/Ala
 sha256 = "ad8d7de35fb38e43184776cac6dfee05ca325caa0b6639a06a55e54e4b026620"
 artifact = "Alacritty.app"
 adopt = true
+
+# pinned until macos27 bug fixed.
+# shortcut: manually update this pin; return to brew-cask when it ships the Qt 6.11.2 build.
+[bootstrap.packages."macos-app:keepassxc"]
+version = "2.8.0-1"
+url = "https://github.com/keepassxreboot/keepassxc/releases/download/2.8.0/KeePassXC-{{version}}-arm64.dmg"
+sha256 = "85f0e75e258ef513f0fc7f5bf470cad0943b7d7e8191b2171f9898ad32e62b9c"
+artifact = "KeePassXC.app"
+os = "macos/arm64"
 
 [bootstrap.directories."~/.ssh"]
 mode = "0700"

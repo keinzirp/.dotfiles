@@ -3,6 +3,9 @@ keep_weekly: 4
 keep_monthly: 6
 keep_yearly: 1
 
+keepassxc:
+  keepassxc_cli_command: /Applications/KeePassXC.app/Contents/MacOS/keepassxc-cli
+
 encryption_passphrase: "{credential keepassxc ~/Sync/keepassxc.kdbx borgmatic}"
 
 source_directories:
