@@ -17,3 +17,8 @@ desc = "Fuzzy find from repository root"
 on = "T"
 run = "plugin toggle-pane max-preview"
 desc = "Maximize or restore the preview pane"
+
+[[mgr.prepend_keymap]]
+on = ["F", "t"]
+run = "plugin toggle-tests"
+desc = "Toggle hiding *.test.* files"

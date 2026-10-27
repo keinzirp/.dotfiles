@@ -94,14 +94,14 @@ url = "https://github.com/chmln/sd/releases/download/v1.1.0/sd-v1.1.0-aarch64-ap
 url_api = "https://api.github.com/repos/chmln/sd/releases/assets/362325451"
 
 [[tools."aqua:cli/cli"]]
-version = "2.103.2"
+version = "2.103.3"
 backend = "aqua:cli/cli"
 specifiers = ["latest"]
 
 [tools."aqua:cli/cli"."platforms.macos-arm64"]
-checksum = "sha256:5416000f5d17580a187339e0c4068a01ca5c87f7d4fe6ca64933696f967bc418"
-url = "https://github.com/cli/cli/releases/download/v2.103.2/gh_2.103.2_macOS_arm64.zip"
-url_api = "https://api.github.com/repos/cli/cli/releases/assets/670305145"
+checksum = "sha256:d700207eae9ae98fe2b89535c2c087c07823d4628c56364695a5a07ef311c062"
+url = "https://github.com/cli/cli/releases/download/v2.103.3/gh_2.103.3_macOS_arm64.zip"
+url_api = "https://api.github.com/repos/cli/cli/releases/assets/679195704"
 provenance = "github-attestations"
 
 [[tools."aqua:dandavison/delta"]]
@@ -185,14 +185,14 @@ url = "https://github.com/rclone/rclone/releases/download/v1.75.2/rclone-v1.75.2
 url_api = "https://api.github.com/repos/rclone/rclone/releases/assets/624713742"
 
 [[tools."aqua:rust-lang/rust-analyzer"]]
-version = "2026-10-19"
+version = "2026-10-26"
 backend = "aqua:rust-lang/rust-analyzer"
 specifiers = ["latest"]
 
 [tools."aqua:rust-lang/rust-analyzer"."platforms.macos-arm64"]
-checksum = "sha256:eedad08a96f7bf92afd0890463787337d17591ea2e3df216033c6bc3ccc9d802"
-url = "https://github.com/rust-lang/rust-analyzer/releases/download/2026-10-19/rust-analyzer-aarch64-apple-darwin.gz"
-url_api = "https://api.github.com/repos/rust-lang/rust-analyzer/releases/assets/655299206"
+checksum = "sha256:8fb90cb58f5910d8d8b24ac1a93cca49f053365cbf0eb3c682144ad0a0027dcf"
+url = "https://github.com/rust-lang/rust-analyzer/releases/download/2026-10-26/rust-analyzer-aarch64-apple-darwin.gz"
+url_api = "https://api.github.com/repos/rust-lang/rust-analyzer/releases/assets/677493459"
 
 [[tools."aqua:sharkdp/bat"]]
 version = "0.26.1"
@@ -255,6 +255,15 @@ checksum = "sha256:38b7fa95a13e7f4d0b3060c875fe7427c2a0613ecff674bb45156eb34bca0
 url = "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_darwin_arm64.tar.gz"
 url_api = "https://api.github.com/repos/wagoodman/dive/releases/assets/241842465"
 
+[[tools.bun]]
+version = "1.4.4"
+backend = "core:bun"
+specifiers = ["1.4.4"]
+
+[tools.bun."platforms.macos-arm64"]
+checksum = "sha256:c240d7f0ccb90c263a849fcdb09b7ee62630d921348ed6aafda86b9d577bc510"
+url = "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-darwin-aarch64.zip"
+
 [[tools."cargo:cargo-license"]]
 version = "0.7.0"
 backend = "cargo:cargo-license"
@@ -305,6 +314,16 @@ asset_pattern = "aw-watcher-media-player-macos-aarch64.zip"
 checksum = "sha256:2b206a58a83653e25e2070ed972b98901d4f546350b1a010d01469504de9f543"
 url = "https://github.com/2e3s/aw-watcher-media-player/releases/download/v1.1.4/aw-watcher-media-player-macos-aarch64.zip"
 url_api = "https://api.github.com/repos/2e3s/aw-watcher-media-player/releases/assets/405045809"
+
+[[tools."github:Yukaii/gitlinker.cr"]]
+version = "nightly"
+backend = "github:Yukaii/gitlinker.cr"
+specifiers = ["nightly"]
+
+[tools."github:Yukaii/gitlinker.cr"."platforms.macos-arm64"]
+checksum = "sha256:7590ac37b55131cf29c00e9f6280c01a429c1c4298994cf65680440461765639"
+url = "https://github.com/Yukaii/gitlinker.cr/releases/download/nightly/gitlinker-aarch64-darwin.tar.gz"
+url_api = "https://api.github.com/repos/Yukaii/gitlinker.cr/releases/assets/298807307"
 
 [[tools."github:carapace-sh/carapace-bridge"]]
 version = "1.7.0"
@@ -405,6 +424,12 @@ aube = { path = "locks/npm-typescript/7.0.2", digest = "sha256:3d06b3b23564c68cd
 backend = "npm:typescript"
 specifiers = ["7"]
 
+[[tools."npm:typescript"]]
+version = "6.0.3"
+aube = { path = "locks/npm-typescript/6.0.3", digest = "sha256:bfd4f60761264c1fe455bfca4cc3841cabe82be4d3aa7c85d578f29f6a674804" }
+backend = "npm:typescript"
+specifiers = ["6"]
+
 [[tools."npm:typescript-language-server"]]
 version = "6.0.2"
 aube = { path = "locks/npm-typescript-language-server/6.0.2", digest = "sha256:c04c228752c1b960fe23a17ede2a5332d60f7a757f2485adadabf23ec0facdf0" }
@@ -441,13 +466,13 @@ url_api = "https://api.github.com/repos/pnpm/pnpm/releases/assets/662173343"
 provenance = "github-attestations"
 
 [[tools.python]]
-version = "3.15.1"
+version = "3.15.2"
 backend = "core:python"
 specifiers = ["3.15"]
 
 [tools.python."platforms.macos-arm64"]
-checksum = "blake3:091b3bc1da195d3a72c2e65464f4679473516b90095693d325443bac43706622"
-url = "https://github.com/astral-sh/python-build-standalone/releases/download/20261021/cpython-3.15.1+20261021-aarch64-apple-darwin-install_only_stripped.tar.gz"
+checksum = "blake3:20b7ad4c4944023af58dee5d5ce5551509b1bbd13c4bb62534005b9ff43ed674"
+url = "https://github.com/astral-sh/python-build-standalone/releases/download/20261026/cpython-3.15.2+20261026-aarch64-apple-darwin-install_only_stripped.tar.gz"
 provenance = "github-attestations"
 
 [[tools.rust]]

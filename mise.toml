@@ -1,2 +1,6 @@
 [dotfile_groups.mise]
 root = "mise"
+
+[tools]
+"aqua:anthropics/claude-code" = "latest"
+bun = "latest"

@@ -27,6 +27,7 @@ rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip
 
 "github:2e3s/aw-watcher-media-player" = { version = "latest", asset_pattern = "aw-watcher-media-player-macos-aarch64.zip" }
 "github:kakoune-lsp/kakoune-lsp" = "latest"
+"github:Yukaii/gitlinker.cr" = "nightly" # only release is a rolling nightly tag
 "github:carapace-sh/carapace-bridge" = "latest"
 "github:stayradiated/fred" = "latest"
 "cargo:cargo-license" = "latest"
@@ -65,7 +66,7 @@ rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip
 "aqua:sxyazi/yazi" = "latest"
 "aqua:ajeetdsouza/zoxide" = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
-"npm:typescript" = "7"
+"npm:typescript" = ["7", "6"]
 "npm:typescript-language-server" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
 "npm:yaml-language-server" = "latest"
@@ -73,6 +74,7 @@ rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip
 "npm:bash-language-server" = "latest"
 "pipx:python-lsp-server" = "latest"
 "cargo:ttyper" = "1.6.0"
+bun = "1.4.4"
 
 [tools."http:kakoune"]
 version = "2026.05.21"
@@ -96,6 +98,9 @@ entries."~/.config/bettercmdtab" = { mode = "symlink" }
 
 [dotfile_groups.atuin]
 root = "atuin"
+
+[dotfile_groups.claude]
+root = "claude"
 
 [dotfile_groups.gh]
 root = "gh"
@@ -215,6 +220,9 @@ post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc
 "brew-cask:stats" = "latest"
 "brew-cask:waterfox" = "latest"
 "brew-cask:whatcable" = "latest"
+"brew:bottom" = "latest"
+"brew-cask:claude-code" = "latest"
+"brew-cask:claude" = "latest"
 
 [bootstrap.packages."macos-app:caffeine"]
 version = "1.6.4"
