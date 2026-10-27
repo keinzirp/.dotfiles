@@ -42,9 +42,6 @@ apps = [
 show_status_bar = true
 preferred_view_style = "icon"
 
-[bootstrap.macos.keyboard]
-automatic_capitalization = true
-fn_state = true
 
 [bootstrap.macos.trackpad]
 three_finger_drag = false

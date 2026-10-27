@@ -1,20 +1,16 @@
 version: 1
-
 git_protocol: ssh
 editor: kak
 prompt: enabled
 prefer_editor_prompt: enabled
 pager: less -FRX
-
 browser:
 http_unix_socket:
-
 clipboard: enabled
 color_labels: enabled
 accessible_colors: disabled
 accessible_prompter: disabled
 spinner: enabled
 telemetry: disabled
-
 aliases:
-  co: pr checkout
+    co: pr checkout

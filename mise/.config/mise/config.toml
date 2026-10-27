@@ -75,6 +75,7 @@ rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip
 "pipx:python-lsp-server" = "latest"
 "cargo:ttyper" = "1.6.0"
 bun = "1.4.4"
+1password = "latest"
 
 [tools."http:kakoune"]
 version = "2026.05.21"
@@ -181,7 +182,6 @@ entries."~/.config/newsboat" = { mode = "symlink" }
 login_shell = "/opt/homebrew/bin/nu"
 
 [bootstrap.hooks]
-post-packages = 'if [ "$(uname -s)" = Darwin ]; then /usr/bin/swift "$HOME/.config/mise/scripts/colemak-dh.swift"; fi'
 post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc jsx lua markdown markdown.inline nu python ruby rust typescript'
 
 [bootstrap.packages]
