@@ -255,6 +255,15 @@ checksum = "sha256:38b7fa95a13e7f4d0b3060c875fe7427c2a0613ecff674bb45156eb34bca0
 url = "https://github.com/wagoodman/dive/releases/download/v0.13.1/dive_0.13.1_darwin_arm64.tar.gz"
 url_api = "https://api.github.com/repos/wagoodman/dive/releases/assets/241842465"
 
+[[tools.bun]]
+version = "1.4.4"
+backend = "core:bun"
+specifiers = ["1.4.4"]
+
+[tools.bun."platforms.macos-arm64"]
+checksum = "sha256:c240d7f0ccb90c263a849fcdb09b7ee62630d921348ed6aafda86b9d577bc510"
+url = "https://github.com/oven-sh/bun/releases/download/bun-v1.4.4/bun-darwin-aarch64.zip"
+
 [[tools."cargo:cargo-license"]]
 version = "0.7.0"
 backend = "cargo:cargo-license"
@@ -305,6 +314,16 @@ asset_pattern = "aw-watcher-media-player-macos-aarch64.zip"
 checksum = "sha256:2b206a58a83653e25e2070ed972b98901d4f546350b1a010d01469504de9f543"
 url = "https://github.com/2e3s/aw-watcher-media-player/releases/download/v1.1.4/aw-watcher-media-player-macos-aarch64.zip"
 url_api = "https://api.github.com/repos/2e3s/aw-watcher-media-player/releases/assets/405045809"
+
+[[tools."github:Yukaii/gitlinker.cr"]]
+version = "nightly"
+backend = "github:Yukaii/gitlinker.cr"
+specifiers = ["nightly"]
+
+[tools."github:Yukaii/gitlinker.cr"."platforms.macos-arm64"]
+checksum = "sha256:7590ac37b55131cf29c00e9f6280c01a429c1c4298994cf65680440461765639"
+url = "https://github.com/Yukaii/gitlinker.cr/releases/download/nightly/gitlinker-aarch64-darwin.tar.gz"
+url_api = "https://api.github.com/repos/Yukaii/gitlinker.cr/releases/assets/298807307"
 
 [[tools."github:carapace-sh/carapace-bridge"]]
 version = "1.7.0"
@@ -404,6 +423,12 @@ version = "7.0.2"
 aube = { path = "locks/npm-typescript/7.0.2", digest = "sha256:3d06b3b23564c68cdad7815c356edb1506fab1c42bfb8c54234134fd9650ec17" }
 backend = "npm:typescript"
 specifiers = ["7"]
+
+[[tools."npm:typescript"]]
+version = "6.0.3"
+aube = { path = "locks/npm-typescript/6.0.3", digest = "sha256:bfd4f60761264c1fe455bfca4cc3841cabe82be4d3aa7c85d578f29f6a674804" }
+backend = "npm:typescript"
+specifiers = ["6"]
 
 [[tools."npm:typescript-language-server"]]
 version = "6.0.2"

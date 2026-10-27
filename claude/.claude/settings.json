@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "ask": [
+      "Bash(rm *)"
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "input=$(cat); dir=$(echo \"$input\" | jq -r '.workspace.current_dir'); printf '\\033[32m%s@%s\\033[0m:\\033[34m%s\\033[0m' \"$(whoami)\" \"$(hostname -s)\" \"$(basename \"$dir\")\"; extra=$(echo \"$input\" | jq -r '[(.context_window.used_percentage // empty | \"ctx \\(round)%\"), ([(.rate_limits.five_hour.used_percentage // empty | \"5h \\(round)%\"), (.rate_limits.seven_day.used_percentage // empty | \"7d \\(round)%\")] | join(\" · \"))] | map(select(. != \"\")) | join(\" \")'); if [ -n \"$extra\" ]; then printf ' %s' \"$extra\"; fi"
+  },
+  "enabledPlugins": {
+    "ponytail@ponytail": true,
+    "typescript-lsp@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      }
+    }
+  },
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    }
+  },
+  "showThinkingSummaries": true,
+  "theme": "dark",
+  "terminalProgressBarEnabled": true,
+  "model": "claude-fable-5-1[1m]"
+}

@@ -34,6 +34,7 @@ def --env y [...args] {
 }
 
 alias morning = mise run morning
+alias chess = ^gnuchess --quiet --easy
 
 def fg [] {
     let jobs = job list
@@ -57,6 +58,9 @@ def set-cwd-window-title [cwd: string] {
 }
 
 if $nu.is-interactive {
+    if not (which bbl | is-empty) {
+        ^bbl rand
+    }
     $env.GPG_TTY = (^tty | str trim)
     set-cwd-window-title $env.PWD
     $env.config.hooks.pre_prompt = (

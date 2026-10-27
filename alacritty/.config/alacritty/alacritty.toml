@@ -1,6 +1,6 @@
 [terminal.shell]
-program = "/usr/bin/env"
-args = ["-u", "ZELLIJ", "/Users/keinzirp/.local/bin/mise", "exec", "--", "/opt/homebrew/bin/zellij"]
+program = "/bin/sh"
+args = ["-c", "unset ZELLIJ; exec \"$HOME/.local/bin/mise\" exec -- /opt/homebrew/bin/zellij"]
 
 [font]
 size = 18.0
