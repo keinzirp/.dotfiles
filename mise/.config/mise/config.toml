@@ -178,6 +178,7 @@ post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc
 "brew:ffmpeg-full" = "latest"
 "brew:gnupg" = "latest"
 "brew:httpie" = "latest"
+"brew-cask:humanlayer/humanlayer/humanlayer" = "latest"
 "brew:imagemagick-full" = "latest"
 "brew:jnsahaj/lumen/lumen" = "latest"
 "brew:mdcat" = "latest"
