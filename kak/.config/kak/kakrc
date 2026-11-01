@@ -85,6 +85,14 @@ map global user-git d ':git diff<ret>' -docstring 'Show Git diff'
 map global user-git b ':git blame<ret>' -docstring 'Show Git blame'
 map global user-git n ':git next-hunk<ret>' -docstring 'Go to next hunk'
 map global user-git p ':git prev-hunk<ret>' -docstring 'Go to previous hunk'
+evaluate-commands %sh{
+    command -v gitlinker >/dev/null || exit
+    gitlinker init kakoune
+    cat <<'EOF'
+map global user-git y ':gitlinker<ret>' -docstring 'Copy permalink'
+map global user-git o ':gitlinker-open<ret>' -docstring 'Open permalink'
+EOF
+}
 nop %sh{
     plug="$kak_config/plugins/plug.kak"
     [ -d "$plug" ] || git clone -q https://github.com/andreyorst/plug.kak.git "$plug" >&2
@@ -232,8 +240,7 @@ evaluate-commands %{
             args = ["--stdio"]
             settings_section = "_"
             [typescript-language-server.settings._]
-            # TypeScript 7 has no tsserver.js; keep workspace versions when usable.
-            tsserver.fallbackPath = "$(mise where npm:typescript)/node_modules/typescript/lib/tsserver.js"
+            tsserver.fallbackPath = "$(mise where npm:typescript@6 2>/dev/null || mise where npm:typescript)/node_modules/typescript/lib/tsserver.js"
 
             [eslint-language-server]
             command = "vscode-eslint-language-server"

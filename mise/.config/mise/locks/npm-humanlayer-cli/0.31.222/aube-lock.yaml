@@ -1,0 +1,74 @@
+lockfileVersion: '9.0'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+
+  .:
+    dependencies:
+      '@humanlayer/cli':
+        specifier: 0.31.222
+        version: 0.31.222
+
+packages:
+
+  '@humanlayer/cli-darwin-arm64@0.31.222':
+    resolution: {integrity: sha512-blESMG83HMKmPv8KjcNq43JegPRHpacK551cDZYTsvzd7VnpkLHpiwYWGRA9LDAtfpLk4hjDgYPQgj6YktaieA==}
+    cpu: [arm64]
+    os: [darwin]
+    hasBin: true
+
+  '@humanlayer/cli-darwin-x64@0.31.222':
+    resolution: {integrity: sha512-xcO9sptgRuDvVx0i6eaDxWgzo1ws6NQmSqa4uvn7jAD08ycLuskj8lAXLJgF0TfWw+YMwXHoH+nFn3kxEeyJwg==}
+    cpu: [x64]
+    os: [darwin]
+    hasBin: true
+
+  '@humanlayer/cli-linux-arm64@0.31.222':
+    resolution: {integrity: sha512-s9XqAXoOo3pG6l9PYAqD6GmO/uVmifXsw2AaCIBqZsC5LqMB4PmD4pCxNPUikwjtek9tf7UkPVmhi8KOgdUP9Q==}
+    cpu: [arm64]
+    os: [linux]
+    hasBin: true
+
+  '@humanlayer/cli-linux-x64@0.31.222':
+    resolution: {integrity: sha512-MLMXjjoqZwd3Phi5lOmEfDzRlC3iln7ZkR7TyDySsZotJRxefy50xa/5QKGyd0VmNQ0O7B8ZlKta/JYGCgg9wQ==}
+    cpu: [x64]
+    os: [linux]
+    hasBin: true
+
+  '@humanlayer/cli-win32-x64@0.31.222':
+    resolution: {integrity: sha512-EeJGTHpGNqxpgeQJtCBrLDzNz2SwvBDA6OvXi34659paPcA/0sp5icU/DPciqg+eE6+kK92IuXGxt6vrON7MtQ==}
+    cpu: [x64]
+    os: [win32]
+    hasBin: true
+
+  '@humanlayer/cli@0.31.222':
+    resolution: {integrity: sha512-RLCbzgRYVJpMA5dOJxrQt+s93ex1Wei8TRWZZdQ5rBJKzao8C5Mc/PNTHk8WURQD7R6zjnmLJrRervMLQa4vfQ==}
+    hasBin: true
+
+snapshots:
+
+  '@humanlayer/cli-darwin-arm64@0.31.222':
+    optional: true
+
+  '@humanlayer/cli-darwin-x64@0.31.222':
+    optional: true
+
+  '@humanlayer/cli-linux-arm64@0.31.222':
+    optional: true
+
+  '@humanlayer/cli-linux-x64@0.31.222':
+    optional: true
+
+  '@humanlayer/cli-win32-x64@0.31.222':
+    optional: true
+
+  '@humanlayer/cli@0.31.222':
+    optionalDependencies:
+      '@humanlayer/cli-darwin-arm64': 0.31.222
+      '@humanlayer/cli-darwin-x64': 0.31.222
+      '@humanlayer/cli-linux-arm64': 0.31.222
+      '@humanlayer/cli-linux-x64': 0.31.222
+      '@humanlayer/cli-win32-x64': 0.31.222

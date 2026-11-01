@@ -13,3 +13,6 @@
 - for full profile:
     - `printf 'env = ["full"]\n' > ~/.config/mise/miserc.local.toml`
     - `mise bootstrap`
+- for the work profile:
+    - `printf 'env = ["full", "work"]\n' > ~/.config/mise/miserc.local.toml`
+    - `mise bootstrap`
