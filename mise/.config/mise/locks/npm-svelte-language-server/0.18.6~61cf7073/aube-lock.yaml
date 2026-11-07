@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       svelte-language-server:
-        specifier: 0.18.5
-        version: 0.18.5(typescript@6.0.3)
+        specifier: 0.18.6
+        version: 0.18.6(typescript@6.0.3)
 
 packages:
 
@@ -33,8 +33,8 @@ packages:
   '@jridgewell/remapping@2.3.5':
     resolution: {integrity: sha512-LI9u/+laYG4Ds1TDKSJW2YPrIlcVYOwi2fUC6xB43lueCjgxV4lffOCZCtYFiH6TNOX+tQKXx97T4IKHbhyHEQ==}
 
-  '@jridgewell/resolve-uri@3.1.2':
-    resolution: {integrity: sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==}
+  '@jridgewell/resolve-uri@3.1.3':
+    resolution: {integrity: sha512-lhTtjtoEArWBjismtfS761S9Hlyn+nIZqOZVYoZ1Xn82PMNMVnk+jj/NhC4fAXGTs7ydONcJiR5vyQBTMDu27g==}
     engines: {node: '>=6.0.0'}
 
   '@jridgewell/sourcemap-codec@1.6.0':
@@ -52,8 +52,8 @@ packages:
     resolution: {integrity: sha512-VT3qmUb8pRV2QrZjd8iAmtg8lf4W0TIjZbvXtz5MKei/q96teWZgGJyyidJzOjzZzvdq616eSRVeMYIQChUTAQ==}
     engines: {node: '>= 18.0.0'}
 
-  '@types/estree@1.0.9':
-    resolution: {integrity: sha512-GhdPgy1el4/ImP05X05Uw4cw2/M93BCUmnEvWZNStlCzEKME4Fkk+YpoA5OiHNQmoS7Cafb8Xa3Pya8m1Qrzeg==}
+  '@types/estree@1.0.10':
+    resolution: {integrity: sha512-lTyOMnOcmRBzdCv6/4zUZCrEhV0xrqQiUZBZtVcbmLHBXKLnN8q89v/wKRF/Q0HbwVsqbIG3o5HDoFl9sduM+g==}
 
   '@vscode/emmet-helper@2.8.4':
     resolution: {integrity: sha512-lUki5QLS47bz/U8IlG9VQ+1lfxMtxMZENmU5nu4Z71eOD5j9FK0SmYGL5NiVJg9WBWeAU0VxRADMY2Qpq7BfVg==}
@@ -178,8 +178,8 @@ packages:
   scule@1.3.0:
     resolution: {integrity: sha512-6FtHJEvt+pVMIB9IBY+IcCJ6Z5f1iQnytgyfKMhDKgmzYG+TeH/wx1y3l27rshSbLiSanrR9ffZDrEsmjlQF2g==}
 
-  semver@7.8.5:
-    resolution: {integrity: sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA==}
+  semver@7.8.6:
+    resolution: {integrity: sha512-9lpSSU4Mly3mrtruwLs1eLK6+gzbzqeBFwRNjIjE+9LuDpWdYctrQlQ3ej1Ilgi7gknpsTRnPoLP8DpCHqHIJw==}
     engines: {node: '>=10'}
     hasBin: true
 
@@ -187,15 +187,15 @@ packages:
     resolution: {integrity: sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw==}
     engines: {node: '>=0.10.0'}
 
-  svelte-language-server@0.18.5:
-    resolution: {integrity: sha512-AD4EGNmC5zt3b/boO5+Ng7rKW/qJFbna6iDdGotQhI4wqoI/3wxn8cWRi3GX8bMOK5d+hsJyOZbOYCJ+NFYqYg==}
+  svelte-language-server@0.18.6:
+    resolution: {integrity: sha512-HlztxHLCn55YWejoNjJ7rnNNptXkDI/w6v4gUkJSjTNEg+oYXvm94/JhSBNCgcjieuAHRKyzULfbLRx22ZHWCA==}
     engines: {node: '>= 18.0.0'}
     hasBin: true
     peerDependencies:
       typescript: ^5.9.2 || ^6.0.2
 
-  svelte2tsx@0.7.62:
-    resolution: {integrity: sha512-ZXfsmL0jzAs01ho0w5z5LSIC2WgSdpTF0QCwaXLq7oHgho4P9fTgHlLp1pKAx6/xtVYRSW5nGH5ZRpEHZCqliA==}
+  svelte2tsx@0.7.63:
+    resolution: {integrity: sha512-gRgz/V6wOx0NDZhm6OMD2VIh+/HrgZc3k6ibX93rkNPEkWNn/P3Uhb1fYCqOrimEUpQd8r65dhiHZIJXSQBeow==}
     peerDependencies:
       svelte: ^3.55 || ^4.0.0-next.0 || ^4.0 || ^5.0.0-next.0
       typescript: ^4.9.4 || ^5.0.0 || ^6.0.0
@@ -204,8 +204,8 @@ packages:
     resolution: {integrity: sha512-eeEgGc2DtiUil5ANdtd8vPwt9AgaMdnuUFnPft9F5oMvU/FHu5IHFic+p1dR/UOB7XU2mX2yHW+NcTch4DCh5Q==}
     engines: {node: '>=16'}
 
-  svelte@5.57.2:
-    resolution: {integrity: sha512-1YiPCAXT0Ct6g1vOMmSLa0Nsc3QRMvtDF32ihgglGVrugIuIK38RyDiFNXVDhtQ81TJjSO57NdMw6DyYLqSGDQ==}
+  svelte@5.57.3:
+    resolution: {integrity: sha512-5mAftM3SoDV9X0zdF386F9p2pv8iKOwi/KfBS1XnBAkVCKFzVOLHUoa8iGWAt4buoicLmyWVRpuuD5wplXOQsg==}
     engines: {node: '>=18'}
 
   typescript-auto-import-cache@0.3.6:
@@ -229,8 +229,8 @@ packages:
   vscode-languageserver-protocol@3.17.5:
     resolution: {integrity: sha512-mb1bvRJN8SVznADSGWM9u/b07H7Ecg0I3OgXDuLdn307rl/J3A9YD6/eYOssqhecL27hK1IPZAsaqh00i/Jljg==}
 
-  vscode-languageserver-textdocument@1.0.15:
-    resolution: {integrity: sha512-Gsfr9S8LU3S6885cS+NaleasJ0n3V5y/SOTqHCifQiXWFw3G9w9/YItDfwHrlCz+dSZWWZ8ilYVMcJe7Sz7Sxw==}
+  vscode-languageserver-textdocument@1.0.16:
+    resolution: {integrity: sha512-qeNEuOi9a3qkqRf7Gfez2WL2VwlBTLCNekHBGO9kxPVUp9XuY15yfTJ9jwvOwKI0I2MhUUfZq95NSp+LK1CLQg==}
 
   vscode-languageserver-types@3.17.5:
     resolution: {integrity: sha512-Ld1VelNuX9pdF39h2Hgaeb5hEZM2Z3jUrrMgWQAu82jMtZp7p3vJT3BzToKtZI7NgQssZje5o0zryOrhQvzQAg==}
@@ -278,13 +278,13 @@ snapshots:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
 
-  '@jridgewell/resolve-uri@3.1.2': {}
+  '@jridgewell/resolve-uri@3.1.3': {}
 
   '@jridgewell/sourcemap-codec@1.6.0': {}
 
   '@jridgewell/trace-mapping@0.3.31':
     dependencies:
-      '@jridgewell/resolve-uri': 3.1.2
+      '@jridgewell/resolve-uri': 3.1.3
       '@jridgewell/sourcemap-codec': 1.6.0
 
   '@sveltejs/acorn-typescript@1.0.13(acorn@8.19.0)':
@@ -293,13 +293,13 @@ snapshots:
 
   '@sveltejs/load-config@0.2.3': {}
 
-  '@types/estree@1.0.9': {}
+  '@types/estree@1.0.10': {}
 
   '@vscode/emmet-helper@2.8.4':
     dependencies:
       emmet: 2.4.11
       jsonc-parser: 2.3.1
-      vscode-languageserver-textdocument: 1.0.15
+      vscode-languageserver-textdocument: 1.0.16
       vscode-languageserver-types: 3.17.5
       vscode-nls: 5.2.0
       vscode-uri: 2.1.2
@@ -323,7 +323,7 @@ snapshots:
   code-red@1.0.4:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.6.0
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
       acorn: 8.19.0
       estree-walker: 3.0.3
       periscopic: 3.1.0
@@ -354,7 +354,7 @@ snapshots:
 
   estree-walker@3.0.3:
     dependencies:
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
 
   fdir@6.5.0: {}
 
@@ -362,7 +362,7 @@ snapshots:
 
   is-reference@3.0.3:
     dependencies:
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
 
   jsonc-parser@2.3.1: {}
 
@@ -376,14 +376,14 @@ snapshots:
 
   periscopic@3.1.0:
     dependencies:
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
       estree-walker: 3.0.3
       is-reference: 3.0.3
 
-  prettier-plugin-svelte4@4.1.1(prettier@3.3.3)(svelte@5.57.2):
+  prettier-plugin-svelte4@4.1.1(prettier@3.3.3)(svelte@5.57.3):
     dependencies:
       prettier: 3.3.3
-      svelte: 5.57.2
+      svelte: 5.57.3
 
   prettier-plugin-svelte@3.5.2(prettier@3.3.3)(svelte@4.2.20):
     dependencies:
@@ -396,11 +396,11 @@ snapshots:
 
   scule@1.3.0: {}
 
-  semver@7.8.5: {}
+  semver@7.8.6: {}
 
   source-map-js@1.2.2: {}
 
-  svelte-language-server@0.18.5(typescript@6.0.3):
+  svelte-language-server@0.18.6(typescript@6.0.3):
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@sveltejs/load-config': 0.2.3
@@ -412,9 +412,9 @@ snapshots:
       globrex: 0.1.2
       prettier: 3.3.3
       prettier-plugin-svelte: 3.5.2(prettier@3.3.3)(svelte@4.2.20)
-      prettier-plugin-svelte4: 4.1.1(prettier@3.3.3)(svelte@5.57.2)
+      prettier-plugin-svelte4: 4.1.1(prettier@3.3.3)(svelte@5.57.3)
       svelte: 4.2.20
-      svelte2tsx: 0.7.62(svelte@4.2.20)(typescript@6.0.3)
+      svelte2tsx: 0.7.63(svelte@4.2.20)(typescript@6.0.3)
       typescript: 6.0.3
       typescript-auto-import-cache: 0.3.6
       vscode-css-languageservice: 6.3.10
@@ -426,7 +426,7 @@ snapshots:
     transitivePeerDependencies:
       - picomatch
 
-  svelte2tsx@0.7.62(svelte@4.2.20)(typescript@6.0.3):
+  svelte2tsx@0.7.63(svelte@4.2.20)(typescript@6.0.3):
     dependencies:
       dedent-js: 1.0.1
       scule: 1.3.0
@@ -438,7 +438,7 @@ snapshots:
       '@ampproject/remapping': 2.3.0
       '@jridgewell/sourcemap-codec': 1.6.0
       '@jridgewell/trace-mapping': 0.3.31
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
       acorn: 8.19.0
       aria-query: 5.3.2
       axobject-query: 4.1.0
@@ -450,12 +450,12 @@ snapshots:
       magic-string: 0.30.21
       periscopic: 3.1.0
 
-  svelte@5.57.2:
+  svelte@5.57.3:
     dependencies:
       '@jridgewell/remapping': 2.3.5
       '@jridgewell/sourcemap-codec': 1.6.0
       '@sveltejs/acorn-typescript': 1.0.13(acorn@8.19.0)
-      '@types/estree': 1.0.9
+      '@types/estree': 1.0.10
       acorn: 8.19.0
       aria-query: 5.3.1
       axobject-query: 4.1.0
@@ -472,21 +472,21 @@ snapshots:
 
   typescript-auto-import-cache@0.3.6:
     dependencies:
-      semver: 7.8.5
+      semver: 7.8.6
 
   typescript@6.0.3: {}
 
   vscode-css-languageservice@6.3.10:
     dependencies:
       '@vscode/l10n': 0.0.18
-      vscode-languageserver-textdocument: 1.0.15
+      vscode-languageserver-textdocument: 1.0.16
       vscode-languageserver-types: 3.17.5
       vscode-uri: 3.1.0
 
   vscode-html-languageservice@5.4.0:
     dependencies:
       '@vscode/l10n': 0.0.18
-      vscode-languageserver-textdocument: 1.0.15
+      vscode-languageserver-textdocument: 1.0.16
       vscode-languageserver-types: 3.17.5
       vscode-uri: 3.1.0
 
@@ -497,7 +497,7 @@ snapshots:
       vscode-jsonrpc: 8.2.0
       vscode-languageserver-types: 3.17.5
 
-  vscode-languageserver-textdocument@1.0.15: {}
+  vscode-languageserver-textdocument@1.0.16: {}
 
   vscode-languageserver-types@3.17.5: {}
 

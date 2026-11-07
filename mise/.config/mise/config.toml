@@ -14,10 +14,15 @@ dotfiles.relative_symlinks = true
 skyspell = "cargo:https://codeberg.org/your-tools/skyspell.git"
 skyspell-kak = "cargo:https://codeberg.org/your-tools/skyspell.git"
 
+[tasks.backup]
+run = "borgmatic --config ~/.config/borgmatic.d/removable.yaml --repository T7 --verbosity 1 create --progress --stats prune compact check"
+raw = true
+
 [tools]
 skyspell = { version = "latest", crate = "skyspell" }
 skyspell-kak = { version = "latest", crate = "skyspell_kak" }
 node = "26"
+flutter = "latest"
 pnpm = "12"
 go = "1.27"
 python = "3.15"
@@ -29,15 +34,12 @@ rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip
 "github:kakoune-lsp/kakoune-lsp" = "latest"
 "github:carapace-sh/carapace-bridge" = "latest"
 "github:stayradiated/fred" = "latest"
+"github:Yukaii/gitlinker.cr" = "nightly"
 "cargo:cargo-license" = "latest"
-"cargo:https://github.com/anthrofract/majjit" = "latest"
-# "cargo:rustlings" = "latest"
-# "cargo:ttyper" = "latest"
 "cargo:eza" = "latest"
 "cargo:kak-tree-sitter" = "latest"
 "cargo:ktsctl" = "latest"
 "cargo:taplo-cli" = { version = "latest", features = ["lsp"] }
-# "cargo:sleek" = "latest"
 
 "aqua:BurntSushi/ripgrep" = "latest"
 "aqua:chmln/sd" = "latest"
@@ -55,7 +57,9 @@ rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip
 "aqua:junegunn/fzf" = "latest"
 "aqua:cli/cli" = "latest"
 "aqua:dandavison/delta" = "latest"
+"aqua:getzola/zola" = "latest"
 "aqua:jj-vcs/jj" = "latest"
+"aqua:idursun/jjui" = "latest"
 "aqua:jqlang/jq" = "latest"
 "aqua:casey/just" = "latest"
 "aqua:kubernetes/kubernetes/kubectl" = "latest"
@@ -66,7 +70,6 @@ rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip
 "aqua:sxyazi/yazi" = "latest"
 "aqua:ajeetdsouza/zoxide" = "latest"
 "npm:@earendil-works/pi-coding-agent" = "latest"
-"npm:@humanlayer/cli" = "latest"
 "npm:typescript" = "7"
 "npm:typescript-language-server" = "latest"
 "npm:vscode-langservers-extracted" = "latest"
@@ -99,6 +102,11 @@ entries."~/.config/bettercmdtab" = { mode = "symlink" }
 [dotfile_groups.atuin]
 root = "atuin"
 
+[dotfile_groups.borgmatic]
+root = "borgmatic"
+entries."~/.config/borgmatic" = { mode = "symlink" }
+entries."~/.config/borgmatic.d" = { mode = "symlink" }
+
 [dotfile_groups.gh]
 root = "gh"
 exclude = ["hosts.yml"]
@@ -121,6 +129,10 @@ entries."~/.config/kak" = { mode = "symlink" }
 
 [dotfile_groups.mise]
 root = "mise"
+
+[dotfile_groups.newsboat]
+root = "newsboat"
+entries."~/.config/newsboat" = { mode = "symlink" }
 
 [dotfile_groups.nushell]
 root = "nushell"
@@ -173,6 +185,8 @@ post-packages = 'if [ "$(uname -s)" = Darwin ]; then /usr/bin/swift "$HOME/.conf
 post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc jsx lua markdown markdown.inline nu python ruby rust typescript'
 
 [bootstrap.packages]
+"brew:borgbackup" = "latest"
+"brew:borgmatic" = "latest"
 "brew:cloudflare-speed-cli" = "latest"
 "brew:editorconfig" = "latest"
 "brew:enchant" = "latest"
@@ -180,10 +194,10 @@ post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc
 "brew:ffmpeg-full" = "latest"
 "brew:gnupg" = "latest"
 "brew:httpie" = "latest"
-"brew-cask:humanlayer/humanlayer/humanlayer" = "latest"
 "brew:imagemagick-full" = "latest"
 "brew:jnsahaj/lumen/lumen" = "latest"
 "brew:mdcat" = "latest"
+"brew:newsboat" = "latest"
 "brew:nushell" = "latest"
 "brew:overmind" = "latest"
 "brew:pgcli" = "latest"
@@ -195,29 +209,26 @@ post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc
 "brew:watchman" = "latest"
 "brew:zellij" = "latest"
 
+"brew-cask:android-platform-tools" = "latest"
+"brew-cask:anki" = "latest"
 "brew-cask:nikitabobko/tap/aerospace" = { version = "latest", adopt = true }
 "brew-cask:activitywatch" = { version = "latest", adopt = true }
 "brew-cask:pearcleaner" = { version = "latest", adopt = true }
 "brew-cask:tableplus" = { version = "latest", adopt = true }
-"brew-cask:1password" = "latest"
 "brew-cask:bettercmdtab" = "latest"
 "brew-cask:colemak-dh" = "latest"
-"brew-cask:font-fira-code" = "latest"
-"brew-cask:font-iosevka" = "latest"
 "brew-cask:font-liberation-nerd-font" = "latest"
-"brew-cask:font-symbols-only-nerd-font" = "latest"
-"brew-cask:font-terminess-ttf-nerd-font" = "latest"
-"brew-cask:gimp" = "latest"
 "brew-cask:hiddenbar" = "latest"
 "brew-cask:meld" = "latest"
 "brew-cask:music-decoy" = "latest"
 "brew-cask:openlogi" = "latest"
 "brew-cask:orbstack" = "latest"
 "brew-cask:sol" = "latest"
-"brew-cask:slack" = "latest"
 "brew-cask:stats" = "latest"
+"brew-cask:syncthing-app" = { version = "latest", adopt = true }
+"brew-cask:tunnelblick" = { version = "latest", adopt = true }
+"brew-cask:vlc" = "latest"
 "brew-cask:waterfox" = "latest"
-"brew-cask:whatcable" = "latest"
 
 [bootstrap.packages."macos-app:caffeine"]
 version = "1.6.4"
@@ -231,6 +242,13 @@ version = "0.17.0"
 url = "https://github.com/alacritty/alacritty/releases/download/v{{version}}/Alacritty-v{{version}}.dmg"
 sha256 = "ad8d7de35fb38e43184776cac6dfee05ca325caa0b6639a06a55e54e4b026620"
 artifact = "Alacritty.app"
+adopt = true
+
+[bootstrap.packages."macos-app:qbittorrent"]
+version = "5.2.3"
+url = "https://downloads.sourceforge.net/qbittorrent/qbittorrent-mac/qbittorrent-{{version}}/qbittorrent-{{version}}.dmg"
+sha256 = "9e37f6c7ff848c7bdd3c10167614c0cb78c00e2ddcc323f1ad3ac6c008a0481f"
+artifact = "qbittorrent.app"
 adopt = true
 
 # pinned until macos27 bug fixed.

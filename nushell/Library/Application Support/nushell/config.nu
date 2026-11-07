@@ -1,3 +1,5 @@
+hide-env MISE_ENV
+
 $env.PATH = ($env.PATH | prepend [
     ($env.HOME + "/.cargo/bin"),
     ($env.HOME + "/.local/bin"),
@@ -21,7 +23,7 @@ $env.config.rm.always_trash = true
 use ~/.config/mise/scripts/integrations.nu [integrations refresh-integrations]
 let integration_loader = ($nu.user-autoload-dirs | first | path join "dotfiles-integrations.nu")
 
-alias backup = mise -C $env.HOME -E full run backup
+alias backup = mise -C $env.HOME run backup
 
 def --env y [...args] {
     let tmp = (mktemp -t "yazi-cwd.XXXXXX")

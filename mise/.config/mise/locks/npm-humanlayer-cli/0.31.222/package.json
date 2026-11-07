@@ -1,7 +1,0 @@
-{
-  "name": "mise-npm-install",
-  "private": true,
-  "dependencies": {
-    "@humanlayer/cli": "0.31.222"
-  }
-}
