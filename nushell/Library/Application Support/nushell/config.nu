@@ -1,5 +1,3 @@
-hide-env MISE_ENV
-
 $env.PATH = ($env.PATH | prepend [
     ($env.HOME + "/.cargo/bin"),
     ($env.HOME + "/.local/bin"),
