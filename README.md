@@ -9,5 +9,3 @@
 - `mise dot apply`
 - `mise bootstrap`
 - `exec nu`
-
-    - `mise bootstrap`

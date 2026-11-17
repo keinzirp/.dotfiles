@@ -77,6 +77,7 @@ rust = { version = "latest", components = ["rust-src"], targets = ["wasm32-wasip
 "npm:svelte-language-server" = { version = "latest", trust_policy_excludes = ["svelte@4.2.20"] }
 "npm:bash-language-server" = "latest"
 "pipx:python-lsp-server" = "latest"
+"pipx:psbs" = "latest"
 "cargo:ttyper" = "1.6.0"
 
 [tools."http:kakoune"]
@@ -174,9 +175,6 @@ exclude = [".config/zellij/plugins"]
 [dotfile_groups.zsh]
 root = "zsh"
 
-[dotfiles]
-"~/.config/lumen/lumen.config.json/preferences" = { source = "~/.dotfiles/lumen/preferences.json", merge = true }
-
 [bootstrap.user]
 login_shell = "/opt/homebrew/bin/nu"
 
@@ -193,9 +191,7 @@ post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc
 "brew:exiftool" = "latest"
 "brew:ffmpeg-full" = "latest"
 "brew:gnupg" = "latest"
-"brew:httpie" = "latest"
 "brew:imagemagick-full" = "latest"
-"brew:jnsahaj/lumen/lumen" = "latest"
 "brew:mdcat" = "latest"
 "brew:newsboat" = "latest"
 "brew:nushell" = "latest"
