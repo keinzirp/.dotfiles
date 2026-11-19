@@ -215,6 +215,7 @@ post-tools = 'mise exec -- ktsctl sync bash c cpp css html javascript json jsonc
 "brew-cask:colemak-dh" = "latest"
 "brew-cask:font-liberation-nerd-font" = "latest"
 "brew-cask:hiddenbar" = "latest"
+"brew-cask:kdenlive" = "latest"
 "brew-cask:meld" = "latest"
 "brew-cask:music-decoy" = "latest"
 "brew-cask:openlogi" = "latest"
